@@ -6,11 +6,12 @@
 <title>SILLY SOCKS | ARCADE DROP</title>
 <style>
 /* ===========================================
-  80s SYNTHWAVE / MEMPHIS THEME - FULL EDITION
+  80s SYNTHWAVE / MEMPHIS THEME - STRICT SEQUENCE
 =========================================== */
 @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Montserrat:ital,wght@0,400;0,800;0,900;1,900&display=swap');
 
 :root {
+  /* DARK MODE: SYNTHWAVE */
   --bg: #0b0c10;
   --text: #ffffff;
   --text-muted: #aaaaaa;
@@ -27,6 +28,7 @@
 }
 
 [data-theme="light"] {
+  /* LIGHT MODE: 80s MEMPHIS DESIGN */
   --bg: #f4f4f4;
   --text: #111111;
   --text-muted: #555555;
@@ -48,7 +50,7 @@ body {
   color: var(--text);
   overflow-x: hidden;
   height: 100vh;
-  overflow-y: hidden;
+  overflow-y: hidden; /* Prevents scroll until catalog unlocks */
   transition: background-color 0.5s, color 0.5s;
   -webkit-tap-highlight-color: transparent;
 }
@@ -71,6 +73,7 @@ body {
   100% { transform: perspective(600px) rotateX(70deg) translateY(50px); }
 }
 
+/* Memphis background elements for Light Mode */
 .memphis-shapes { position: fixed; top:0; left:0; width:100%; height:100%; z-index:-1; pointer-events: none; opacity: 0; transition: opacity 0.5s; }
 [data-theme="light"] .memphis-shapes { opacity: 1; }
 .shape { position: absolute; border: 4px solid var(--card-border); }
@@ -137,6 +140,7 @@ body {
 .ttt-cell.x { color: var(--accent-1); text-shadow: 0 0 15px var(--accent-1); }
 .ttt-cell.o { color: var(--accent-2); text-shadow: 0 0 15px var(--accent-2); }
 #ttt-status { font-family: var(--font-retro); font-size: 10px; color: var(--accent-3); margin-top: 10px; line-height: 1.6; animation: pulseLogo 1.5s infinite alternate;}
+.btn-group { display: flex; flex-wrap: wrap; justify-content: center; gap: 5px; margin-top: 15px; }
 
 /* --- SCREEN 4: GATE / HACKING --- */
 .lock-icon { font-size: 40px; margin-bottom: 15px; filter: drop-shadow(0 0 10px var(--accent-1)); transition: all 0.5s ease; }
@@ -211,13 +215,18 @@ body {
 .footer { text-align: center; padding: 3rem 1.5rem; font-family: var(--font-retro); font-size: 9px; color: var(--text-muted); border-top: 2px dashed var(--card-border); margin-top: 3rem; line-height: 2;}
 
 /* --- IG FLOATING BUTTON --- */
-.ig-float-btn { position: fixed; bottom: 20px; right: 20px; width: 50px; height: 50px; background: var(--accent-1); display: flex; align-items: center; justify-content: center; border: 3px solid var(--card-border); cursor: pointer; z-index: 9999; box-shadow: 4px 4px 0 var(--card-border); transition: all 0.2s; }
+.ig-float-btn {
+  position: fixed; bottom: 20px; right: 20px; width: 50px; height: 50px;
+  background: var(--accent-1); display: flex; align-items: center; justify-content: center;
+  border: 3px solid var(--card-border); cursor: pointer; z-index: 9999;
+  box-shadow: 4px 4px 0 var(--card-border); transition: all 0.2s;
+}
 .ig-float-btn:active { transform: translate(4px, 4px); box-shadow: 0 0 0 transparent; }
 .ig-float-btn svg { width: 24px; height: 24px; fill: #fff; }
 
 @media(max-width: 480px) {
   .input-row { flex-direction: column; align-items: stretch; }
-  .retro-btn { width: 100% !important; padding: 15px; }
+  .retro-btn { width: 100% !important; padding: 15px; margin: 5px 0;}
   .cat-header { flex-direction: column; align-items: center; text-align: center; }
   .welcome-pill { justify-content: center; text-align: center; }
   .theme-toggle-btn { margin-left: 0; margin-top: 5px; }
@@ -266,9 +275,10 @@ body {
       <div class="ttt-cell" onclick="makeMove(8)"></div>
     </div>
 
-    <div style="margin-top: 15px;">
+    <div class="btn-group">
       <button class="retro-btn" id="resetTttBtn" style="display:none;" onclick="resetBoard()">REMATCH</button>
       <button class="retro-btn" id="skipTttBtn" onclick="showGate(false)">I HAVE A CODE</button>
+      <button class="retro-btn" onclick="skipToCatalog()">SKIP TO CATALOG</button>
     </div>
   </div>
 </div>
@@ -306,7 +316,7 @@ body {
     </div>
   </header>
 
-  <!-- Simulated Global Leaderboard Ticker -->
+  <!-- Arcade Leaderboard Ticker -->
   <div class="ticker-wrap" id="leaderboardWrap">
     <div class="ticker" id="lbTickerContainer">
       <!-- Populated via JS -->
@@ -560,13 +570,35 @@ function resetBoard() {
   document.getElementById('resetTttBtn').style.display = "none";
 }
 
+// --- DIRECT SKIP TO CATALOG ---
+function skipToCatalog() {
+  soundClick();
+  stopBGM(); // Stop music when bypassing immediately 
+  tttScreen.style.opacity = "0";
+  tttScreen.style.transform = "scale(0.5)";
+  tttScreen.style.pointerEvents = "none";
+  document.body.style.overflowY = 'auto'; // allow scrolling now
+  
+  setTimeout(() => {
+    tttScreen.style.display = "none";
+    catalog.style.display = "block";
+    document.getElementById("broName").textContent = "GUEST";
+    renderLeaderboard();
+    
+    setTimeout(() => {
+      catalog.classList.add("visible");
+      window.scrollTo({top: 0, behavior: 'smooth'});
+    }, 50);
+  }, 600);
+}
+
 // --- Leaderboard ---
 function updateLeaderboard(name) {
   let localLb = JSON.parse(localStorage.getItem('sillySocksLB') || '[]');
   let globalLb = ["SONGLAP", "FOUZIA", "SHIHAB", "ANHAR", "SIAM"];
   
   // If player won, push their name
-  if(name) localLb.unshift(name.toUpperCase());
+  if(name && name !== "GUEST") localLb.unshift(name.toUpperCase());
   
   localStorage.setItem('sillySocksLB', JSON.stringify(localLb));
   
@@ -578,6 +610,10 @@ function updateLeaderboard(name) {
   tickerHTML += uniqueLb.map((n, i) => `#${i+1} ${n}`).join(" ⚡ ") + " 👑";
   
   document.getElementById('lbTickerContainer').innerHTML = `<span>${tickerHTML}</span><span>${tickerHTML}</span>`;
+}
+
+function renderLeaderboard() {
+  updateLeaderboard(); // Run update with no new name just to render
 }
 
 // --- Gatekeeper Logic ---
@@ -671,6 +707,7 @@ function unlockCatalog(playerName) {
     gate.style.display = "none";
     catalog.style.display = "block";
     document.getElementById("broName").textContent = playerName;
+    renderLeaderboard();
     
     setTimeout(() => {
       catalog.classList.add("visible");
@@ -778,8 +815,6 @@ function updatePrice(radio, index) {
 
 function doBuy() { soundClick(); window.open(FORM_LINK, '_blank'); }
 
-// Init
-updateLeaderboard(""); // Initialize leaderboard on load
 showPage(1);
 </script>
 </body>
