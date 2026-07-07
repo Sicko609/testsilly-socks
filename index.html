@@ -215,12 +215,7 @@ body {
 .footer { text-align: center; padding: 3rem 1.5rem; font-family: var(--font-retro); font-size: 9px; color: var(--text-muted); border-top: 2px dashed var(--card-border); margin-top: 3rem; line-height: 2;}
 
 /* --- IG FLOATING BUTTON --- */
-.ig-float-btn {
-  position: fixed; bottom: 20px; right: 20px; width: 50px; height: 50px;
-  background: var(--accent-1); display: flex; align-items: center; justify-content: center;
-  border: 3px solid var(--card-border); cursor: pointer; z-index: 9999;
-  box-shadow: 4px 4px 0 var(--card-border); transition: all 0.2s;
-}
+.ig-float-btn { position: fixed; bottom: 20px; right: 20px; width: 50px; height: 50px; background: var(--accent-1); display: flex; align-items: center; justify-content: center; border: 3px solid var(--card-border); cursor: pointer; z-index: 9999; box-shadow: 4px 4px 0 var(--card-border); transition: all 0.2s; }
 .ig-float-btn:active { transform: translate(4px, 4px); box-shadow: 0 0 0 transparent; }
 .ig-float-btn svg { width: 24px; height: 24px; fill: #fff; }
 
@@ -595,7 +590,7 @@ function skipToCatalog() {
 // --- Leaderboard ---
 function updateLeaderboard(name) {
   let localLb = JSON.parse(localStorage.getItem('sillySocksLB') || '[]');
-  let globalLb = ["SONGLAP", "FOUZIA", "SHIHAB", "ANHAR", "SIAM"];
+  let globalLb = ["SHIHAB", "SIAM", "ABID", "MADDIE", "MAMUN"];
   
   // If player won, push their name
   if(name && name !== "GUEST") localLb.unshift(name.toUpperCase());
@@ -617,8 +612,8 @@ function renderLeaderboard() {
 }
 
 // --- Gatekeeper Logic ---
-var allowed = "tauhid|songlap|fouzia|anhar|mafruha|siam|abid|authai|rifah|fatima|azha|namira|maddie|nafisa|nayla|faysol|labby|mamun|sayemrohitkarmakar|nafisalubabaetu|mirzaabdulkhaled|namiraahmedshams|ishmamalam|farhanmasud|aunu|labbyahsan|jarinsubahshifa|nafisanoor|sabilaanjum|miswaralam|abdullahaljawad|tasin|arshan|ahnaf";
-var pretty   = "Tauhid|Songlap|Fouzia|Anhar|Mafruha|Siam|Abid|Authai|Rifah|Fatima|Azha|Namira|Maddie|Nafisa|Nayla|Faysol|Labby|Mamun|Sayem Rohit Karmakar|Nafisa Lubaba Etu|Mirza Abdul Khaled|Namira Ahmed Shams|Ishmam Alam|Farhan Masud|Aunu|Labby Ahsan|Jarin Subah Shifa|Nafisa Noor|Sabila Anjum|Miswar Alam|Abdullah Al Jawad|Tasin|Arshan|Ahnaf";
+var allowed = "mafruha|siam|abid|authai|rifah|fatima|azha|namira|maddie|nafisa|nayla|faysol|labby|mamun|sayemrohitkarmakar|nafisalubabaetu|mirzaabdulkhaled|namiraahmedshams|ishmamalam|farhanmasud|aunu|labbyahsan|jarinsubahshifa|nafisanoor|sabilaanjum|miswaralam|abdullahaljawad|tasin|arshan|ahnaf";
+var pretty   = "Mafruha|Siam|Abid|Authai|Rifah|Fatima|Azha|Namira|Maddie|Nafisa|Nayla|Faysol|Labby|Mamun|Sayem Rohit Karmakar|Nafisa Lubaba Etu|Mirza Abdul Khaled|Namira Ahmed Shams|Ishmam Alam|Farhan Masud|Aunu|Labby Ahsan|Jarin Subah Shifa|Nafisa Noor|Sabila Anjum|Miswar Alam|Abdullah Al Jawad|Tasin|Arshan|Ahnaf";
 var FORM_LINK = "https://forms.gle/psdEZ97p6kBwDWzC7";
 var allowedList = allowed.split("|");
 var prettyList  = pretty.split("|");
@@ -728,7 +723,7 @@ function getPriceHTML(isFlash, isWithSD) {
   }
 }
 
-// --- Render Grids with Exact File Names ---
+// --- Render Grids ---
 var camData = [
   { n:"Yellow 1985", v:"Sunny 80s vibes", i:"c1.jpg" },
   { n:"Black Retro",  v:"Neon noir aesthetic", i:"c2.jpg" },
@@ -815,6 +810,8 @@ function updatePrice(radio, index) {
 
 function doBuy() { soundClick(); window.open(FORM_LINK, '_blank'); }
 
+// Init
+updateLeaderboard(""); // Initialize leaderboard on load
 showPage(1);
 </script>
 </body>
