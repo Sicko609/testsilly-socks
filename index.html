@@ -5,53 +5,50 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
 <title>Silly Socks — 80s Arcade Drop</title>
 <style>
-/* ===========================================
-  80s SYNTHWAVE / MEMPHIS THEME
-=========================================== */
+/* --- 80s SYNTHWAVE / MEMPHIS THEME --- */
 @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Montserrat:wght@400;800;900&display=swap');
-
-:root {
-  --bg: #0b0c10; --text: #ffffff; --accent-1: #ff00ff; 
-  --accent-2: #00ffff; --accent-3: #ffff00;
-}
+:root { --bg: #0b0c10; --text: #ffffff; --accent-1: #ff00ff; --accent-2: #00ffff; --accent-3: #ffff00; --card-bg: rgba(20, 10, 30, 0.95); --card-border: #ff00ff; }
+[data-theme="light"] { --bg: #f4f4f4; --text: #111111; --text-muted: #555555; --accent-1: #ff007f; --accent-2: #00e5ff; --accent-3: #ffea00; --card-bg: #ffffff; --card-border: #111111; }
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-body { font-family: 'Montserrat', sans-serif; background-color: var(--bg); color: var(--text); height: 100vh; overflow-y: hidden; }
+body { font-family: 'Montserrat', sans-serif; background-color: var(--bg); color: var(--text); height: 100vh; overflow-y: hidden; transition: 0.5s; }
 
-/* --- HERO & GATE --- */
-#hero, #ttt-screen, #gate { position: fixed; top:0; left:0; width:100vw; height:100vh; display:flex; flex-direction:column; align-items:center; justify-content:center; background: var(--bg); z-index: 999; cursor: pointer; }
+/* --- GRID & HERO --- */
+.synth-grid { position: fixed; bottom: -20vh; left: -50vw; width: 200vw; height: 70vh; background-image: linear-gradient(rgba(0,255,255,0.2) 2px, transparent 2px), linear-gradient(90deg, rgba(0,255,255,0.2) 2px, transparent 2px); background-size: 50px 50px; transform: perspective(600px) rotateX(70deg); z-index: -2; }
+#hero, #ttt-screen, #gate { position: fixed; top:0; left:0; width:100vw; height:100vh; display:flex; flex-direction:column; align-items:center; justify-content:center; background: var(--bg); z-index: 5000; cursor: pointer; transition: 0.5s; }
 #ttt-screen, #gate { display: none; }
-.hero-logo { font-family: 'Press Start 2P'; font-size: 40px; text-shadow: 0 0 10px var(--accent-1); margin-bottom: 20px; }
+.hero-logo { font-family: 'Press Start 2P'; font-size: 40px; text-shadow: 0 0 10px var(--accent-1); margin-bottom: 20px; text-align: center; }
 
-/* --- RETRO BOXES --- */
-.retro-box { width: 90%; max-width: 500px; text-align: center; padding: 3rem; background: rgba(20, 10, 30, 0.9); border: 4px solid var(--accent-1); box-shadow: 0 0 20px var(--accent-1); }
-.retro-btn { padding: 15px; background: var(--accent-1); border: 2px solid white; color: #fff; font-family: 'Press Start 2P'; font-size: 10px; cursor: pointer; margin-top: 20px; }
-
-/* --- TIC TAC TOE --- */
-.ttt-board { display: grid; grid-template-columns: repeat(3, 1fr); gap: 4px; width: 250px; margin: 20px auto; background: var(--accent-1); }
+/* --- RETRO ELEMENTS --- */
+.retro-box { width: 90%; max-width: 500px; text-align: center; padding: 3rem; background: var(--card-bg); border: 4px solid var(--card-border); box-shadow: 0 0 20px var(--accent-1); }
+.retro-btn { padding: 15px; background: var(--accent-1); border: 2px solid white; color: #fff; font-family: 'Press Start 2P'; font-size: 10px; cursor: pointer; margin-top: 10px; text-transform: uppercase; }
+.ttt-board { display: grid; grid-template-columns: repeat(3, 1fr); gap: 4px; width: 250px; margin: 20px auto; background: var(--card-border); }
 .ttt-cell { background: #000; height: 80px; display: flex; align-items: center; justify-content: center; font-family: 'Press Start 2P'; font-size: 30px; cursor: pointer; }
+.ttt-cell.x { color: var(--accent-1); } .ttt-cell.o { color: var(--accent-2); }
 
 /* --- CATALOG --- */
 #catalog { display: none; padding-bottom: 50px; overflow-y: auto; height: 100vh; }
+.cat-header { background: var(--card-bg); border-bottom: 4px solid var(--card-border); padding: 20px; display: flex; justify-content: space-between; align-items: center; position: sticky; top:0; z-index: 100; }
 .cam-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 30px; padding: 2rem; }
-.cam-card { background: rgba(20, 10, 30, 0.9); border: 3px solid var(--accent-1); padding: 15px; }
+.cam-card { background: var(--card-bg); border: 3px solid var(--card-border); padding: 15px; }
 .cam-img { width: 100%; height: 200px; object-fit: cover; background: #333; }
 .cam-name { font-family: 'Press Start 2P'; font-size: 12px; margin: 10px 0; color: var(--accent-2); }
 .buy-btn { width: 100%; padding: 15px; background: var(--accent-1); border: none; color: #fff; font-family: 'Press Start 2P'; font-size: 10px; cursor: pointer; }
+.theme-toggle-btn { background: var(--bg); color: var(--text); border: 2px solid var(--accent-3); padding: 5px 10px; font-family: 'Press Start 2P'; font-size: 8px; cursor: pointer; }
 </style>
 </head>
 <body>
 
-<!-- HERO -->
+<div class="synth-grid"></div>
+
 <div id="hero" onclick="showTTT()">
   <h1 class="hero-logo">SILLY SOCKS</h1>
   <p style="font-family: 'Press Start 2P'; color: var(--accent-3);">>> CLICK TO START <<</p>
 </div>
 
-<!-- TIC TAC TOE -->
 <div id="ttt-screen">
   <div class="retro-box">
-    <h2 style="font-family: 'Press Start 2P'; color: var(--accent-1); margin-bottom: 20px;">BATTLE THE BOT</h2>
-    <div class="ttt-board">
+    <h2 style="font-family: 'Press Start 2P'; color: var(--accent-1); margin-bottom: 20px; font-size: 14px;">BEAT THE BOT</h2>
+    <div class="ttt-board" id="board">
       <div class="ttt-cell" onclick="move(0)"></div><div class="ttt-cell" onclick="move(1)"></div><div class="ttt-cell" onclick="move(2)"></div>
       <div class="ttt-cell" onclick="move(3)"></div><div class="ttt-cell" onclick="move(4)"></div><div class="ttt-cell" onclick="move(5)"></div>
       <div class="ttt-cell" onclick="move(6)"></div><div class="ttt-cell" onclick="move(7)"></div><div class="ttt-cell" onclick="move(8)"></div>
@@ -60,22 +57,29 @@ body { font-family: 'Montserrat', sans-serif; background-color: var(--bg); color
   </div>
 </div>
 
-<!-- GATE -->
 <div id="gate">
   <div class="retro-box">
-    <h2 style="font-family: 'Press Start 2P'; color: var(--accent-1); margin-bottom: 20px;">SYSTEM LOCKED</h2>
-    <input id="refInput" type="text" placeholder="ENTER REFERRAL CODE" style="width: 100%; padding: 15px; border: 2px solid var(--accent-2); background: #000; color: #fff;" />
+    <h2 style="font-family: 'Press Start 2P'; color: var(--accent-1); margin-bottom: 20px; font-size: 14px;">SYSTEM LOCKED</h2>
+    <input id="refInput" type="text" placeholder="REFERRAL CODE" style="width: 100%; padding: 15px; border: 2px solid var(--accent-2); background: #000; color: #fff;" />
     <button class="retro-btn" onclick="checkCode()">ACCESS</button>
-    <div id="errMsg" style="color:red; margin-top:10px; display:none;">ACCESS DENIED</div>
+    <div id="errMsg" style="color:red; margin-top:10px; display:none; font-family: 'Press Start 2P'; font-size: 8px;">ACCESS DENIED</div>
   </div>
 </div>
 
-<!-- CATALOG -->
 <div id="catalog">
+  <header class="cat-header">
+    <div style="font-family: 'Press Start 2P'; font-size: 14px;">SILLY SOCKS</div>
+    <div>
+      <span id="broName" style="font-family: 'Press Start 2P'; font-size: 10px;">PLAYER</span>
+      <button class="theme-toggle-btn" onclick="toggleTheme()">[ DAY/NIGHT ]</button>
+    </div>
+  </header>
   <div class="cam-grid" id="grid"></div>
 </div>
 
 <script>
+// --- CORE LOGIC ---
+function toggleTheme() { document.body.dataset.theme = document.body.dataset.theme === 'light' ? '' : 'light'; }
 function showTTT() { document.getElementById('hero').style.display = 'none'; document.getElementById('ttt-screen').style.display = 'flex'; }
 function showGate() { document.getElementById('ttt-screen').style.display = 'none'; document.getElementById('gate').style.display = 'flex'; }
 
@@ -84,7 +88,7 @@ function move(i) {
   if(board[i] === "") {
     board[i] = "X";
     document.querySelectorAll('.ttt-cell')[i].innerText = "X";
-    if(checkWin("X")) { document.getElementById('ttt-screen').style.display = 'none'; document.getElementById('catalog').style.display = 'block'; }
+    if(checkWin("X")) unlock();
     else setTimeout(bot, 300);
   }
 }
@@ -96,8 +100,8 @@ function bot() {
     document.querySelectorAll('.ttt-cell')[r].innerText = "O";
   }
 }
-function checkWin(p) { return [[0,1,2],[3,4,5],[6,8,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[2,4,6]].some(a => a.every(i => board[i] === p)); }
-
+function checkWin(p) { return [[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[2,4,6]].some(a => a.every(i => board[i] === p)); }
+function unlock() { document.getElementById('ttt-screen').style.display = 'none'; document.getElementById('catalog').style.display = 'block'; }
 function checkCode() {
   let codes = ["tauhid", "songlap", "fouzia", "anhar"];
   if(codes.includes(document.getElementById('refInput').value.toLowerCase())) {
@@ -113,7 +117,7 @@ let data = [
 ];
 let grid = document.getElementById('grid');
 data.forEach(item => {
-  grid.innerHTML += `<div class="cam-card"><img src="${item.i}" class="cam-img" onerror="this.src='https://placehold.co/300x200?text=IMG+MISSING'"><div class="cam-name">${item.n}</div><button class="buy-btn">SELECT</button></div>`;
+  grid.innerHTML += `<div class="cam-card"><img src="${item.i}" class="cam-img"><div class="cam-name">${item.n}</div><button class="buy-btn">SELECT ITEM</button></div>`;
 });
 </script>
 </body>
