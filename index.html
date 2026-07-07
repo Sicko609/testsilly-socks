@@ -6,7 +6,7 @@
 <title>SILLY SOCKS | ARCADE DROP</title>
 <style>
 /* ===========================================
-  80s SYNTHWAVE / MEMPHIS THEME - FULL EDITION
+  80s SYNTHWAVE / MEMPHIS THEME - STRICT SEQUENCE
 =========================================== */
 @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Montserrat:ital,wght@0,400;0,800;0,900;1,900&display=swap');
 
@@ -84,20 +84,24 @@ body {
 @keyframes float { 0% {transform: translateY(0) rotate(0deg);} 100% {transform: translateY(30px) rotate(15deg);} }
 @keyframes spin { 100% {transform: rotate(360deg);} }
 
-/* --- HERO SECTION --- */
-#hero {
+/* --- SCREENS CONFIGURATION --- */
+.screen-layer {
   position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
   display: flex; flex-direction: column; align-items: center; justify-content: center;
-  z-index: 5000; background: var(--bg);
-  transition: transform 1s cubic-bezier(0.8, -0.2, 0.2, 1.5), opacity 1s ease;
-  cursor: pointer;
+  background: var(--bg); z-index: 5000; transition: all 0.6s cubic-bezier(0.8, -0.2, 0.2, 1.5);
 }
+#hero-screen, #tictactoe-screen, #gate { display: none; opacity: 0; transform: scale(0.8); }
+#hero-screen.visible, #tictactoe-screen.visible, #gate.visible { opacity: 1; transform: scale(1); }
+
+/* --- SCREEN 1: POWER ON --- */
+#power-screen { z-index: 6000; cursor: pointer; }
 #init-prompt {
   font-family: var(--font-retro); font-size: clamp(12px, 4vw, 18px); color: var(--accent-2);
   animation: blink 1s infinite; text-align: center; padding: 20px; text-shadow: 0 0 10px var(--accent-2);
 }
-#hero-content { display: none; flex-direction: column; align-items: center; }
 
+/* --- SCREEN 2: HERO (SOCKS) --- */
+#hero-screen { cursor: pointer; }
 .hero-logo {
   font-family: var(--font-retro); font-size: clamp(24px, 6vw, 60px); text-align: center;
   color: #fff; text-shadow: 0 0 10px var(--accent-1), 4px 4px 0px var(--accent-2);
@@ -107,10 +111,7 @@ body {
   0% { transform: scale(1) skewX(0deg); text-shadow: 0 0 10px var(--accent-1), 4px 4px 0px var(--accent-2); }
   100% { transform: scale(1.05) skewX(-5deg); text-shadow: 0 0 25px var(--accent-1), 6px 6px 0px var(--accent-2); }
 }
-.hero-prompt {
-  font-family: var(--font-retro); font-size: clamp(10px, 3vw, 14px); color: var(--accent-3);
-  animation: blink 1s steps(2, start) infinite; z-index: 10; text-align: center; padding: 0 10px; line-height: 1.5;
-}
+.hero-prompt { font-family: var(--font-retro); font-size: clamp(10px, 3vw, 14px); color: var(--accent-3); animation: blink 1s steps(2, start) infinite; z-index: 10; text-align: center; padding: 0 10px; line-height: 1.5; }
 @keyframes blink { to { visibility: hidden; } }
 
 #sock-rain { position: absolute; top: 0; left: 0; width: 100%; height: 100%; overflow: hidden; pointer-events: none; z-index: 1;}
@@ -132,69 +133,37 @@ body {
 .retro-btn:hover { background: var(--accent-2); color: #000; box-shadow: 4px 4px 0 var(--accent-1); transform: translate(-2px, -2px); }
 .retro-btn:active { transform: translate(2px, 2px); box-shadow: 0 0 0 transparent; }
 
-/* --- TIC-TAC-TOE SECTION --- */
-.screen-layer {
-  position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
-  display: flex; flex-direction: column; align-items: center; justify-content: center;
-  z-index: 4000; display: none; opacity: 0; transform: scale(0.8);
-  transition: all 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-}
-.screen-layer.visible { opacity: 1; transform: scale(1); }
-
-.ttt-board {
-  display: grid; grid-template-columns: repeat(3, 1fr); gap: 4px; 
-  width: 100%; max-width: 280px; margin: 20px auto; aspect-ratio: 1/1;
-  background: var(--card-border); border: 4px solid var(--card-border); box-shadow: 0 0 20px rgba(0,0,0,0.5);
-}
-.ttt-cell {
-  background: var(--bg); display: flex; align-items: center; justify-content: center;
-  font-family: var(--font-retro); font-size: clamp(30px, 8vw, 40px); cursor: pointer; transition: background 0.2s;
-}
+/* --- SCREEN 3: TIC-TAC-TOE --- */
+.ttt-board { display: grid; grid-template-columns: repeat(3, 1fr); gap: 4px; width: 100%; max-width: 280px; margin: 20px auto; aspect-ratio: 1/1; background: var(--card-border); border: 4px solid var(--card-border); box-shadow: 0 0 20px rgba(0,0,0,0.5); }
+.ttt-cell { background: var(--bg); display: flex; align-items: center; justify-content: center; font-family: var(--font-retro); font-size: clamp(30px, 8vw, 40px); cursor: pointer; transition: background 0.2s; }
 .ttt-cell:hover { background: rgba(255,255,255,0.1); }
 .ttt-cell.x { color: var(--accent-1); text-shadow: 0 0 15px var(--accent-1); }
 .ttt-cell.o { color: var(--accent-2); text-shadow: 0 0 15px var(--accent-2); }
 #ttt-status { font-family: var(--font-retro); font-size: 10px; color: var(--accent-3); margin-top: 10px; line-height: 1.6; animation: pulseLogo 1.5s infinite alternate;}
 
-/* --- GATE SECTION --- */
+/* --- SCREEN 4: GATE / HACKING --- */
 .lock-icon { font-size: 40px; margin-bottom: 15px; filter: drop-shadow(0 0 10px var(--accent-1)); transition: all 0.5s ease; }
 .gate-title { font-family: var(--font-retro); font-size: 16px; line-height: 1.5; margin-bottom: 15px; color: var(--accent-1); text-shadow: 2px 2px 0 #000; transition: color 0.5s ease; }
 .gate-sub { font-size: 11px; font-weight: 800; font-family: var(--font-retro); color: var(--text-muted); margin-bottom: 2rem; line-height: 1.8;}
 
 .input-row { display: flex; flex-direction: row; gap: 10px; margin-bottom: 15px; justify-content: center; align-items: center;}
-.retro-input {
-  flex: 1; min-width: 0; padding: 12px; background: #000; border: 3px solid var(--card-border);
-  color: #0f0; font-family: var(--font-retro); font-size: 10px; outline: none;
-  box-shadow: inset 0 0 10px rgba(0,255,0,0.2); text-transform: uppercase;
-}
+.retro-input { flex: 1; min-width: 0; padding: 12px; background: #000; border: 3px solid var(--card-border); color: #0f0; font-family: var(--font-retro); font-size: 10px; outline: none; box-shadow: inset 0 0 10px rgba(0,255,0,0.2); text-transform: uppercase; }
 .retro-input:focus { border-color: var(--accent-2); box-shadow: inset 0 0 15px var(--accent-2); }
 #errMsg { font-family: var(--font-retro); font-size: 10px; color: var(--accent-1); min-height: 20px; display: none; margin-top: 10px; }
 
-/* Hacking animation colors */
+/* Hacking animation classes */
 .hacked-text { color: #0f0 !important; text-shadow: 0 0 15px #0f0 !important; }
 .hacked-icon { filter: drop-shadow(0 0 15px #0f0) !important; transform: scale(1.2); }
 
-/* --- CATALOG UI --- */
+/* --- SCREEN 5: CATALOG UI --- */
 #catalog { display: none; min-height: 100vh; opacity: 0; transform: translateY(100px); transition: all 0.8s cubic-bezier(0.2, 1, 0.3, 1); padding-bottom: 50px; z-index: 10; position: relative;}
 #catalog.visible { opacity: 1; transform: translateY(0); }
 
-.cat-header {
-  background: var(--card-bg); border-bottom: 4px solid var(--card-border);
-  padding: 1.5rem; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 15px;
-  position: sticky; top: 0; z-index: 100; box-shadow: var(--shadow-retro);
-}
+.cat-header { background: var(--card-bg); border-bottom: 4px solid var(--card-border); padding: 1.5rem; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 15px; position: sticky; top: 0; z-index: 100; box-shadow: var(--shadow-retro); }
 .header-logo { font-family: var(--font-retro); font-size: clamp(16px, 4vw, 20px); color: var(--accent-2); text-shadow: 2px 2px 0 var(--accent-1); }
 
-.welcome-pill { 
-  display: flex; align-items: center; flex-wrap: wrap; gap: 10px;
-  border: 2px solid var(--accent-3); padding: 8px 12px; font-family: var(--font-retro); 
-  font-size: 10px; color: var(--accent-3); background: #000;
-}
-.theme-toggle-btn {
-  background: var(--bg); color: var(--text); font-weight: 900; font-family: var(--font-retro);
-  font-size: 8px; text-transform: uppercase; cursor: pointer;
-  border: 2px solid var(--accent-3); padding: 6px 10px;
-  box-shadow: 2px 2px 0 var(--accent-3); transition: all 0.2s; margin: 0;
-}
+.welcome-pill { display: flex; align-items: center; flex-wrap: wrap; gap: 10px; border: 2px solid var(--accent-3); padding: 8px 12px; font-family: var(--font-retro); font-size: 10px; color: var(--accent-3); background: #000; }
+.theme-toggle-btn { background: var(--bg); color: var(--text); font-weight: 900; font-family: var(--font-retro); font-size: 8px; text-transform: uppercase; cursor: pointer; border: 2px solid var(--accent-3); padding: 6px 10px; box-shadow: 2px 2px 0 var(--accent-3); transition: all 0.2s; margin: 0; }
 .theme-toggle-btn:active { transform: translate(2px, 2px); box-shadow: none; }
 .theme-toggle-btn:hover { background: var(--accent-3); color: #000; }
 
@@ -208,14 +177,13 @@ body {
 .cat-body { max-width: 1200px; margin: 0 auto; padding: 3rem 1.5rem 0; }
 .section-label { font-family: var(--font-retro); font-size: 14px; color: var(--text); margin-bottom: 2rem; text-shadow: 2px 2px 0 var(--accent-1); line-height: 1.4; }
 
-/* --- RETRO PRODUCT CARDS --- */
+/* --- PRODUCT CARDS --- */
 .cam-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 30px; }
 .cam-card { background: var(--card-bg); border: 4px solid var(--card-border); position: relative; transition: all 0.2s ease; box-shadow: 6px 6px 0 var(--accent-1); }
 @media (hover: hover) { .cam-card:hover { transform: translate(-4px, -4px); box-shadow: 10px 10px 0 var(--accent-2); } .cam-card:hover .cam-img { transform: scale(1.08); filter: contrast(110%); } }
 
 .img-wrapper { width: 100%; height: 200px; border-bottom: 4px solid var(--card-border); background: #ffffff; overflow: hidden; position: relative;}
 .cam-img { width: 100%; height: 100%; object-fit: contain; padding: 10px; transition: transform 0.5s; }
-
 .stock-tag { position: absolute; top: 10px; right: 10px; background: var(--accent-3); color: #000; font-family: var(--font-retro); font-size: 8px; padding: 6px 10px; border: 2px solid #000; z-index: 10;}
 
 .cam-info { padding: 15px; }
@@ -246,12 +214,7 @@ body {
 .footer { text-align: center; padding: 3rem 1.5rem; font-family: var(--font-retro); font-size: 9px; color: var(--text-muted); border-top: 2px dashed var(--card-border); margin-top: 3rem; line-height: 2;}
 
 /* --- IG FLOATING BUTTON --- */
-.ig-float-btn {
-  position: fixed; bottom: 20px; right: 20px; width: 50px; height: 50px;
-  background: var(--accent-1); display: flex; align-items: center; justify-content: center;
-  border: 3px solid var(--card-border); cursor: pointer; z-index: 9999;
-  box-shadow: 4px 4px 0 var(--card-border); transition: all 0.2s;
-}
+.ig-float-btn { position: fixed; bottom: 20px; right: 20px; width: 50px; height: 50px; background: var(--accent-1); display: flex; align-items: center; justify-content: center; border: 3px solid var(--card-border); cursor: pointer; z-index: 9999; box-shadow: 4px 4px 0 var(--card-border); transition: all 0.2s; }
 .ig-float-btn:active { transform: translate(4px, 4px); box-shadow: 0 0 0 transparent; }
 .ig-float-btn svg { width: 24px; height: 24px; fill: #fff; }
 
@@ -272,23 +235,21 @@ body {
   <div class="shape triangle"></div>
   <div class="shape squiggle"></div>
 </div>
-
-<!-- 80s Perspective Grid -->
 <div class="synth-grid"></div>
 
-<!-- 1. HERO SECTION -->
-<div id="hero">
-  <div id="sock-rain"></div>
-  <!-- Initial Tap Prompt for Mobile Audio -->
+<!-- SCREEN 1: POWER ON PROMPT -->
+<div id="power-screen" class="screen-layer" style="display:flex;">
   <div id="init-prompt">>> TAP TO POWER ON <<</div>
-  
-  <div id="hero-content">
-    <h1 class="hero-logo">SILLY SOCKS</h1>
-    <p class="hero-prompt">>> CLICK OR SCROLL TO ENTER <<</p>
-  </div>
 </div>
 
-<!-- 2. TIC-TAC-TOE BATTLE SECTION -->
+<!-- SCREEN 2: HERO SECTION (Silly Socks) -->
+<div id="hero-screen" class="screen-layer">
+  <div id="sock-rain"></div>
+  <h1 class="hero-logo">SILLY SOCKS</h1>
+  <p class="hero-prompt">>> CLICK OR SCROLL TO ENTER <<</p>
+</div>
+
+<!-- SCREEN 3: TIC-TAC-TOE BATTLE SECTION -->
 <div id="tictactoe-screen" class="screen-layer">
   <div class="retro-box">
     <div class="gate-title" style="margin-bottom: 20px;">BEAT THE BOT TO UNLOCK</div>
@@ -313,7 +274,7 @@ body {
   </div>
 </div>
 
-<!-- 3. REFERRAL GATE SECTION -->
+<!-- SCREEN 4: REFERRAL GATE / HACKING -->
 <div id="gate" class="screen-layer">
   <div class="retro-box">
     <div class="lock-icon" id="gate-icon">🔒</div>
@@ -336,7 +297,7 @@ body {
   </div>
 </div>
 
-<!-- 4. CATALOG SECTION -->
+<!-- SCREEN 5: CATALOG SECTION -->
 <div id="catalog">
   <header class="cat-header">
     <div class="header-logo">SILLY SOCKS</div>
@@ -385,56 +346,14 @@ body {
 
 <script>
 // ==========================================
-// 80s WEB AUDIO API SYNTHESIZER & BGM
+// 80s WEB AUDIO API SYNTHESIZER
 // ==========================================
 let audioCtx;
-let audioInitialized = false;
+let isPoweredOn = false;
 let isBgmRunning = false;
 
-function initAudio() {
-  if (audioInitialized) return;
-  
-  // Create audio context
-  audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-  if (audioCtx.state === 'suspended') audioCtx.resume();
-  
-  // Play silent buffer to unlock iOS Safari
-  const buffer = audioCtx.createBuffer(1, 1, 22050);
-  const source = audioCtx.createBufferSource();
-  source.buffer = buffer;
-  source.connect(audioCtx.destination);
-  source.start(0);
-
-  audioInitialized = true;
-  
-  // Hide prompt, show hero content, and start BGM
-  document.getElementById('init-prompt').style.display = 'none';
-  document.getElementById('hero-content').style.display = 'flex';
-  startBGM();
-}
-
-// BGM Looping Sequence
-function startBGM() {
-  if(isBgmRunning || !audioCtx) return;
-  isBgmRunning = true;
-  let t = 0;
-  // C3, Eb3, C3, G3 frequencies for an 80s bassline
-  let notes = [130.81, 155.56, 130.81, 196.00]; 
-  
-  function loop() {
-    if(!isBgmRunning) return;
-    playTone(notes[t % 4], 'sawtooth', 0.2, 0.02); // Bass note
-    if(t % 2 === 0) playTone(800, 'square', 0.05, 0.01); // Hi-hat beat
-    t++;
-    setTimeout(loop, 300); // tempo
-  }
-  loop();
-}
-
-function stopBGM() { isBgmRunning = false; }
-
 function playTone(freq, type, duration, vol = 0.05) {
-  if (!audioCtx) return;
+  if (!audioCtx || audioCtx.state !== 'running') return;
   const osc = audioCtx.createOscillator();
   const gain = audioCtx.createGain();
   osc.type = type;
@@ -444,8 +363,6 @@ function playTone(freq, type, duration, vol = 0.05) {
   osc.connect(gain); gain.connect(audioCtx.destination);
   osc.start(); osc.stop(audioCtx.currentTime + duration);
 }
-
-// Sound effects
 function soundClick() { playTone(600, 'square', 0.1); }
 function soundBot() { playTone(400, 'square', 0.1, 0.03); }
 function soundError() { playTone(150, 'sawtooth', 0.4, 0.1); }
@@ -459,12 +376,78 @@ function soundHack() {
   for(let i=0; i<15; i++) { setTimeout(() => playTone(400 + (i*50), 'square', 0.05, 0.03), i*60); }
 }
 
-// Global touch/click to unlock audio
-document.body.addEventListener('click', initAudio, {once:true});
-document.body.addEventListener('touchstart', initAudio, {once:true});
+function startBGM() {
+  if (isBgmRunning) return;
+  isBgmRunning = true;
+  let t = 0;
+  let notes = [130.81, 155.56, 130.81, 196.00]; 
+  function loop() {
+    if(!isBgmRunning) return;
+    playTone(notes[t % 4], 'sawtooth', 0.2, 0.02);
+    if(t % 2 === 0) playTone(800, 'square', 0.05, 0.01);
+    t++;
+    setTimeout(loop, 300);
+  }
+  loop();
+}
+function stopBGM() { isBgmRunning = false; }
 
+// --- STATE 1: Power On ---
+const powerScreen = document.getElementById('power-screen');
+const heroScreen = document.getElementById('hero-screen');
 
-// --- Theme Toggle Logic ---
+function powerOn(e) {
+  if (e) { e.preventDefault(); e.stopPropagation(); }
+  if (isPoweredOn) return;
+  isPoweredOn = true;
+  
+  const AudioContext = window.AudioContext || window.webkitAudioContext;
+  audioCtx = new AudioContext();
+  if(audioCtx.state === 'suspended') audioCtx.resume();
+  const buffer = audioCtx.createBuffer(1, 1, 22050);
+  const source = audioCtx.createBufferSource();
+  source.buffer = buffer;
+  source.connect(audioCtx.destination);
+  source.start(0);
+
+  startBGM();
+
+  powerScreen.style.opacity = '0';
+  setTimeout(() => {
+    powerScreen.style.display = 'none';
+    heroScreen.style.display = 'flex';
+    setTimeout(() => { heroScreen.classList.add('visible'); }, 50);
+  }, 500);
+}
+document.getElementById('power-screen').addEventListener('click', powerOn);
+
+// --- STATE 2: Leave Hero (Silly Socks) ---
+let hasEnteredHero = false;
+const tttScreen = document.getElementById('tictactoe-screen');
+const gate = document.getElementById('gate');
+const catalog = document.getElementById('catalog');
+
+function leaveHero() {
+  if (!isPoweredOn || hasEnteredHero) return;
+  hasEnteredHero = true;
+  soundClick();
+  
+  heroScreen.style.transform = 'translateY(-100vh) scale(1.5)';
+  heroScreen.style.opacity = '0';
+  
+  tttScreen.style.display = 'flex';
+  setTimeout(() => {
+    heroScreen.style.display = 'none';
+    tttScreen.classList.add('visible');
+  }, 600);
+}
+heroScreen.addEventListener('click', leaveHero);
+heroScreen.addEventListener('touchstart', leaveHero, {passive: true});
+window.addEventListener('wheel', (e) => { 
+  if (isPoweredOn && !hasEnteredHero && e.deltaY > 0) leaveHero(); 
+});
+
+// --- Theme Toggle ---
 function toggleTheme() {
   soundClick();
   const body = document.body;
@@ -478,7 +461,7 @@ function toggleTheme() {
   }
 }
 
-// --- Sock Rain Animation Engine ---
+// --- Sock Rain ---
 function createSockRain() {
   const rainContainer = document.getElementById('sock-rain');
   const sockCount = window.innerWidth < 768 ? 15 : 30; 
@@ -494,32 +477,6 @@ function createSockRain() {
   }
 }
 createSockRain();
-
-// --- Flow Control ---
-let hasEnteredHero = false;
-const hero = document.getElementById('hero-content'); // bind to inner content to avoid double triggering
-const tttScreen = document.getElementById('tictactoe-screen');
-const gate = document.getElementById('gate');
-const catalog = document.getElementById('catalog');
-
-function leaveHero() {
-  if (hasEnteredHero || !audioInitialized) return;
-  soundClick();
-  hasEnteredHero = true;
-  document.getElementById('hero').style.transform = 'translateY(-100vh) scale(1.5)';
-  document.getElementById('hero').style.opacity = '0';
-  tttScreen.style.display = 'flex';
-  
-  setTimeout(() => {
-    document.getElementById('hero').style.display = 'none';
-    tttScreen.classList.add('visible');
-  }, 600);
-}
-
-// Wait for user to init audio, THEN next click/scroll enters the game
-document.getElementById('hero').addEventListener('click', () => { if(audioInitialized) leaveHero(); });
-window.addEventListener('wheel', (e) => { if(!hasEnteredHero && audioInitialized && e.deltaY > 0) leaveHero(); });
-window.addEventListener('touchstart', (e) => { if(!hasEnteredHero && audioInitialized) leaveHero(); }, {passive: true});
 
 // --- Tic-Tac-Toe Game Logic ---
 let board = ["", "", "", "", "", "", "", "", ""];
@@ -575,7 +532,7 @@ function endGame(msg, playerWon) {
   statusText.innerText = msg;
   if(playerWon) {
     soundWin();
-    setTimeout(() => { showGate(true); }, 1500); // Trigger auto-unlock gate
+    setTimeout(() => { showGate(true); }, 1500); 
   } else {
     soundError();
     document.getElementById('resetTttBtn').style.display = "inline-block";
@@ -591,7 +548,7 @@ function resetBoard() {
   document.getElementById('resetTttBtn').style.display = "none";
 }
 
-// --- Leaderboard Logic ---
+// --- Leaderboard ---
 function updateLeaderboard(name) {
   let lb = JSON.parse(localStorage.getItem('sillySocksLB') || '[]');
   lb.unshift(name.toUpperCase());
@@ -627,7 +584,6 @@ function showGate(autoUnlock) {
     setTimeout(() => {
       gate.classList.add("visible");
       
-      // If player won TTT, initiate the auto-hack sequence
       if(autoUnlock) {
         soundHack();
         document.getElementById('gate-input-area').style.display = 'none';
@@ -652,6 +608,7 @@ function showGate(autoUnlock) {
 }
 
 function checkCode() {
+  soundClick();
   var val = document.getElementById("refInput").value.toLowerCase().trim();
   var foundIndex = allowedList.indexOf(val);
   var errMsg = document.getElementById("errMsg");
@@ -689,11 +646,11 @@ document.getElementById("refInput").addEventListener("keyup", function(e) { if(e
 document.getElementById("lbInput").addEventListener("keyup", function(e) { if(e.key === "Enter") saveInitialsAndEnter(); });
 
 function unlockCatalog(playerName) {
+  stopBGM(); 
   gate.style.opacity = "0";
   gate.style.transform = "scale(0.5)";
   gate.style.pointerEvents = "none";
-  stopBGM(); // Stop the BGM to let user focus on shopping
-  document.body.style.overflowY = 'auto'; // allow scrolling
+  document.body.style.overflowY = 'auto'; // allow scrolling now
   
   setTimeout(() => {
     gate.style.display = "none";
@@ -720,7 +677,7 @@ function getPriceHTML(isFlash, isWithSD) {
   }
 }
 
-// --- Render Grids with Exact File Names ---
+// --- Render Grids ---
 var camData = [
   { n:"Yellow 1985", v:"Sunny 80s vibes", i:"c1.jpg" },
   { n:"Black Retro",  v:"Neon noir aesthetic", i:"c2.jpg" },
