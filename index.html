@@ -49,7 +49,7 @@ body {
   background-color: var(--bg);
   color: var(--text);
   overflow-x: hidden;
-  height: 100vh;
+  height: 100vh; /* Prevent scroll until entered */
   overflow-y: hidden;
   transition: background-color 0.5s, color 0.5s;
 }
@@ -291,20 +291,24 @@ body {
 </head>
 <body>
 
+<!-- Light Mode Memphis Shapes -->
 <div class="memphis-shapes">
   <div class="shape circle"></div>
   <div class="shape triangle"></div>
   <div class="shape squiggle"></div>
 </div>
 
+<!-- 80s Perspective Grid -->
 <div class="synth-grid"></div>
 
+<!-- 1. HERO SECTION (Falling Socks) -->
 <div id="hero">
   <div id="sock-rain"></div>
   <h1 class="hero-logo">SILLY SOCKS</h1>
   <p class="hero-prompt">>> CLICK OR SCROLL TO ENTER <<</p>
 </div>
 
+<!-- 2. TIC-TAC-TOE BATTLE SECTION -->
 <div id="tictactoe-screen">
   <div class="retro-box">
     <div class="gate-title">BEAT THE BOT TO UNLOCK</div>
@@ -322,6 +326,7 @@ body {
       <div class="ttt-cell" onclick="makeMove(8)"></div>
     </div>
 
+    <!-- Victory Name Input Form -->
     <div id="ttt-win-form">
       <p class="gate-sub" style="color: var(--accent-2); margin-bottom: 10px;">HIGH SCORE ACHIEVED!</p>
       <div class="input-row">
@@ -337,6 +342,7 @@ body {
   </div>
 </div>
 
+<!-- 3. REFERRAL GATE SECTION (Fallback) -->
 <div id="gate">
   <div class="retro-box">
     <div class="lock-icon">👾</div>
@@ -350,18 +356,22 @@ body {
   </div>
 </div>
 
+<!-- 4. CATALOG SECTION -->
 <div id="catalog">
   <header class="cat-header">
     <div class="header-logo">SILLY SOCKS</div>
     <div class="welcome-pill">
       PLAYER 1: <span id="broName" style="margin: 0 5px;">???</span>
+      <!-- Inline Theme Toggle -->
       <button class="theme-toggle-btn" id="themeToggle" onclick="toggleTheme()">[ DAY MODE ]</button>
     </div>
   </header>
 
+  <!-- Arcade Leaderboard Ticker -->
   <div class="ticker-wrap" id="leaderboardWrap">
     <div class="ticker" id="lbTickerContainer">
-      </div>
+      <!-- Populated via JS -->
+    </div>
   </div>
   
   <div class="disc-bar">
@@ -373,11 +383,13 @@ body {
     <div class="page-tab" id="tab2" onclick="showPage(2)">LVL 2: FLASH GEAR</div>
   </div>
   
+  <!-- Without Flashes -->
   <div class="cat-body" id="page1Body">
     <div class="section-label">> THE CLASSICS DROP</div>
     <div id="camGrid" class="cam-grid"></div>
   </div>
   
+  <!-- With Flashes -->
   <div class="cat-body" id="page2Body" style="display:none;">
     <div class="section-label">> NIGHT VISION UPGRADES</div>
     <div id="camGrid2" class="cam-grid"></div>
@@ -641,7 +653,7 @@ enterBtn.addEventListener("click", unlockCatalogFromGate);
 refInput.addEventListener("keyup", function(event) { if (event.key === "Enter") unlockCatalogFromGate(); });
 document.getElementById('winnerName').addEventListener("keyup", function(event) { if (event.key === "Enter") saveWinner(); });
 
-// --- Price Formatter Helper ---
+// --- Price Formatter Helper[cite: 1] ---
 function getPriceHTML(isFlash, isWithSD) {
   if (isFlash) {
     if (isWithSD) return '<span class="old-price">৳2631</span><span class="new-price">৳2500</span><span class="disc-tag">-5% PWR</span>';
@@ -653,23 +665,20 @@ function getPriceHTML(isFlash, isWithSD) {
 }
 
 // --- Render Grids with Images ---
-// CAUTION: The filenames must match EXACTLY how they are saved on your computer/GitHub.
-// Ensure c1.jpg - c6.jpg and f1.jpg - f4.jpg are in the same folder as this index.html file!
-
 var camData = [
-  { n:"Yellow 1985", v:"Sunny 80s vibes", i:"c1.jpg" },
-  { n:"Black Retro",  v:"Neon noir aesthetic", i:"c2.jpg" },
-  { n:"Blue Mini",     v:"Cool coastal feel",   i:"c3.jpg" },
-  { n:"Street Red",     v:"Bold streetwear", i:"c4.jpg" },
-  { n:"Minimal White",  v:"Clean & modern",      i:"c5.jpg" },
-  { n:"Green Personality", v:"90s personality", i:"c6.jpg" }
+  { n:"Yellow 1985", v:"Sunny 80s vibes", i:"4cdc3949-18b2-4580-8e00-fc3f0ec24cec.JPG" },
+  { n:"Black Retro",  v:"Neon noir aesthetic", i:"9bec28bf-d322-4187-97d2-691ba16e0d73.JPG" },
+  { n:"Blue Mini",     v:"Cool coastal feel",   i:"92af401d-e276-4d92-ac3b-e695fd7c8489.JPG" },
+  { n:"Street Red",     v:"Bold streetwear", i:"172ece95-a12b-48be-94da-96133383139a.JPG" },
+  { n:"Minimal White",  v:"Clean & modern",      i:"365fe080-ec1d-4728-9160-dc35a954707b.JPG" },
+  { n:"Green Personality", v:"90s personality", i:"a76c5170-f07b-4537-983e-b62537ce85c3.JPG" }
 ];
 
 var camData2 = [
-  { n:"1988 Orange Flash", v:"Retro vintage stripes", i:"f1.jpg" },
-  { n:"1988 Yellow Flash", v:"Sunny 80s vibes", i:"f2.jpg" },
-  { n:"Blue Wave Flash", v:"Cool retro stripes", i:"f3.jpg" },
-  { n:"Street Red Flash", v:"Bold arcade energy", i:"f4.jpg" }
+  { n:"1988 Orange Flash", v:"Retro vintage stripes", i:"6a3188a8-0de8-4a10-b0c3-2ee8f726eea2.jpg" },
+  { n:"1988 Yellow Flash", v:"Sunny 80s vibes", i:"9ce01900-7b12-4a72-9a58-2fc50f2c1b23.jpg" },
+  { n:"Blue Wave Flash", v:"Cool retro stripes", i:"606e0e40-afa9-4dd9-bbb6-c29de75b7940.jpg" },
+  { n:"Street Red Flash", v:"Bold arcade energy", i:"e8a34649-f9b1-4ff6-a101-0f127fafb1e8.jpg" }
 ];
 
 function renderGrid(dataArray, gridId, prefix) {
@@ -686,7 +695,7 @@ function renderGrid(dataArray, gridId, prefix) {
     card.innerHTML =
       '<div class="img-wrapper">' +
         '<div class="stock-tag">1 UP</div>' +
-        '<img src="' + c.i + '" class="cam-img" alt="' + c.n + '" onerror="this.src=\'https://placehold.co/600x400/222/ff00ff?text=IMAGE+NOT+FOUND\'" />' +
+        '<img src="' + c.i + '" class="cam-img" alt="' + c.n + '" />' +
       '</div>' +
       '<div class="cam-info">' +
         '<div class="cam-name">' + c.n + '</div>' +
