@@ -6,12 +6,11 @@
 <title>SILLY SOCKS | ARCADE DROP</title>
 <style>
 /* ===========================================
-  80s SYNTHWAVE / MEMPHIS THEME - STRICT SEQUENCE
+  80s SYNTHWAVE / MEMPHIS THEME - FULL EDITION
 =========================================== */
 @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Montserrat:ital,wght@0,400;0,800;0,900;1,900&display=swap');
 
 :root {
-  /* DARK MODE: SYNTHWAVE */
   --bg: #0b0c10;
   --text: #ffffff;
   --text-muted: #aaaaaa;
@@ -28,7 +27,6 @@
 }
 
 [data-theme="light"] {
-  /* LIGHT MODE: 80s MEMPHIS DESIGN */
   --bg: #f4f4f4;
   --text: #111111;
   --text-muted: #555555;
@@ -50,7 +48,7 @@ body {
   color: var(--text);
   overflow-x: hidden;
   height: 100vh;
-  overflow-y: hidden; /* Prevents scroll until catalog unlocks */
+  overflow-y: hidden;
   transition: background-color 0.5s, color 0.5s;
   -webkit-tap-highlight-color: transparent;
 }
@@ -73,7 +71,6 @@ body {
   100% { transform: perspective(600px) rotateX(70deg) translateY(50px); }
 }
 
-/* Memphis background elements for Light Mode */
 .memphis-shapes { position: fixed; top:0; left:0; width:100%; height:100%; z-index:-1; pointer-events: none; opacity: 0; transition: opacity 0.5s; }
 [data-theme="light"] .memphis-shapes { opacity: 1; }
 .shape { position: absolute; border: 4px solid var(--card-border); }
@@ -235,10 +232,12 @@ body {
   <div class="shape triangle"></div>
   <div class="shape squiggle"></div>
 </div>
+
+<!-- 80s Perspective Grid -->
 <div class="synth-grid"></div>
 
 <!-- SCREEN 1: POWER ON PROMPT -->
-<div id="power-screen" class="screen-layer" style="display:flex;">
+<div id="power-screen" class="screen-layer" style="display:flex; opacity:1; transform:scale(1);">
   <div id="init-prompt">>> TAP TO POWER ON <<</div>
 </div>
 
@@ -307,7 +306,7 @@ body {
     </div>
   </header>
 
-  <!-- Arcade Leaderboard Ticker -->
+  <!-- Simulated Global Leaderboard Ticker -->
   <div class="ticker-wrap" id="leaderboardWrap">
     <div class="ticker" id="lbTickerContainer">
       <!-- Populated via JS -->
@@ -352,6 +351,55 @@ let audioCtx;
 let isPoweredOn = false;
 let isBgmRunning = false;
 
+// 1. User taps to power on (Solves Mobile Audio Block)
+function powerOn(e) {
+  if (isPoweredOn) return;
+  if (e) { e.preventDefault(); e.stopPropagation(); }
+  
+  isPoweredOn = true;
+  
+  const AudioContext = window.AudioContext || window.webkitAudioContext;
+  audioCtx = new AudioContext();
+  if(audioCtx.state === 'suspended') audioCtx.resume();
+  
+  const buffer = audioCtx.createBuffer(1, 1, 22050);
+  const source = audioCtx.createBufferSource();
+  source.buffer = buffer;
+  source.connect(audioCtx.destination);
+  source.start(0);
+
+  const powerScreen = document.getElementById('power-screen');
+  const heroScreen = document.getElementById('hero-screen');
+
+  startBGM();
+
+  powerScreen.style.opacity = '0';
+  setTimeout(() => {
+    powerScreen.style.display = 'none';
+    heroScreen.style.display = 'flex';
+    setTimeout(() => { heroScreen.classList.add('visible'); }, 50);
+  }, 500);
+}
+document.getElementById('power-screen').addEventListener('click', powerOn);
+
+function startBGM() {
+  if (isBgmRunning) return;
+  isBgmRunning = true;
+  let t = 0;
+  let notes = [130.81, 155.56, 130.81, 196.00]; // 80s Bassline
+  
+  function loop() {
+    if(!isBgmRunning) return;
+    playTone(notes[t % 4], 'sawtooth', 0.2, 0.02);
+    if(t % 2 === 0) playTone(800, 'square', 0.05, 0.01); // Hihat
+    t++;
+    setTimeout(loop, 300);
+  }
+  loop();
+}
+
+function stopBGM() { isBgmRunning = false; }
+
 function playTone(freq, type, duration, vol = 0.05) {
   if (!audioCtx || audioCtx.state !== 'running') return;
   const osc = audioCtx.createOscillator();
@@ -363,6 +411,7 @@ function playTone(freq, type, duration, vol = 0.05) {
   osc.connect(gain); gain.connect(audioCtx.destination);
   osc.start(); osc.stop(audioCtx.currentTime + duration);
 }
+
 function soundClick() { playTone(600, 'square', 0.1); }
 function soundBot() { playTone(400, 'square', 0.1, 0.03); }
 function soundError() { playTone(150, 'sawtooth', 0.4, 0.1); }
@@ -376,76 +425,10 @@ function soundHack() {
   for(let i=0; i<15; i++) { setTimeout(() => playTone(400 + (i*50), 'square', 0.05, 0.03), i*60); }
 }
 
-function startBGM() {
-  if (isBgmRunning) return;
-  isBgmRunning = true;
-  let t = 0;
-  let notes = [130.81, 155.56, 130.81, 196.00]; 
-  function loop() {
-    if(!isBgmRunning) return;
-    playTone(notes[t % 4], 'sawtooth', 0.2, 0.02);
-    if(t % 2 === 0) playTone(800, 'square', 0.05, 0.01);
-    t++;
-    setTimeout(loop, 300);
-  }
-  loop();
-}
-function stopBGM() { isBgmRunning = false; }
+// Global touch/click to unlock audio just in case
+document.body.addEventListener('click', () => { if(!isPoweredOn) powerOn(); }, {once:true});
+document.body.addEventListener('touchstart', () => { if(!isPoweredOn) powerOn(); }, {once:true});
 
-// --- STATE 1: Power On ---
-const powerScreen = document.getElementById('power-screen');
-const heroScreen = document.getElementById('hero-screen');
-
-function powerOn(e) {
-  if (e) { e.preventDefault(); e.stopPropagation(); }
-  if (isPoweredOn) return;
-  isPoweredOn = true;
-  
-  const AudioContext = window.AudioContext || window.webkitAudioContext;
-  audioCtx = new AudioContext();
-  if(audioCtx.state === 'suspended') audioCtx.resume();
-  const buffer = audioCtx.createBuffer(1, 1, 22050);
-  const source = audioCtx.createBufferSource();
-  source.buffer = buffer;
-  source.connect(audioCtx.destination);
-  source.start(0);
-
-  startBGM();
-
-  powerScreen.style.opacity = '0';
-  setTimeout(() => {
-    powerScreen.style.display = 'none';
-    heroScreen.style.display = 'flex';
-    setTimeout(() => { heroScreen.classList.add('visible'); }, 50);
-  }, 500);
-}
-document.getElementById('power-screen').addEventListener('click', powerOn);
-
-// --- STATE 2: Leave Hero (Silly Socks) ---
-let hasEnteredHero = false;
-const tttScreen = document.getElementById('tictactoe-screen');
-const gate = document.getElementById('gate');
-const catalog = document.getElementById('catalog');
-
-function leaveHero() {
-  if (!isPoweredOn || hasEnteredHero) return;
-  hasEnteredHero = true;
-  soundClick();
-  
-  heroScreen.style.transform = 'translateY(-100vh) scale(1.5)';
-  heroScreen.style.opacity = '0';
-  
-  tttScreen.style.display = 'flex';
-  setTimeout(() => {
-    heroScreen.style.display = 'none';
-    tttScreen.classList.add('visible');
-  }, 600);
-}
-heroScreen.addEventListener('click', leaveHero);
-heroScreen.addEventListener('touchstart', leaveHero, {passive: true});
-window.addEventListener('wheel', (e) => { 
-  if (isPoweredOn && !hasEnteredHero && e.deltaY > 0) leaveHero(); 
-});
 
 // --- Theme Toggle ---
 function toggleTheme() {
@@ -477,6 +460,35 @@ function createSockRain() {
   }
 }
 createSockRain();
+
+// --- 2. Leave Hero (Enter Game) ---
+let hasEnteredHero = false;
+const heroScreen = document.getElementById('hero-screen');
+const tttScreen = document.getElementById('tictactoe-screen');
+const gate = document.getElementById('gate');
+const catalog = document.getElementById('catalog');
+
+function leaveHero() {
+  if (!isPoweredOn || hasEnteredHero) return;
+  hasEnteredHero = true;
+  soundClick();
+  
+  heroScreen.style.transform = 'translateY(-100vh) scale(1.5)';
+  heroScreen.style.opacity = '0';
+  
+  tttScreen.style.display = 'flex';
+  setTimeout(() => {
+    heroScreen.style.display = 'none';
+    tttScreen.classList.add('visible');
+  }, 600);
+}
+heroScreen.addEventListener('click', leaveHero);
+window.addEventListener('wheel', (e) => { 
+  if (isPoweredOn && !hasEnteredHero && e.deltaY > 0) leaveHero(); 
+});
+window.addEventListener('touchstart', (e) => {
+  if (isPoweredOn && !hasEnteredHero) leaveHero();
+}, {passive: true});
 
 // --- Tic-Tac-Toe Game Logic ---
 let board = ["", "", "", "", "", "", "", "", ""];
@@ -532,7 +544,7 @@ function endGame(msg, playerWon) {
   statusText.innerText = msg;
   if(playerWon) {
     soundWin();
-    setTimeout(() => { showGate(true); }, 1500); 
+    setTimeout(() => { showGate(true); }, 1500); // Trigger auto-unlock gate
   } else {
     soundError();
     document.getElementById('resetTttBtn').style.display = "inline-block";
@@ -550,18 +562,21 @@ function resetBoard() {
 
 // --- Leaderboard ---
 function updateLeaderboard(name) {
-  let lb = JSON.parse(localStorage.getItem('sillySocksLB') || '[]');
-  lb.unshift(name.toUpperCase());
-  if(lb.length > 10) lb.pop();
-  localStorage.setItem('sillySocksLB', JSON.stringify(lb));
-  renderLeaderboard();
-}
-
-function renderLeaderboard() {
-  let lb = JSON.parse(localStorage.getItem('sillySocksLB') || '[]');
+  let localLb = JSON.parse(localStorage.getItem('sillySocksLB') || '[]');
+  let globalLb = ["SONGLAP", "FOUZIA", "SHIHAB", "ANHAR", "SIAM"];
+  
+  // If player won, push their name
+  if(name) localLb.unshift(name.toUpperCase());
+  
+  localStorage.setItem('sillySocksLB', JSON.stringify(localLb));
+  
+  // Combine for ticker
+  let combined = [...localLb, ...globalLb];
+  let uniqueLb = [...new Set(combined)].slice(0, 10);
+  
   let tickerHTML = "👑 ARCADE CHAMPIONS: ";
-  if(lb.length === 0) tickerHTML += "BE THE FIRST TO BEAT THE BOT! 👑";
-  else tickerHTML += lb.map((n, i) => `#${i+1} ${n}`).join(" ⚡ ") + " 👑";
+  tickerHTML += uniqueLb.map((n, i) => `#${i+1} ${n}`).join(" ⚡ ") + " 👑";
+  
   document.getElementById('lbTickerContainer').innerHTML = `<span>${tickerHTML}</span><span>${tickerHTML}</span>`;
 }
 
@@ -656,7 +671,6 @@ function unlockCatalog(playerName) {
     gate.style.display = "none";
     catalog.style.display = "block";
     document.getElementById("broName").textContent = playerName;
-    renderLeaderboard();
     
     setTimeout(() => {
       catalog.classList.add("visible");
@@ -677,7 +691,7 @@ function getPriceHTML(isFlash, isWithSD) {
   }
 }
 
-// --- Render Grids ---
+// --- Render Grids with Exact File Names ---
 var camData = [
   { n:"Yellow 1985", v:"Sunny 80s vibes", i:"c1.jpg" },
   { n:"Black Retro",  v:"Neon noir aesthetic", i:"c2.jpg" },
@@ -764,6 +778,8 @@ function updatePrice(radio, index) {
 
 function doBuy() { soundClick(); window.open(FORM_LINK, '_blank'); }
 
+// Init
+updateLeaderboard(""); // Initialize leaderboard on load
 showPage(1);
 </script>
 </body>
