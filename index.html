@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-<title>SILLY SOCKS | ARCADE DROP</title>
+<title>Silly Socks — Arcade Drop</title>
 <style>
 /* ===========================================
   80s SYNTHWAVE / MEMPHIS THEME - FULL EDITION
@@ -84,20 +84,17 @@ body {
 @keyframes float { 0% {transform: translateY(0) rotate(0deg);} 100% {transform: translateY(30px) rotate(15deg);} }
 @keyframes spin { 100% {transform: rotate(360deg);} }
 
-/* --- HERO SECTION --- */
-#hero {
+/* --- SCREENS (HERO, TTT, GATE) --- */
+.screen-layer {
   position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
   display: flex; flex-direction: column; align-items: center; justify-content: center;
-  z-index: 5000; background: var(--bg);
-  transition: transform 1s cubic-bezier(0.8, -0.2, 0.2, 1.5), opacity 1s ease;
-  cursor: pointer;
+  background: var(--bg); z-index: 5000; transition: all 0.6s cubic-bezier(0.8, -0.2, 0.2, 1.5);
 }
-#init-prompt {
-  font-family: var(--font-retro); font-size: clamp(12px, 4vw, 18px); color: var(--accent-2);
-  animation: blink 1s infinite; text-align: center; padding: 20px; text-shadow: 0 0 10px var(--accent-2);
-}
-#hero-content { display: none; flex-direction: column; align-items: center; }
+#ttt-screen, #gate { display: none; opacity: 0; transform: scale(0.8); }
+#ttt-screen.visible, #gate.visible { opacity: 1; transform: scale(1); }
 
+/* --- HERO SECTION --- */
+#hero { cursor: pointer; }
 .hero-logo {
   font-family: var(--font-retro); font-size: clamp(24px, 6vw, 60px); text-align: center;
   color: #fff; text-shadow: 0 0 10px var(--accent-1), 4px 4px 0px var(--accent-2);
@@ -107,10 +104,7 @@ body {
   0% { transform: scale(1) skewX(0deg); text-shadow: 0 0 10px var(--accent-1), 4px 4px 0px var(--accent-2); }
   100% { transform: scale(1.05) skewX(-5deg); text-shadow: 0 0 25px var(--accent-1), 6px 6px 0px var(--accent-2); }
 }
-.hero-prompt {
-  font-family: var(--font-retro); font-size: clamp(10px, 3vw, 14px); color: var(--accent-3);
-  animation: blink 1s steps(2, start) infinite; z-index: 10; text-align: center; padding: 0 10px; line-height: 1.5;
-}
+.hero-prompt { font-family: var(--font-retro); font-size: clamp(10px, 3vw, 14px); color: var(--accent-3); animation: blink 1s steps(2, start) infinite; z-index: 10; text-align: center; padding: 0 10px; line-height: 1.5; }
 @keyframes blink { to { visibility: hidden; } }
 
 #sock-rain { position: absolute; top: 0; left: 0; width: 100%; height: 100%; overflow: hidden; pointer-events: none; z-index: 1;}
@@ -132,44 +126,25 @@ body {
 .retro-btn:hover { background: var(--accent-2); color: #000; box-shadow: 4px 4px 0 var(--accent-1); transform: translate(-2px, -2px); }
 .retro-btn:active { transform: translate(2px, 2px); box-shadow: 0 0 0 transparent; }
 
-/* --- TIC-TAC-TOE SECTION --- */
-.screen-layer {
-  position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
-  display: flex; flex-direction: column; align-items: center; justify-content: center;
-  z-index: 4000; display: none; opacity: 0; transform: scale(0.8);
-  transition: all 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-}
-.screen-layer.visible { opacity: 1; transform: scale(1); }
-
-.ttt-board {
-  display: grid; grid-template-columns: repeat(3, 1fr); gap: 4px; 
-  width: 100%; max-width: 280px; margin: 20px auto; aspect-ratio: 1/1;
-  background: var(--card-border); border: 4px solid var(--card-border); box-shadow: 0 0 20px rgba(0,0,0,0.5);
-}
-.ttt-cell {
-  background: var(--bg); display: flex; align-items: center; justify-content: center;
-  font-family: var(--font-retro); font-size: clamp(30px, 8vw, 40px); cursor: pointer; transition: background 0.2s;
-}
+/* --- TIC-TAC-TOE --- */
+.ttt-board { display: grid; grid-template-columns: repeat(3, 1fr); gap: 4px; width: 100%; max-width: 280px; margin: 20px auto; aspect-ratio: 1/1; background: var(--card-border); border: 4px solid var(--card-border); box-shadow: 0 0 20px rgba(0,0,0,0.5); }
+.ttt-cell { background: var(--bg); display: flex; align-items: center; justify-content: center; font-family: var(--font-retro); font-size: clamp(30px, 8vw, 40px); cursor: pointer; transition: background 0.2s; }
 .ttt-cell:hover { background: rgba(255,255,255,0.1); }
 .ttt-cell.x { color: var(--accent-1); text-shadow: 0 0 15px var(--accent-1); }
 .ttt-cell.o { color: var(--accent-2); text-shadow: 0 0 15px var(--accent-2); }
 #ttt-status { font-family: var(--font-retro); font-size: 10px; color: var(--accent-3); margin-top: 10px; line-height: 1.6; animation: pulseLogo 1.5s infinite alternate;}
 
-/* --- GATE SECTION --- */
+/* --- GATE SECTION (System Locked) --- */
 .lock-icon { font-size: 40px; margin-bottom: 15px; filter: drop-shadow(0 0 10px var(--accent-1)); transition: all 0.5s ease; }
 .gate-title { font-family: var(--font-retro); font-size: 16px; line-height: 1.5; margin-bottom: 15px; color: var(--accent-1); text-shadow: 2px 2px 0 #000; transition: color 0.5s ease; }
 .gate-sub { font-size: 11px; font-weight: 800; font-family: var(--font-retro); color: var(--text-muted); margin-bottom: 2rem; line-height: 1.8;}
 
 .input-row { display: flex; flex-direction: row; gap: 10px; margin-bottom: 15px; justify-content: center; align-items: center;}
-.retro-input {
-  flex: 1; min-width: 0; padding: 12px; background: #000; border: 3px solid var(--card-border);
-  color: #0f0; font-family: var(--font-retro); font-size: 10px; outline: none;
-  box-shadow: inset 0 0 10px rgba(0,255,0,0.2); text-transform: uppercase;
-}
+.retro-input { flex: 1; min-width: 0; padding: 12px; background: #000; border: 3px solid var(--card-border); color: #0f0; font-family: var(--font-retro); font-size: 10px; outline: none; box-shadow: inset 0 0 10px rgba(0,255,0,0.2); text-transform: uppercase; }
 .retro-input:focus { border-color: var(--accent-2); box-shadow: inset 0 0 15px var(--accent-2); }
 #errMsg { font-family: var(--font-retro); font-size: 10px; color: var(--accent-1); min-height: 20px; display: none; margin-top: 10px; }
 
-/* Hacking animation colors */
+/* Hacking Colors */
 .hacked-text { color: #0f0 !important; text-shadow: 0 0 15px #0f0 !important; }
 .hacked-icon { filter: drop-shadow(0 0 15px #0f0) !important; transform: scale(1.2); }
 
@@ -177,24 +152,11 @@ body {
 #catalog { display: none; min-height: 100vh; opacity: 0; transform: translateY(100px); transition: all 0.8s cubic-bezier(0.2, 1, 0.3, 1); padding-bottom: 50px; z-index: 10; position: relative;}
 #catalog.visible { opacity: 1; transform: translateY(0); }
 
-.cat-header {
-  background: var(--card-bg); border-bottom: 4px solid var(--card-border);
-  padding: 1.5rem; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 15px;
-  position: sticky; top: 0; z-index: 100; box-shadow: var(--shadow-retro);
-}
+.cat-header { background: var(--card-bg); border-bottom: 4px solid var(--card-border); padding: 1.5rem; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 15px; position: sticky; top: 0; z-index: 100; box-shadow: var(--shadow-retro); }
 .header-logo { font-family: var(--font-retro); font-size: clamp(16px, 4vw, 20px); color: var(--accent-2); text-shadow: 2px 2px 0 var(--accent-1); }
 
-.welcome-pill { 
-  display: flex; align-items: center; flex-wrap: wrap; gap: 10px;
-  border: 2px solid var(--accent-3); padding: 8px 12px; font-family: var(--font-retro); 
-  font-size: 10px; color: var(--accent-3); background: #000;
-}
-.theme-toggle-btn {
-  background: var(--bg); color: var(--text); font-weight: 900; font-family: var(--font-retro);
-  font-size: 8px; text-transform: uppercase; cursor: pointer;
-  border: 2px solid var(--accent-3); padding: 6px 10px;
-  box-shadow: 2px 2px 0 var(--accent-3); transition: all 0.2s; margin: 0;
-}
+.welcome-pill { display: flex; align-items: center; flex-wrap: wrap; gap: 10px; border: 2px solid var(--accent-3); padding: 8px 12px; font-family: var(--font-retro); font-size: 10px; color: var(--accent-3); background: #000;}
+.theme-toggle-btn { background: var(--bg); color: var(--text); font-weight: 900; font-family: var(--font-retro); font-size: 8px; text-transform: uppercase; cursor: pointer; border: 2px solid var(--accent-3); padding: 6px 10px; box-shadow: 2px 2px 0 var(--accent-3); transition: all 0.2s; margin: 0; }
 .theme-toggle-btn:active { transform: translate(2px, 2px); box-shadow: none; }
 .theme-toggle-btn:hover { background: var(--accent-3); color: #000; }
 
@@ -273,22 +235,23 @@ body {
   <div class="shape squiggle"></div>
 </div>
 
-<!-- 80s Perspective Grid -->
 <div class="synth-grid"></div>
 
 <!-- 1. HERO SECTION -->
-<div id="hero">
+<div id="hero" class="screen-layer" style="display:flex; opacity:1; transform:scale(1);">
   <div id="sock-rain"></div>
-  <!-- Initial Tap Prompt for Mobile Audio -->
-  <div id="init-prompt">>> TAP TO POWER ON <<</div>
   
-  <div id="hero-content">
+  <div id="init-prompt" class="hero-prompt" style="font-size: clamp(14px, 4vw, 18px); color: var(--accent-2); margin-bottom:20px;">
+    >> TAP TO POWER ON <<
+  </div>
+  
+  <div id="hero-content" style="display:none; flex-direction:column; align-items:center;">
     <h1 class="hero-logo">SILLY SOCKS</h1>
     <p class="hero-prompt">>> CLICK OR SCROLL TO ENTER <<</p>
   </div>
 </div>
 
-<!-- 2. TIC-TAC-TOE BATTLE SECTION -->
+<!-- 2. TIC-TAC-TOE SECTION -->
 <div id="tictactoe-screen" class="screen-layer">
   <div class="retro-box">
     <div class="gate-title" style="margin-bottom: 20px;">BEAT THE BOT TO UNLOCK</div>
@@ -326,7 +289,7 @@ body {
       <button class="retro-btn" id="enterBtn" onclick="checkCode()" style="margin:0; width:100px;">START</button>
     </div>
 
-    <!-- Leaderboard Initials Area (Shown after hack) -->
+    <!-- Leaderboard Initials Area -->
     <div class="input-row" id="lb-input-area" style="display:none;">
       <input id="lbInput" class="retro-input" type="text" placeholder="INITIALS..." maxlength="10" autocomplete="off" />
       <button class="retro-btn" onclick="saveInitialsAndEnter()" style="margin:0; width:100px;">SAVE</button>
@@ -377,6 +340,7 @@ body {
   </div>
 </div>
 
+<!-- IG Button -->
 <button class="ig-float-btn" onclick="window.open('https://www.instagram.com/your.sillysocks/', '_blank')">
   <svg viewBox="0 0 24 24">
     <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 1.76-6.98 6.276-.058 1.281-.072 1.688-.072 4.947s.014 3.666.072 4.947c.2 4.515 2.622 6.076 6.98 6.276 1.28.058 1.687.072 4.947.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-1.76 6.979-6.276.059-1.281.073-1.689.073-4.947 0-3.258-.014-3.667-.072-4.947-.196-4.516-2.624-6.076-6.979-6.276-1.28-.058-1.688-.072-4.948-.072zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
@@ -385,48 +349,47 @@ body {
 
 <script>
 // ==========================================
-// 80s WEB AUDIO API SYNTHESIZER & BGM
+// 80s AUDIO ENGINE
 // ==========================================
 let audioCtx;
-let audioInitialized = false;
+let isPoweredOn = false;
 let isBgmRunning = false;
 
-function initAudio() {
-  if (audioInitialized) return;
+// 1. User taps to power on (Solves Mobile Audio Block)
+function powerOn(e) {
+  if (isPoweredOn) return;
+  if (e) { e.preventDefault(); e.stopPropagation(); }
   
-  // Create audio context
-  audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-  if (audioCtx.state === 'suspended') audioCtx.resume();
+  isPoweredOn = true;
   
-  // Play silent buffer to unlock iOS Safari
+  const AudioContext = window.AudioContext || window.webkitAudioContext;
+  audioCtx = new AudioContext();
+  if(audioCtx.state === 'suspended') audioCtx.resume();
+  
   const buffer = audioCtx.createBuffer(1, 1, 22050);
   const source = audioCtx.createBufferSource();
   source.buffer = buffer;
   source.connect(audioCtx.destination);
   source.start(0);
 
-  audioInitialized = true;
-  
-  // Hide prompt, show hero content, and start BGM
   document.getElementById('init-prompt').style.display = 'none';
   document.getElementById('hero-content').style.display = 'flex';
+  
   startBGM();
 }
 
-// BGM Looping Sequence
 function startBGM() {
-  if(isBgmRunning || !audioCtx) return;
+  if (isBgmRunning) return;
   isBgmRunning = true;
   let t = 0;
-  // C3, Eb3, C3, G3 frequencies for an 80s bassline
-  let notes = [130.81, 155.56, 130.81, 196.00]; 
+  let notes = [130.81, 155.56, 130.81, 196.00]; // 80s Bassline
   
   function loop() {
     if(!isBgmRunning) return;
-    playTone(notes[t % 4], 'sawtooth', 0.2, 0.02); // Bass note
-    if(t % 2 === 0) playTone(800, 'square', 0.05, 0.01); // Hi-hat beat
+    playTone(notes[t % 4], 'sawtooth', 0.2, 0.02);
+    if(t % 2 === 0) playTone(800, 'square', 0.05, 0.01); // Hihat
     t++;
-    setTimeout(loop, 300); // tempo
+    setTimeout(loop, 300);
   }
   loop();
 }
@@ -434,7 +397,7 @@ function startBGM() {
 function stopBGM() { isBgmRunning = false; }
 
 function playTone(freq, type, duration, vol = 0.05) {
-  if (!audioCtx) return;
+  if (!audioCtx || audioCtx.state !== 'running') return;
   const osc = audioCtx.createOscillator();
   const gain = audioCtx.createGain();
   osc.type = type;
@@ -445,7 +408,6 @@ function playTone(freq, type, duration, vol = 0.05) {
   osc.start(); osc.stop(audioCtx.currentTime + duration);
 }
 
-// Sound effects
 function soundClick() { playTone(600, 'square', 0.1); }
 function soundBot() { playTone(400, 'square', 0.1, 0.03); }
 function soundError() { playTone(150, 'sawtooth', 0.4, 0.1); }
@@ -459,12 +421,7 @@ function soundHack() {
   for(let i=0; i<15; i++) { setTimeout(() => playTone(400 + (i*50), 'square', 0.05, 0.03), i*60); }
 }
 
-// Global touch/click to unlock audio
-document.body.addEventListener('click', initAudio, {once:true});
-document.body.addEventListener('touchstart', initAudio, {once:true});
-
-
-// --- Theme Toggle Logic ---
+// --- Theme Toggle ---
 function toggleTheme() {
   soundClick();
   const body = document.body;
@@ -478,7 +435,7 @@ function toggleTheme() {
   }
 }
 
-// --- Sock Rain Animation Engine ---
+// --- Sock Rain ---
 function createSockRain() {
   const rainContainer = document.getElementById('sock-rain');
   const sockCount = window.innerWidth < 768 ? 15 : 30; 
@@ -495,33 +452,37 @@ function createSockRain() {
 }
 createSockRain();
 
-// --- Flow Control ---
+// --- 2. Leave Hero (Enter Game) ---
 let hasEnteredHero = false;
-const hero = document.getElementById('hero-content'); // bind to inner content to avoid double triggering
+const hero = document.getElementById('hero');
 const tttScreen = document.getElementById('tictactoe-screen');
 const gate = document.getElementById('gate');
 const catalog = document.getElementById('catalog');
 
 function leaveHero() {
-  if (hasEnteredHero || !audioInitialized) return;
-  soundClick();
+  if (hasEnteredHero) return;
   hasEnteredHero = true;
-  document.getElementById('hero').style.transform = 'translateY(-100vh) scale(1.5)';
-  document.getElementById('hero').style.opacity = '0';
+  soundClick();
+  hero.style.transform = 'translateY(-100vh) scale(1.5)';
+  hero.style.opacity = '0';
   tttScreen.style.display = 'flex';
-  
   setTimeout(() => {
-    document.getElementById('hero').style.display = 'none';
+    hero.style.display = 'none';
     tttScreen.classList.add('visible');
   }, 600);
 }
 
-// Wait for user to init audio, THEN next click/scroll enters the game
-document.getElementById('hero').addEventListener('click', () => { if(audioInitialized) leaveHero(); });
-window.addEventListener('wheel', (e) => { if(!hasEnteredHero && audioInitialized && e.deltaY > 0) leaveHero(); });
-window.addEventListener('touchstart', (e) => { if(!hasEnteredHero && audioInitialized) leaveHero(); }, {passive: true});
+// Bind Hero Interactions
+hero.addEventListener('click', function(e) {
+  if (!isPoweredOn) powerOn(e);
+  else leaveHero();
+});
+window.addEventListener('wheel', (e) => { 
+  if (isPoweredOn && !hasEnteredHero && e.deltaY > 0) leaveHero(); 
+});
 
-// --- Tic-Tac-Toe Game Logic ---
+
+// --- Tic-Tac-Toe Game ---
 let board = ["", "", "", "", "", "", "", "", ""];
 let gameActive = true;
 const cells = document.querySelectorAll('.ttt-cell');
@@ -591,7 +552,7 @@ function resetBoard() {
   document.getElementById('resetTttBtn').style.display = "none";
 }
 
-// --- Leaderboard Logic ---
+// --- Leaderboard ---
 function updateLeaderboard(name) {
   let lb = JSON.parse(localStorage.getItem('sillySocksLB') || '[]');
   lb.unshift(name.toUpperCase());
@@ -627,7 +588,6 @@ function showGate(autoUnlock) {
     setTimeout(() => {
       gate.classList.add("visible");
       
-      // If player won TTT, initiate the auto-hack sequence
       if(autoUnlock) {
         soundHack();
         document.getElementById('gate-input-area').style.display = 'none';
@@ -659,7 +619,6 @@ function checkCode() {
   if(foundIndex > -1) {
     errMsg.style.display = "none";
     soundHack();
-    
     document.getElementById('gate-title').innerText = "ACCESS GRANTED";
     document.getElementById('gate-title').classList.add('hacked-text');
     document.getElementById('gate-icon').innerText = "🔓";
@@ -689,10 +648,10 @@ document.getElementById("refInput").addEventListener("keyup", function(e) { if(e
 document.getElementById("lbInput").addEventListener("keyup", function(e) { if(e.key === "Enter") saveInitialsAndEnter(); });
 
 function unlockCatalog(playerName) {
+  stopBGM(); // Stop music when entering catalog
   gate.style.opacity = "0";
   gate.style.transform = "scale(0.5)";
   gate.style.pointerEvents = "none";
-  stopBGM(); // Stop the BGM to let user focus on shopping
   document.body.style.overflowY = 'auto'; // allow scrolling
   
   setTimeout(() => {
@@ -709,7 +668,7 @@ function unlockCatalog(playerName) {
 }
 
 
-// --- Price Formatter Helper ---
+// --- Price Formatter Helper[cite: 1] ---
 function getPriceHTML(isFlash, isWithSD) {
   if (isFlash) {
     if (isWithSD) return '<span class="old-price">৳2631</span><span class="new-price">৳2500</span><span class="disc-tag">-5% PWR</span>';
