@@ -52,6 +52,7 @@ body {
   height: 100vh;
   overflow-y: hidden; /* Prevents scroll until catalog unlocks */
   transition: background-color 0.5s, color 0.5s;
+  -webkit-tap-highlight-color: transparent;
 }
 
 /* --- 80s PERSPECTIVE GRID --- */
@@ -91,6 +92,12 @@ body {
   transition: transform 1s cubic-bezier(0.8, -0.2, 0.2, 1.5), opacity 1s ease;
   cursor: pointer;
 }
+#init-prompt {
+  font-family: var(--font-retro); font-size: clamp(12px, 4vw, 18px); color: var(--accent-2);
+  animation: blink 1s infinite; text-align: center; padding: 20px; text-shadow: 0 0 10px var(--accent-2);
+}
+#hero-content { display: none; flex-direction: column; align-items: center; }
+
 .hero-logo {
   font-family: var(--font-retro); font-size: clamp(24px, 6vw, 60px); text-align: center;
   color: #fff; text-shadow: 0 0 10px var(--accent-1), 4px 4px 0px var(--accent-2);
@@ -112,7 +119,7 @@ body {
 
 /* --- REUSABLE RETRO BOX --- */
 .retro-box {
-  width: 90%; max-width: 450px; text-align: center; padding: 2.5rem 1.5rem;
+  width: 90%; max-width: 500px; text-align: center; padding: 2.5rem 1.5rem;
   background: var(--card-bg); border: 4px solid var(--card-border);
   box-shadow: var(--shadow-retro); position: relative; margin: 0 auto;
 }
@@ -126,16 +133,17 @@ body {
 .retro-btn:active { transform: translate(2px, 2px); box-shadow: 0 0 0 transparent; }
 
 /* --- TIC-TAC-TOE SECTION --- */
-#tictactoe-screen {
-  min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center;
-  position: relative; z-index: 15; display: none; opacity: 0;
-  transform: scale(0.8); transition: all 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+.screen-layer {
+  position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  z-index: 4000; display: none; opacity: 0; transform: scale(0.8);
+  transition: all 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
-#tictactoe-screen.visible { opacity: 1; transform: scale(1); }
+.screen-layer.visible { opacity: 1; transform: scale(1); }
 
 .ttt-board {
   display: grid; grid-template-columns: repeat(3, 1fr); gap: 4px; 
-  width: 100%; max-width: 250px; margin: 20px auto; aspect-ratio: 1/1;
+  width: 100%; max-width: 280px; margin: 20px auto; aspect-ratio: 1/1;
   background: var(--card-border); border: 4px solid var(--card-border); box-shadow: 0 0 20px rgba(0,0,0,0.5);
 }
 .ttt-cell {
@@ -147,14 +155,7 @@ body {
 .ttt-cell.o { color: var(--accent-2); text-shadow: 0 0 15px var(--accent-2); }
 #ttt-status { font-family: var(--font-retro); font-size: 10px; color: var(--accent-3); margin-top: 10px; line-height: 1.6; animation: pulseLogo 1.5s infinite alternate;}
 
-/* --- GATE SECTION (System Locked) --- */
-#gate {
-  min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center;
-  position: relative; z-index: 10; display: none; opacity: 0;
-  transform: scale(0.8); transition: all 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-}
-#gate.visible { opacity: 1; transform: scale(1); }
-
+/* --- GATE SECTION --- */
 .lock-icon { font-size: 40px; margin-bottom: 15px; filter: drop-shadow(0 0 10px var(--accent-1)); transition: all 0.5s ease; }
 .gate-title { font-family: var(--font-retro); font-size: 16px; line-height: 1.5; margin-bottom: 15px; color: var(--accent-1); text-shadow: 2px 2px 0 #000; transition: color 0.5s ease; }
 .gate-sub { font-size: 11px; font-weight: 800; font-family: var(--font-retro); color: var(--text-muted); margin-bottom: 2rem; line-height: 1.8;}
@@ -173,7 +174,7 @@ body {
 .hacked-icon { filter: drop-shadow(0 0 15px #0f0) !important; transform: scale(1.2); }
 
 /* --- CATALOG UI --- */
-#catalog { display: none; min-height: 100vh; opacity: 0; transform: translateY(100px); transition: all 0.8s cubic-bezier(0.2, 1, 0.3, 1); padding-bottom: 50px; }
+#catalog { display: none; min-height: 100vh; opacity: 0; transform: translateY(100px); transition: all 0.8s cubic-bezier(0.2, 1, 0.3, 1); padding-bottom: 50px; z-index: 10; position: relative;}
 #catalog.visible { opacity: 1; transform: translateY(0); }
 
 .cat-header {
@@ -214,6 +215,7 @@ body {
 
 .img-wrapper { width: 100%; height: 200px; border-bottom: 4px solid var(--card-border); background: #ffffff; overflow: hidden; position: relative;}
 .cam-img { width: 100%; height: 100%; object-fit: contain; padding: 10px; transition: transform 0.5s; }
+
 .stock-tag { position: absolute; top: 10px; right: 10px; background: var(--accent-3); color: #000; font-family: var(--font-retro); font-size: 8px; padding: 6px 10px; border: 2px solid #000; z-index: 10;}
 
 .cam-info { padding: 15px; }
@@ -244,7 +246,12 @@ body {
 .footer { text-align: center; padding: 3rem 1.5rem; font-family: var(--font-retro); font-size: 9px; color: var(--text-muted); border-top: 2px dashed var(--card-border); margin-top: 3rem; line-height: 2;}
 
 /* --- IG FLOATING BUTTON --- */
-.ig-float-btn { position: fixed; bottom: 20px; right: 20px; width: 50px; height: 50px; background: var(--accent-1); display: flex; align-items: center; justify-content: center; border: 3px solid var(--card-border); cursor: pointer; z-index: 9999; box-shadow: 4px 4px 0 var(--card-border); transition: all 0.2s; }
+.ig-float-btn {
+  position: fixed; bottom: 20px; right: 20px; width: 50px; height: 50px;
+  background: var(--accent-1); display: flex; align-items: center; justify-content: center;
+  border: 3px solid var(--card-border); cursor: pointer; z-index: 9999;
+  box-shadow: 4px 4px 0 var(--card-border); transition: all 0.2s;
+}
 .ig-float-btn:active { transform: translate(4px, 4px); box-shadow: 0 0 0 transparent; }
 .ig-float-btn svg { width: 24px; height: 24px; fill: #fff; }
 
@@ -259,13 +266,6 @@ body {
 </head>
 <body>
 
-<!-- GLOBAL INSTAGRAM BUTTON -->
-<button class="ig-float-btn" onclick="window.open('https://www.instagram.com/your.sillysocks/', '_blank')">
-  <svg viewBox="0 0 24 24">
-    <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 1.76-6.98 6.276-.058 1.281-.072 1.688-.072 4.947s.014 3.666.072 4.947c.2 4.515 2.622 6.076 6.98 6.276 1.28.058 1.687.072 4.947.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-1.76 6.979-6.276.059-1.281.073-1.689.073-4.947 0-3.258-.014-3.667-.072-4.947-.196-4.516-2.624-6.076-6.979-6.276-1.28-.058-1.688-.072-4.948-.072zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
-  </svg>
-</button>
-
 <!-- Light Mode Memphis Shapes -->
 <div class="memphis-shapes">
   <div class="shape circle"></div>
@@ -276,11 +276,16 @@ body {
 <!-- 80s Perspective Grid -->
 <div class="synth-grid"></div>
 
-<!-- 1. HERO SECTION (Falling Socks) -->
+<!-- 1. HERO SECTION -->
 <div id="hero">
   <div id="sock-rain"></div>
-  <h1 class="hero-logo">SILLY SOCKS</h1>
-  <p class="hero-prompt">>> CLICK OR SCROLL TO ENTER <<</p>
+  <!-- Initial Tap Prompt for Mobile Audio -->
+  <div id="init-prompt">>> TAP TO POWER ON <<</div>
+  
+  <div id="hero-content">
+    <h1 class="hero-logo">SILLY SOCKS</h1>
+    <p class="hero-prompt">>> CLICK OR SCROLL TO ENTER <<</p>
+  </div>
 </div>
 
 <!-- 2. TIC-TAC-TOE BATTLE SECTION -->
@@ -372,15 +377,62 @@ body {
   </div>
 </div>
 
+<button class="ig-float-btn" onclick="window.open('https://www.instagram.com/your.sillysocks/', '_blank')">
+  <svg viewBox="0 0 24 24">
+    <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 1.76-6.98 6.276-.058 1.281-.072 1.688-.072 4.947s.014 3.666.072 4.947c.2 4.515 2.622 6.076 6.98 6.276 1.28.058 1.687.072 4.947.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-1.76 6.979-6.276.059-1.281.073-1.689.073-4.947 0-3.258-.014-3.667-.072-4.947-.196-4.516-2.624-6.076-6.979-6.276-1.28-.058-1.688-.072-4.948-.072zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+  </svg>
+</button>
+
 <script>
 // ==========================================
-// 80s WEB AUDIO API SYNTHESIZER
+// 80s WEB AUDIO API SYNTHESIZER & BGM
 // ==========================================
 let audioCtx;
+let audioInitialized = false;
+let isBgmRunning = false;
+
 function initAudio() {
-  if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+  if (audioInitialized) return;
+  
+  // Create audio context
+  audioCtx = new (window.AudioContext || window.webkitAudioContext)();
   if (audioCtx.state === 'suspended') audioCtx.resume();
+  
+  // Play silent buffer to unlock iOS Safari
+  const buffer = audioCtx.createBuffer(1, 1, 22050);
+  const source = audioCtx.createBufferSource();
+  source.buffer = buffer;
+  source.connect(audioCtx.destination);
+  source.start(0);
+
+  audioInitialized = true;
+  
+  // Hide prompt, show hero content, and start BGM
+  document.getElementById('init-prompt').style.display = 'none';
+  document.getElementById('hero-content').style.display = 'flex';
+  startBGM();
 }
+
+// BGM Looping Sequence
+function startBGM() {
+  if(isBgmRunning || !audioCtx) return;
+  isBgmRunning = true;
+  let t = 0;
+  // C3, Eb3, C3, G3 frequencies for an 80s bassline
+  let notes = [130.81, 155.56, 130.81, 196.00]; 
+  
+  function loop() {
+    if(!isBgmRunning) return;
+    playTone(notes[t % 4], 'sawtooth', 0.2, 0.02); // Bass note
+    if(t % 2 === 0) playTone(800, 'square', 0.05, 0.01); // Hi-hat beat
+    t++;
+    setTimeout(loop, 300); // tempo
+  }
+  loop();
+}
+
+function stopBGM() { isBgmRunning = false; }
+
 function playTone(freq, type, duration, vol = 0.05) {
   if (!audioCtx) return;
   const osc = audioCtx.createOscillator();
@@ -392,6 +444,8 @@ function playTone(freq, type, duration, vol = 0.05) {
   osc.connect(gain); gain.connect(audioCtx.destination);
   osc.start(); osc.stop(audioCtx.currentTime + duration);
 }
+
+// Sound effects
 function soundClick() { playTone(600, 'square', 0.1); }
 function soundBot() { playTone(400, 'square', 0.1, 0.03); }
 function soundError() { playTone(150, 'sawtooth', 0.4, 0.1); }
@@ -405,9 +459,14 @@ function soundHack() {
   for(let i=0; i<15; i++) { setTimeout(() => playTone(400 + (i*50), 'square', 0.05, 0.03), i*60); }
 }
 
+// Global touch/click to unlock audio
+document.body.addEventListener('click', initAudio, {once:true});
+document.body.addEventListener('touchstart', initAudio, {once:true});
+
+
 // --- Theme Toggle Logic ---
 function toggleTheme() {
-  initAudio(); soundClick();
+  soundClick();
   const body = document.body;
   const btn = document.getElementById("themeToggle");
   if (body.getAttribute("data-theme") === "light") {
@@ -438,28 +497,29 @@ createSockRain();
 
 // --- Flow Control ---
 let hasEnteredHero = false;
-const hero = document.getElementById('hero');
+const hero = document.getElementById('hero-content'); // bind to inner content to avoid double triggering
 const tttScreen = document.getElementById('tictactoe-screen');
 const gate = document.getElementById('gate');
 const catalog = document.getElementById('catalog');
 
 function leaveHero() {
-  if (hasEnteredHero) return;
-  initAudio(); soundClick();
+  if (hasEnteredHero || !audioInitialized) return;
+  soundClick();
   hasEnteredHero = true;
-  hero.style.transform = 'translateY(-100vh) scale(1.5)';
-  hero.style.opacity = '0';
-  document.body.style.overflowY = 'auto'; 
+  document.getElementById('hero').style.transform = 'translateY(-100vh) scale(1.5)';
+  document.getElementById('hero').style.opacity = '0';
   tttScreen.style.display = 'flex';
+  
   setTimeout(() => {
-    hero.style.display = 'none';
+    document.getElementById('hero').style.display = 'none';
     tttScreen.classList.add('visible');
-  }, 800);
+  }, 600);
 }
 
-hero.addEventListener('click', leaveHero);
-window.addEventListener('wheel', (e) => { if(!hasEnteredHero && e.deltaY > 0) leaveHero(); });
-window.addEventListener('touchstart', (e) => { if(!hasEnteredHero) leaveHero(); }, {passive: true});
+// Wait for user to init audio, THEN next click/scroll enters the game
+document.getElementById('hero').addEventListener('click', () => { if(audioInitialized) leaveHero(); });
+window.addEventListener('wheel', (e) => { if(!hasEnteredHero && audioInitialized && e.deltaY > 0) leaveHero(); });
+window.addEventListener('touchstart', (e) => { if(!hasEnteredHero && audioInitialized) leaveHero(); }, {passive: true});
 
 // --- Tic-Tac-Toe Game Logic ---
 let board = ["", "", "", "", "", "", "", "", ""];
@@ -469,7 +529,7 @@ const statusText = document.getElementById('ttt-status');
 
 function makeMove(index) {
   if(board[index] !== "" || !gameActive) return;
-  initAudio(); soundClick();
+  soundClick();
   board[index] = "X";
   updateBoard();
   
@@ -523,7 +583,7 @@ function endGame(msg, playerWon) {
 }
 
 function resetBoard() {
-  initAudio(); soundClick();
+  soundClick();
   board = ["", "", "", "", "", "", "", "", ""];
   gameActive = true;
   updateBoard();
@@ -556,9 +616,9 @@ var allowedList = allowed.split("|");
 var prettyList  = pretty.split("|");
 
 function showGate(autoUnlock) {
-  initAudio(); soundClick();
-  tttScreen.style.transform = 'translateY(-100vh) scale(1.5)';
-  tttScreen.style.opacity = '0';
+  soundClick();
+  tttScreen.style.opacity = "0";
+  tttScreen.style.transform = "scale(0.5)";
   
   setTimeout(() => {
     tttScreen.style.display = "none";
@@ -592,7 +652,6 @@ function showGate(autoUnlock) {
 }
 
 function checkCode() {
-  initAudio();
   var val = document.getElementById("refInput").value.toLowerCase().trim();
   var foundIndex = allowedList.indexOf(val);
   var errMsg = document.getElementById("errMsg");
@@ -620,7 +679,7 @@ function checkCode() {
 }
 
 function saveInitialsAndEnter() {
-  initAudio(); soundClick();
+  soundClick();
   let name = document.getElementById('lbInput').value || "CHAMPION";
   updateLeaderboard(name);
   unlockCatalog(name.toUpperCase());
@@ -633,11 +692,14 @@ function unlockCatalog(playerName) {
   gate.style.opacity = "0";
   gate.style.transform = "scale(0.5)";
   gate.style.pointerEvents = "none";
+  stopBGM(); // Stop the BGM to let user focus on shopping
+  document.body.style.overflowY = 'auto'; // allow scrolling
   
   setTimeout(() => {
     gate.style.display = "none";
     catalog.style.display = "block";
     document.getElementById("broName").textContent = playerName;
+    renderLeaderboard();
     
     setTimeout(() => {
       catalog.classList.add("visible");
@@ -717,7 +779,7 @@ renderGrid(camData2, "camGrid2", "p2_");
 
 // --- Tabs Logic ---
 function showPage(page) {
-  initAudio(); soundClick();
+  soundClick();
   document.getElementById('tab1').className = 'page-tab' + (page === 1 ? ' active' : '');
   document.getElementById('tab2').className = 'page-tab' + (page === 2 ? ' active' : '');
   
@@ -743,7 +805,7 @@ function updatePrice(radio, index) {
   priceRow.innerHTML = getPriceHTML(isFlash, isWithSD);
 }
 
-function doBuy() { initAudio(); soundClick(); window.open(FORM_LINK, '_blank'); }
+function doBuy() { soundClick(); window.open(FORM_LINK, '_blank'); }
 
 showPage(1);
 </script>
