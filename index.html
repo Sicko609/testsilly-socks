@@ -90,8 +90,8 @@ body {
   display: flex; flex-direction: column; align-items: center; justify-content: center;
   background: var(--bg); z-index: 5000; transition: all 0.6s cubic-bezier(0.8, -0.2, 0.2, 1.5);
 }
-#hero-screen, #tictactoe-screen, #gate { display: none; opacity: 0; transform: scale(0.8); }
-#hero-screen.visible, #tictactoe-screen.visible, #gate.visible { opacity: 1; transform: scale(1); }
+#hero-screen, #tictactoe-screen, #gate, #checkout-screen { display: none; opacity: 0; transform: scale(0.8); }
+#hero-screen.visible, #tictactoe-screen.visible, #gate.visible, #checkout-screen.visible { opacity: 1; transform: scale(1); }
 
 /* --- SCREEN 1: POWER ON --- */
 #power-screen { z-index: 6000; cursor: pointer; }
@@ -128,7 +128,7 @@ body {
 .retro-btn {
   padding: 12px 15px; background: var(--accent-1); color: #fff; border: 3px solid var(--card-border);
   font-family: var(--font-retro); font-size: 10px; cursor: pointer;
-  transition: all 0.2s; box-shadow: 4px 4px 0 var(--accent-2); text-transform: uppercase; margin: 5px;
+  transition: all 0.2s; box-shadow: 4px 4px 0 var(--accent-2); text-transform: uppercase; margin: 5px; width: calc(100% - 10px); display: inline-block;
 }
 .retro-btn:hover { background: var(--accent-2); color: #000; box-shadow: 4px 4px 0 var(--accent-1); transform: translate(-2px, -2px); }
 .retro-btn:active { transform: translate(2px, 2px); box-shadow: 0 0 0 transparent; }
@@ -148,15 +148,27 @@ body {
 .gate-sub { font-size: 11px; font-weight: 800; font-family: var(--font-retro); color: var(--text-muted); margin-bottom: 2rem; line-height: 1.8;}
 
 .input-row { display: flex; flex-direction: row; gap: 10px; margin-bottom: 15px; justify-content: center; align-items: center;}
-.retro-input { flex: 1; min-width: 0; padding: 12px; background: #000; border: 3px solid var(--card-border); color: #0f0; font-family: var(--font-retro); font-size: 10px; outline: none; box-shadow: inset 0 0 10px rgba(0,255,0,0.2); text-transform: uppercase; }
-.retro-input:focus { border-color: var(--accent-2); box-shadow: inset 0 0 15px var(--accent-2); }
+.retro-input, .retro-select { flex: 1; min-width: 0; padding: 12px; background: #000; border: 3px solid var(--card-border); color: #0f0; font-family: var(--font-retro); font-size: 10px; outline: none; box-shadow: inset 0 0 10px rgba(0,255,0,0.2); text-transform: uppercase; }
+.retro-input:focus, .retro-select:focus { border-color: var(--accent-2); box-shadow: inset 0 0 15px var(--accent-2); }
 #errMsg { font-family: var(--font-retro); font-size: 10px; color: var(--accent-1); min-height: 20px; display: none; margin-top: 10px; }
 
 /* Hacking animation classes */
 .hacked-text { color: #0f0 !important; text-shadow: 0 0 15px #0f0 !important; }
 .hacked-icon { filter: drop-shadow(0 0 15px #0f0) !important; transform: scale(1.2); }
 
-/* --- SCREEN 5: CATALOG UI --- */
+/* --- SCREEN 5: CHECKOUT UI --- */
+#checkout-screen { overflow-y: auto; padding: 40px 0; justify-content: flex-start; }
+.checkout-form { display: flex; flex-direction: column; gap: 15px; text-align: left; margin-top: 20px;}
+.checkout-form label { font-size: 10px; font-family: var(--font-retro); color: var(--accent-2); margin-top: 10px;}
+.tc-box { height: 120px; overflow-y: auto; background: #000; border: 2px dashed var(--accent-1); padding: 10px; font-size: 10px; color: var(--text-muted); line-height: 1.6; margin-bottom: 10px; }
+.tc-box strong { color: var(--accent-1); font-weight: 900;}
+.checkbox-row { display: flex; align-items: flex-start; gap: 10px; font-size: 10px; font-weight: 800; line-height: 1.4; color: #fff;}
+.checkbox-row input { appearance: none; width: 16px; height: 16px; border: 2px solid var(--card-border); background: var(--bg); cursor: pointer; min-width: 16px; margin-top: 2px;}
+.checkbox-row input:checked { background: var(--accent-3); border-color: var(--accent-3); box-shadow: inset 0 0 0 2px #000; }
+.radio-group { display: flex; gap: 15px; flex-wrap: wrap; }
+.radio-group label { display: flex; align-items: center; gap: 8px; color: #fff; font-family: var(--font-main); font-size: 12px; margin-top: 0;}
+
+/* --- SCREEN 6: CATALOG UI --- */
 #catalog { display: none; min-height: 100vh; opacity: 0; transform: translateY(100px); transition: all 0.8s cubic-bezier(0.2, 1, 0.3, 1); padding-bottom: 50px; z-index: 10; position: relative;}
 #catalog.visible { opacity: 1; transform: translateY(0); }
 
@@ -215,7 +227,7 @@ body {
 .footer { text-align: center; padding: 3rem 1.5rem; font-family: var(--font-retro); font-size: 9px; color: var(--text-muted); border-top: 2px dashed var(--card-border); margin-top: 3rem; line-height: 2;}
 
 /* --- IG FLOATING BUTTON --- */
-.ig-float-btn { position: fixed; bottom: 20px; right: 20px; width: 50px; height: 50px; background: var(--accent-1); display: flex; align-items: center; justify-content: center; border: 3px solid var(--card-border); cursor: pointer; z-index: 9999; box-shadow: 4px 4px 0 var(--card-border); transition: all 0.2s; }
+.ig-float-btn { position: fixed; bottom: 20px; right: 20px; width: 50px; height: 50px; background: var(--accent-1); display: flex; align-items: center; justify-content: center; border: 3px solid var(--card-border); cursor: pointer; z-index: 9999; box-shadow: 4px 4px 0 var(--card-border); transition: all 0.2s; border-radius: 50%;}
 .ig-float-btn:active { transform: translate(4px, 4px); box-shadow: 0 0 0 transparent; }
 .ig-float-btn svg { width: 24px; height: 24px; fill: #fff; }
 
@@ -301,7 +313,86 @@ body {
   </div>
 </div>
 
-<!-- SCREEN 5: CATALOG SECTION -->
+<!-- SCREEN 5: SECURE CHECKOUT -->
+<div id="checkout-screen" class="screen-layer">
+  <div class="retro-box" style="margin: 40px auto 20px auto; max-height: 90vh; overflow-y: auto;">
+    <div class="gate-title" style="color: var(--accent-3);">SECURE CHECKOUT</div>
+    
+    <!-- IMPORTANT: Submit logic is handled entirely by JavaScript Fetch API -->
+    <form id="orderForm" class="checkout-form">
+      
+      <label>> FULL NAME *</label>
+      <input type="text" name="Full Name" class="retro-input" required placeholder="JOHN DOE" />
+      
+      <label>> PHONE NUMBER *</label>
+      <input type="tel" name="Phone Number" class="retro-input" required placeholder="+8801XXXXXXXXX" />
+      
+      <label>> DELIVERY ADDRESS *</label>
+      <textarea name="Delivery Address" class="retro-input" required placeholder="HOUSE, ROAD, DHAKA..." rows="3" style="resize:none; font-family: var(--font-main);"></textarea>
+      
+      <label>> SELECT PRODUCT COLOR *</label>
+      <select name="Product Color" id="form-color" class="retro-select" required>
+        <option value="White">White</option>
+        <option value="Red">Red</option>
+        <option value="Yellow">Yellow</option>
+        <option value="Green">Green</option>
+        <option value="Blue">Blue</option>
+        <option value="Black">Black</option>
+      </select>
+
+      <label>> CHOOSE ADD-ONS *</label>
+      <select name="Add-ons" id="form-addons" class="retro-select" required>
+        <option value="Without SD card 1582">Without SD card 1582</option>
+        <option value="With SD card 1994">With SD card 1994</option>
+        <option value="With SD card + card reader 2100">With SD card + card reader 2100</option>
+        <option value="Flash with SD card 2564">Flash with SD card 2564</option>
+        <option value="Flash without SD card 1999">Flash without SD card 1999</option>
+      </select>
+
+      <label>> BRO CODE (OPTIONAL)</label>
+      <input type="text" name="BRO CODE" id="form-brocode" class="retro-input" placeholder="FOR 5% OFF & FREE DEL" />
+
+      <label>> QUANTITY *</label>
+      <select name="Quantity" class="retro-select" required>
+        <option value="1">1</option>
+        <option value="2">2</option>
+        <option value="3">3</option>
+      </select>
+
+      <label>> PREFERRED PAYMENT METHOD *</label>
+      <div class="radio-group">
+        <label><input type="radio" name="Payment Method" value="Cash on Delivery (COD)" required onclick="toggleBkash(false)" checked> Cash on Delivery</label>
+        <label><input type="radio" name="Payment Method" value="Bkash" required onclick="toggleBkash(true)"> Bkash</label>
+      </div>
+
+      <div id="bkash-field" style="display:none; flex-direction:column; gap:10px;">
+        <label>> BKASH TRANSACTION ID</label>
+        <input type="text" name="Transaction ID" class="retro-input" placeholder="TRX ID..." />
+      </div>
+
+      <label>> LEGAL AGREEMENT</label>
+      <div class="tc-box">
+        <strong>1. ORDER MODIFICATION:</strong> We reserve the right to cancel, modify, change the order value, or delay shipments at our sole discretion.<br><br>
+        <strong>2. CASH ON DELIVERY (COD):</strong> All orders are strictly COD. We reserve the right to take legal action if a customer fails or refuses to receive their order upon delivery attempt.<br><br>
+        <strong>3. DAMAGES & LIABILITY:</strong> The customer is fully responsible for any damage occurring after successful delivery.<br><br>
+        <strong>4. STRICT 3-DAY WARRANTY:</strong> We provide a 3-day replacement warranty covering ONLY manufacturing defects. Claims must be submitted within exactly 3 days of receiving the order. Claims after 3 days are strictly not applicable.<br><br>
+        <strong>5. WARRANTY EXCLUSIONS:</strong> Screen-related issues and ANY physical damage are strictly NOT covered under the warranty policy.
+      </div>
+      
+      <label class="checkbox-row">
+        <input type="checkbox" required /> I have read and agree to the Privacy Policy.
+      </label>
+      <label class="checkbox-row">
+        <input type="checkbox" required /> I accept the Terms & Conditions outlined above, including the strict 3-day warranty limits and COD liability.
+      </label>
+
+      <button type="submit" id="submitOrderBtn" class="retro-btn" style="background: var(--accent-3); color: #000; font-size: 12px; margin-top: 15px;">CONFIRM ORDER</button>
+      <button type="button" class="retro-btn" onclick="cancelCheckout()" style="background: #333; border-color: #555;">CANCEL & RETURN</button>
+    </form>
+  </div>
+</div>
+
+<!-- SCREEN 6: CATALOG SECTION -->
 <div id="catalog">
   <header class="cat-header">
     <div class="header-logo">SILLY SOCKS</div>
@@ -355,8 +446,8 @@ body {
 let audioCtx;
 let isPoweredOn = false;
 let isBgmRunning = false;
+let appliedBroCode = "";
 
-// 1. User taps to power on (Solves Mobile Audio Block)
 function powerOn(e) {
   if (isPoweredOn) return;
   if (e) { e.preventDefault(); e.stopPropagation(); }
@@ -472,6 +563,7 @@ const heroScreen = document.getElementById('hero-screen');
 const tttScreen = document.getElementById('tictactoe-screen');
 const gate = document.getElementById('gate');
 const catalog = document.getElementById('catalog');
+const checkoutScreen = document.getElementById('checkout-screen');
 
 function leaveHero() {
   if (!isPoweredOn || hasEnteredHero) return;
@@ -614,7 +706,6 @@ function renderLeaderboard() {
 // --- Gatekeeper Logic ---
 var allowed = "mafruha|siam|abid|authai|rifah|fatima|azha|namira|maddie|nafisa|nayla|faysol|labby|mamun|sayemrohitkarmakar|nafisalubabaetu|mirzaabdulkhaled|namiraahmedshams|ishmamalam|farhanmasud|aunu|labbyahsan|jarinsubahshifa|nafisanoor|sabilaanjum|miswaralam|abdullahaljawad|tasin|arshan|ahnaf";
 var pretty   = "Mafruha|Siam|Abid|Authai|Rifah|Fatima|Azha|Namira|Maddie|Nafisa|Nayla|Faysol|Labby|Mamun|Sayem Rohit Karmakar|Nafisa Lubaba Etu|Mirza Abdul Khaled|Namira Ahmed Shams|Ishmam Alam|Farhan Masud|Aunu|Labby Ahsan|Jarin Subah Shifa|Nafisa Noor|Sabila Anjum|Miswar Alam|Abdullah Al Jawad|Tasin|Arshan|Ahnaf";
-var FORM_LINK = "https://forms.gle/psdEZ97p6kBwDWzC7";
 var allowedList = allowed.split("|");
 var prettyList  = pretty.split("|");
 
@@ -662,6 +753,7 @@ function checkCode() {
   if(foundIndex > -1) {
     errMsg.style.display = "none";
     soundHack();
+    appliedBroCode = val.toUpperCase(); // Save for checkout
     
     document.getElementById('gate-title').innerText = "ACCESS GRANTED";
     document.getElementById('gate-title').classList.add('hacked-text');
@@ -711,8 +803,98 @@ function unlockCatalog(playerName) {
   }, 600);
 }
 
+// --- SECURE CHECKOUT LOGIC ---
+function openCheckout(itemColor, isFlash, isWithSD) {
+  soundClick();
+  document.getElementById('catalog').style.opacity = "0";
+  
+  setTimeout(() => {
+    document.getElementById('catalog').style.display = "none";
+    
+    // Auto-select Color in dropdown
+    document.getElementById('form-color').value = itemColor;
 
-// --- Price Formatter Helper ---
+    // Auto-select Add-on in dropdown based on selection
+    let addonDropdown = document.getElementById('form-addons');
+    if(isFlash) {
+      addonDropdown.value = isWithSD ? "Flash with SD card 2564" : "Flash without SD card 1999";
+    } else {
+      addonDropdown.value = isWithSD ? "With SD card 1994" : "Without SD card 1582";
+    }
+
+    // Auto-fill Bro Code if they hacked via gate
+    document.getElementById('form-brocode').value = appliedBroCode;
+    
+    checkoutScreen.style.display = "flex";
+    setTimeout(() => { 
+      checkoutScreen.classList.add('visible'); 
+      window.scrollTo(0,0); 
+    }, 50);
+  }, 400);
+}
+
+function cancelCheckout() {
+  soundClick();
+  checkoutScreen.classList.remove('visible');
+  
+  setTimeout(() => {
+    checkoutScreen.style.display = "none";
+    document.getElementById('catalog').style.display = "block";
+    
+    setTimeout(() => { 
+      document.getElementById('catalog').style.opacity = "1"; 
+      window.scrollTo(0,0);
+    }, 50);
+  }, 400);
+}
+
+function toggleBkash(show) {
+  document.getElementById('bkash-field').style.display = show ? "flex" : "none";
+}
+
+// Submitting the Order Form Invisibly via AJAX to Google Script
+document.getElementById("orderForm").addEventListener("submit", function(e) {
+  e.preventDefault(); 
+  soundClick();
+  
+  var btn = document.getElementById("submitOrderBtn");
+  btn.innerText = "TRANSMITTING...";
+  btn.style.pointerEvents = "none";
+  btn.style.opacity = "0.7";
+
+  var formData = new FormData(this);
+  
+  // ==========================================
+  // GOOGLE APPS SCRIPT WEB APP URL
+  // ==========================================
+  var googleScriptURL = "https://script.google.com/macros/s/AKfycbzLvK0XJD6cROtesbrDPAUS-PBohgt2Mp2yA-YJELGlWf_5EnF4bSfAx9_NvRS6CWm9/exec";
+
+  fetch(googleScriptURL, { method: 'POST', body: formData, mode: 'no-cors' })
+    .then(response => {
+      btn.innerText = "ORDER SECURED!";
+      btn.style.background = "#0f0";
+      soundWin();
+      
+      setTimeout(() => {
+         alert("YOUR ORDER HAS BEEN PLACED SUCCESSFULLY!");
+         cancelCheckout();
+         btn.innerText = "CONFIRM ORDER";
+         btn.style.pointerEvents = "auto";
+         btn.style.opacity = "1";
+         btn.style.background = "var(--accent-3)";
+         document.getElementById("orderForm").reset();
+         toggleBkash(false);
+      }, 2000);
+    })
+    .catch(error => {
+       soundError();
+       btn.innerText = "ERROR. TRY AGAIN.";
+       btn.style.pointerEvents = "auto";
+       btn.style.opacity = "1";
+    });
+});
+
+// --- Render Grids ---
 function getPriceHTML(isFlash, isWithSD) {
   if (isFlash) {
     if (isWithSD) return '<span class="old-price">৳2631</span><span class="new-price">৳2500</span><span class="disc-tag">-5% PWR</span>';
@@ -723,21 +905,20 @@ function getPriceHTML(isFlash, isWithSD) {
   }
 }
 
-// --- Render Grids ---
 var camData = [
-  { n:"Yellow 1985", v:"Sunny 80s vibes", i:"c1.jpg" },
-  { n:"Black Retro",  v:"Neon noir aesthetic", i:"c2.jpg" },
-  { n:"Blue Mini",     v:"Cool coastal feel",   i:"c3.jpg" },
-  { n:"Street Red",     v:"Bold streetwear", i:"c4.jpg" },
-  { n:"Minimal White",  v:"Clean & modern",      i:"c5.jpg" },
-  { n:"Green Personality", v:"90s personality", i:"c6.jpg" }
+  { n:"Yellow 1985", v:"Sunny 80s vibes", i:"c1.jpg", c:"Yellow" },
+  { n:"Black Retro",  v:"Neon noir aesthetic", i:"c2.jpg", c:"Black" },
+  { n:"Blue Mini",     v:"Cool coastal feel",   i:"c3.jpg", c:"Blue" },
+  { n:"Street Red",     v:"Bold streetwear", i:"c4.jpg", c:"Red" },
+  { n:"Minimal White",  v:"Clean & modern",      i:"c5.jpg", c:"White" },
+  { n:"Green Personality", v:"90s personality", i:"c6.jpg", c:"Green" }
 ];
 
 var camData2 = [
-  { n:"1988 Orange Flash", v:"Retro vintage stripes", i:"f1.jpg" },
-  { n:"1988 Yellow Flash", v:"Sunny 80s vibes", i:"f2.jpg" },
-  { n:"Blue Wave Flash", v:"Cool retro stripes", i:"f3.jpg" },
-  { n:"Street Red Flash", v:"Bold arcade energy", i:"f4.jpg" }
+  { n:"1988 Orange Flash", v:"Retro vintage stripes", i:"f1.jpg", c:"Yellow" },
+  { n:"1988 Yellow Flash", v:"Sunny 80s vibes", i:"f2.jpg", c:"Yellow" },
+  { n:"Blue Wave Flash", v:"Cool retro stripes", i:"f3.jpg", c:"Blue" },
+  { n:"Street Red Flash", v:"Bold arcade energy", i:"f4.jpg", c:"Red" }
 ];
 
 function renderGrid(dataArray, gridId, prefix) {
@@ -765,13 +946,13 @@ function renderGrid(dataArray, gridId, prefix) {
           '<span class="perk" style="color:var(--accent-1);">>> DM ON IG FOR 10% OFF</span>' +
         '</div>' +
         '<div class="variant-toggle">' +
-          '<label class="toggle-opt"><input type="radio" name="sdopt' + prefix + x + '" value="with" checked onchange="updatePrice(this, \'' + prefix + x + '\'); soundClick();"> [X] 8GB SD CARD</label>' +
-          '<label class="toggle-opt"><input type="radio" name="sdopt' + prefix + x + '" value="without" onchange="updatePrice(this, \'' + prefix + x + '\'); soundClick();"> [ ] NO SD CARD</label>' +
+          '<label class="toggle-opt"><input type="radio" id="sdopt_' + prefix + x + '_with" name="sdopt' + prefix + x + '" value="with" checked onchange="updatePrice(this, \'' + prefix + x + '\'); soundClick();"> [X] 8GB SD CARD</label>' +
+          '<label class="toggle-opt"><input type="radio" id="sdopt_' + prefix + x + '_without" name="sdopt' + prefix + x + '" value="without" onchange="updatePrice(this, \'' + prefix + x + '\'); soundClick();"> [ ] NO SD CARD</label>' +
         '</div>' +
         '<div class="price-row" id="priceRow' + prefix + x + '">' +
           initialPriceHTML +
         '</div>' +
-        '<button class="buy-btn" onclick="doBuy()">SELECT ITEM</button>' +
+        '<button class="buy-btn" onclick="openCheckout(\'' + c.c + '\', ' + isFlash + ', document.getElementById(\'sdopt_' + prefix + x + '_with\').checked)">SECURE ITEM</button>' +
       '</div>';
     grid.appendChild(card);
   }
@@ -807,8 +988,6 @@ function updatePrice(radio, index) {
   var priceRow = document.getElementById('priceRow' + index);
   priceRow.innerHTML = getPriceHTML(isFlash, isWithSD);
 }
-
-function doBuy() { soundClick(); window.open(FORM_LINK, '_blank'); }
 
 // Init
 updateLeaderboard(""); // Initialize leaderboard on load
