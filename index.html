@@ -7,23 +7,20 @@
 <style>
 /* ===========================================
   MODERN SYNTHWAVE / CYBER-AESTHETIC THEME
-  (Smooth, Glassmorphic, Eye-Pleasing)
+  (Smooth, Glassmorphic, High Visibility)
 =========================================== */
 @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;500;700;900&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap');
 
 :root {
-  /* Deep, rich background colors instead of harsh black */
   --bg: #090a0f; 
   --bg-gradient: radial-gradient(circle at top right, #1a1025, #090a0f);
   --text: #f8fafc;
   --text-muted: #94a3b8;
   
-  /* Softer, more expensive-looking neons */
   --accent-1: #d946ef; /* Fuchsia */
   --accent-2: #06b6d4; /* Cyan */
   --accent-3: #fbbf24; /* Amber/Gold */
   
-  /* Glassmorphic cards */
   --card-bg: rgba(15, 17, 26, 0.65);
   --card-border: rgba(255, 255, 255, 0.1);
   --card-glow: 0 8px 32px rgba(0, 0, 0, 0.4);
@@ -65,7 +62,7 @@ body {
   z-index: -3; pointer-events: none; opacity: 0.8;
 }
 
-/* --- CRT SCANLINES (Very subtle for aesthetic, not eye-strain) --- */
+/* --- CRT SCANLINES --- */
 .scanlines {
   position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
   background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.1) 50%);
@@ -74,17 +71,6 @@ body {
   opacity: 0.3;
 }
 [data-theme="light"] .scanlines { opacity: 0.03; }
-
-/* --- SLEEK AUDIO TOGGLE CORNER BUTTON --- */
-.audio-toggle-btn {
-  position: fixed; top: 20px; right: 20px; z-index: 10000;
-  background: rgba(0,0,0,0.4); border: 1px solid rgba(255,255,255,0.1);
-  color: var(--text-muted); font-family: var(--font-retro); font-size: 10px;
-  padding: 10px 16px; cursor: pointer; border-radius: 20px;
-  backdrop-filter: blur(10px); transition: all 0.3s ease;
-}
-.audio-toggle-btn:hover { background: rgba(255,255,255,0.1); color: var(--text); }
-.audio-toggle-btn.active { color: var(--accent-3); border-color: var(--accent-3); box-shadow: 0 0 15px rgba(251, 191, 36, 0.2); }
 
 /* --- MEMPHIS FLOATING ARTIFACTS --- */
 .memphis-shapes { position: fixed; top:0; left:0; width:100%; height:100%; z-index:-2; pointer-events: none; }
@@ -102,8 +88,18 @@ body {
 #hero-screen, #tictactoe-screen, #gate, #checkout-screen, #success-screen { display: none; opacity: 0; transform: scale(0.95) translateY(20px); }
 #hero-screen.visible, #tictactoe-screen.visible, #gate.visible, #checkout-screen.visible, #success-screen.visible { opacity: 1; transform: scale(1) translateY(0); }
 
-/* Start directly on Hero */
-#hero-screen { display: flex; opacity: 1; transform: scale(1); cursor: pointer; }
+#hero-screen { display: flex; opacity: 1; transform: scale(1); cursor: pointer; position: relative; }
+
+/* --- SLEEK AUDIO TOGGLE CORNER BUTTON (Now inside Hero Screen) --- */
+.audio-toggle-btn {
+  position: absolute; top: 20px; right: 20px; z-index: 10000;
+  background: rgba(0,0,0,0.4); border: 1px solid rgba(255,255,255,0.1);
+  color: var(--text-muted); font-family: var(--font-retro); font-size: 10px;
+  padding: 10px 16px; cursor: pointer; border-radius: 20px;
+  backdrop-filter: blur(10px); transition: all 0.3s ease;
+}
+.audio-toggle-btn:hover { background: rgba(255,255,255,0.1); color: var(--text); }
+.audio-toggle-btn.active { color: var(--accent-3); border-color: var(--accent-3); box-shadow: 0 0 15px rgba(251, 191, 36, 0.2); }
 
 /* --- HERO (LOADING) SCREEN --- */
 .hero-logo { 
@@ -120,14 +116,13 @@ body {
 }
 @keyframes pulseOpacity { 0%, 100% { opacity: 0.5; } 50% { opacity: 1; } }
 
-/* --- REUSABLE GLASS BOX (Replaces blocky retro box) --- */
+/* --- REUSABLE GLASS BOX --- */
 .retro-box { 
   width: 92%; max-width: 480px; text-align: center; padding: 3rem 2rem; 
   background: var(--card-bg); border: 1px solid var(--card-border); 
   box-shadow: var(--card-glow); position: relative; margin: 0 auto; 
   backdrop-filter: blur(20px); border-radius: 24px;
 }
-/* Subtle top accent line */
 .retro-box::before { content: ''; position: absolute; top: 0; left: 10%; right: 10%; height: 2px; background: linear-gradient(90deg, transparent, var(--accent-2), transparent); border-radius: 50%; opacity: 0.5; }
 
 /* --- BUTTONS --- */
@@ -175,7 +170,7 @@ body {
 .checkbox-row input:checked { background: var(--accent-2); border-color: var(--accent-2); background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='20 6 9 17 4 12'%3E%3C/polyline%3E%3C/svg%3E"); background-size: 70%; background-position: center; background-repeat: no-repeat;}
 
 .radio-group { display: flex; gap: 20px; flex-wrap: wrap; background: rgba(0,0,0,0.1); padding: 15px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.05); }
-.radio-group label { display: flex; align-items: center; gap: 8px; color: var(--text); font-family: var(--font-main); font-size: 13px; cursor: pointer; margin-top: 0;}
+.radio-group label { display: flex; align-items: center; gap: 8px; color: var(--text); font-family: var(--font-main); font-size: 13px; font-weight: 800; cursor: pointer; margin-top: 0;}
 
 .bkash-info-box { background: rgba(217, 70, 239, 0.1); border: 1px solid rgba(217, 70, 239, 0.3); padding: 15px; border-radius: 10px; margin-top: 5px; display: flex; flex-direction: column; gap: 10px; }
 .bkash-number { font-family: var(--font-retro); font-size: 13px; color: var(--accent-1); }
@@ -205,7 +200,7 @@ body {
 .cat-body { max-width: 1200px; margin: 0 auto; padding: 3rem 1.5rem 0; }
 .section-label { font-family: var(--font-retro); font-size: 16px; color: var(--text); margin-bottom: 2.5rem; opacity: 0.9; }
 
-/* --- PRODUCT CARDS (SLEEK & PLEASING) --- */
+/* --- PRODUCT CARDS --- */
 .cam-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 30px; }
 .cam-card { background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 20px; position: relative; transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); backdrop-filter: blur(10px); overflow: hidden; display: flex; flex-direction: column;}
 @media (hover: hover) { .cam-card:hover { transform: translateY(-8px); box-shadow: 0 20px 40px rgba(0,0,0,0.4); border-color: rgba(255,255,255,0.3);} .cam-card:hover .cam-img { transform: scale(1.05); } }
@@ -252,10 +247,8 @@ body {
   .cat-header { flex-direction: column; padding: 1.2rem; }
   .welcome-pill { justify-content: space-between; width: 100%; margin-top: 15px; padding: 12px 15px;}
   .retro-box { padding: 2rem 1.2rem; width: 95%; border-radius: 20px;}
-  .audio-toggle-btn { top: 15px; right: 15px; padding: 8px 12px; }
-  .cam-grid { gap: 20px; }
-  .hero-logo { font-size: clamp(40px, 12vw, 60px); }
-  .ttt-cell { font-size: 40px; }
+  .audio-toggle-btn { top: 15px; right: 15px; padding: 8px 12px; font-size: 8px; }
+  .cam-grid { gap: 25px; }
 }
 </style>
 </head>
@@ -272,11 +265,12 @@ body {
   <div class="shape triangle"></div>
 </div>
 
-<!-- AUDIO TOGGLE BUTTON -->
-<button id="audioToggleBtn" class="audio-toggle-btn" onclick="toggleAudio(event)">AUDIO: OFF</button>
-
 <!-- SCREEN 1: HERO SECTION (LOADING/ENTRY) -->
 <div id="hero-screen" class="screen-layer visible">
+  
+  <!-- AUDIO TOGGLE BUTTON (Inside Hero Only) -->
+  <button id="audioToggleBtn" class="audio-toggle-btn" onclick="toggleAudio(event)">AUDIO: OFF</button>
+  
   <h1 class="hero-logo">SILLY SOCKS</h1>
   <p class="hero-prompt">TAP ANYWHERE TO ENTER</p>
 </div>
@@ -640,10 +634,6 @@ function soundHack() {
   for(let i=0; i<10; i++) { setTimeout(() => playTone(500 + (i*60), 'sine', 0.05, 0.02), i*50); }
 }
 
-document.body.addEventListener('click', () => { 
-  if(audioEnabled && audioCtx && audioCtx.state === 'suspended') audioCtx.resume(); 
-}, {once:true});
-
 function toggleTheme() {
   soundClick();
   const body = document.body;
@@ -668,7 +658,8 @@ const successScreen = document.getElementById('success-screen');
 
 function leaveHero(e) {
   if (hasEnteredHero) return;
-  if(e && e.target && e.target.id === 'audioToggleBtn') return; 
+  // Ignore clicks on the audio toggle button itself so it doesn't bypass the screen
+  if(e && e.target && (e.target.id === 'audioToggleBtn' || e.target.closest('#audioToggleBtn'))) return; 
 
   hasEnteredHero = true;
   soundClick();
@@ -684,7 +675,6 @@ function leaveHero(e) {
 }
 heroScreen.addEventListener('click', leaveHero);
 window.addEventListener('wheel', (e) => { if (!hasEnteredHero && e.deltaY > 0) leaveHero(e); });
-window.addEventListener('touchstart', (e) => { if (!hasEnteredHero) leaveHero(e); }, {passive: true});
 
 // --- Tic-Tac-Toe Logic ---
 let board = ["", "", "", "", "", "", "", "", ""];
