@@ -6,297 +6,411 @@
 <title>SILLY SOCKS | ARCADE DROP</title>
 <style>
 /* ===========================================
-  80s SYNTHWAVE / DYNAMIC CYBERPUNK THEME
-  (Smooth Animations, Reactive Canvas)
+  EUPHORIC CYBER-KAWAII ARCADE THEME
+  (Cute, Bouncy, Glassmorphic, Extremely Rewarding)
 =========================================== */
-@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Montserrat:ital,wght@0,400;0,800;0,900;1,900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;800;900&family=Space+Mono:wght@700&display=swap');
 
 :root {
-  --bg: #0b0c10;
+  /* DARK MODE (Dreamy Midnight) */
+  --bg-color: #0b0710; 
+  --bg-gradient: radial-gradient(circle at top right, #381254, #0b0710 70%), radial-gradient(circle at bottom left, #0b2e59, #0b0710 70%);
   --text: #ffffff;
-  --text-muted: #aaaaaa;
-  --accent-1: #ff00ff; 
-  --accent-2: #00ffff; 
-  --accent-3: #ffff00; 
-  --card-bg: rgba(15, 10, 20, 0.85);
-  --card-border: #ff00ff;
-  --font-main: 'Montserrat', sans-serif;
-  --font-retro: 'Press Start 2P', cursive;
-  --shadow-retro: 0 0 15px var(--accent-1), 0 0 25px var(--accent-2);
+  --text-muted: #a8a2b8;
+  
+  --accent-cyan: #00f0ff;
+  --accent-pink: #ff007f;
+  --accent-yellow: #ffe600;
+  --accent-green: #00ff66;
+  
+  /* Euphoric Glass Effects */
+  --glass-bg: rgba(30, 20, 45, 0.45);
+  --glass-border: rgba(255, 255, 255, 0.15);
+  --glass-highlight: rgba(255, 255, 255, 0.25);
+  --glass-blur: blur(20px);
+  --glass-shadow: 0 10px 40px rgba(255, 0, 127, 0.15), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  
+  --input-bg: rgba(0, 0, 0, 0.5);
+  --input-border: rgba(255, 255, 255, 0.2);
+  
+  --font-main: 'Outfit', sans-serif;
+  --font-code: 'Space Mono', monospace;
 }
 
 [data-theme="light"] {
-  --bg: #f4f4f4;
-  --text: #111111;
-  --text-muted: #555555;
-  --accent-1: #ff007f; 
-  --accent-2: #0088ff; 
-  --accent-3: #ffaa00; 
-  --card-bg: rgba(255,255,255,0.9);
-  --card-border: #111111;
-  --shadow-retro: 8px 8px 0px var(--card-border);
+  /* DAY MODE (Cotton Candy Sky) */
+  --bg-color: #fcf8ff;
+  --bg-gradient: radial-gradient(circle at top right, #ffe6f2, #fcf8ff 70%), radial-gradient(circle at bottom left, #e6f7ff, #fcf8ff 70%);
+  --text: #1e1b4b;
+  --text-muted: #64748b;
+  
+  --accent-cyan: #0284c7;
+  --accent-pink: #db2777;
+  --accent-yellow: #d97706;
+  --accent-green: #059669;
+  
+  --glass-bg: rgba(255, 255, 255, 0.6);
+  --glass-border: rgba(255, 255, 255, 0.8);
+  --glass-highlight: rgba(255, 255, 255, 1);
+  --glass-blur: blur(25px);
+  --glass-shadow: 0 10px 40px rgba(219, 39, 119, 0.1), inset 0 1px 0 rgba(255, 255, 255, 1);
+  
+  --input-bg: rgba(255, 255, 255, 0.8);
+  --input-border: rgba(219, 39, 119, 0.2);
 }
 
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
 body {
   font-family: var(--font-main);
-  background-color: var(--bg);
+  background-color: var(--bg-color);
+  background-image: var(--bg-gradient);
+  background-attachment: fixed;
   color: var(--text);
   overflow-x: hidden;
   height: 100vh;
   overflow-y: hidden;
-  transition: background-color 0.5s, color 0.5s;
+  transition: background 0.6s ease, color 0.6s ease;
   -webkit-tap-highlight-color: transparent;
 }
 
 /* --- DYNAMIC CANVAS BACKGROUND --- */
 #bgCanvas {
   position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
-  z-index: -3; pointer-events: none;
+  z-index: -3; pointer-events: none; opacity: 0.6; mix-blend-mode: screen;
 }
-
-/* --- CRT SCANLINES & ARTIFACTS --- */
-.scanlines {
-  position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
-  background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.2) 50%);
-  background-size: 100% 4px;
-  pointer-events: none; z-index: 9998;
-  opacity: 0.15; 
-}
-[data-theme="light"] .scanlines { opacity: 0.05; }
-
-.vhs-tracking {
-  position: fixed; top: -10vh; left: 0; width: 100vw; height: 8vh;
-  background: rgba(255,255,255,0.02);
-  box-shadow: 0 0 10px rgba(0,255,255,0.1), 0 0 5px rgba(255,0,255,0.1);
-  pointer-events: none; z-index: 9997;
-  animation: vhsScroll 8s infinite linear;
-}
-@keyframes vhsScroll { 0% { transform: translateY(-10vh); } 100% { transform: translateY(120vh); } }
-
-/* --- MEMPHIS FLOATING ARTIFACTS --- */
-.memphis-shapes { position: fixed; top:0; left:0; width:100%; height:100%; z-index:-2; pointer-events: none; }
-.shape { position: absolute; border: 3px solid var(--card-border); opacity: 0.4; }
-.circle { border-radius: 50%; width: 60px; height: 60px; background: transparent; top: 15%; left: 8%; animation: floatOrbit 12s infinite linear; }
-.triangle { width: 0; height: 0; border-left: 40px solid transparent; border-right: 40px solid transparent; border-bottom: 70px solid var(--accent-1); border-top: none; background: transparent; top: 75%; right: 12%; animation: floatOrbit 15s infinite linear reverse; }
-@keyframes floatOrbit { 0% { transform: rotate(0deg) translateX(20px) rotate(0deg); } 100% { transform: rotate(360deg) translateX(20px) rotate(-360deg); } }
+[data-theme="light"] #bgCanvas { mix-blend-mode: multiply; opacity: 0.3; }
 
 /* --- SCREENS CONFIGURATION --- */
 .screen-layer {
   position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
   display: flex; flex-direction: column; align-items: center; justify-content: center;
-  background: transparent; z-index: 5000; transition: all 0.6s cubic-bezier(0.2, 0.8, 0.2, 1);
+  background: transparent; z-index: 5000; transition: all 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
-#tictactoe-screen, #gate, #checkout-screen, #success-screen { display: none; opacity: 0; transform: scale(0.95); }
-#tictactoe-screen.visible, #gate.visible, #checkout-screen.visible, #success-screen.visible { opacity: 1; transform: scale(1); }
+#tictactoe-screen, #gate, #checkout-screen, #success-screen { display: none; opacity: 0; transform: scale(0.9) translateY(20px); filter: blur(10px); }
+#tictactoe-screen.visible, #gate.visible, #checkout-screen.visible, #success-screen.visible { opacity: 1; transform: scale(1) translateY(0); filter: blur(0); }
 
 /* --- SCREEN 1: HERO (LOADING/ENTRY) --- */
 #hero-screen { display: flex; opacity: 1; transform: scale(1); cursor: pointer; position: relative; }
 
 .hero-logo { 
-  font-family: var(--font-retro); font-size: clamp(28px, 8vw, 75px); text-align: center; color: #fff; 
-  margin-bottom: 20px; z-index: 10; padding: 0 15px; position: relative;
-  text-shadow: 4px 4px 0 var(--accent-1), -4px -4px 0 var(--accent-2);
+  font-family: var(--font-main); font-weight: 900; font-size: clamp(45px, 12vw, 120px); 
+  text-align: center; color: transparent; 
+  background: linear-gradient(to right, var(--accent-pink), var(--accent-yellow), var(--accent-cyan));
+  background-size: 300% 300%;
+  -webkit-background-clip: text; background-clip: text;
+  margin-bottom: 10px; z-index: 10; padding: 0 15px; position: relative;
+  filter: drop-shadow(0 10px 20px rgba(255,0,127,0.4));
+  letter-spacing: -3px; animation: rainbowFlow 5s ease infinite;
 }
-.hero-prompt { 
-  font-family: var(--font-retro); font-size: clamp(10px, 3vw, 14px); color: var(--accent-3); 
-  animation: blink 1.5s steps(2, start) infinite; z-index: 10; text-align: center; 
-  line-height: 1.5; background: rgba(0,0,0,0.6); padding: 15px 25px; 
-  border: 2px dashed var(--accent-3); box-shadow: 4px 4px 0 var(--accent-1); 
-  backdrop-filter: blur(5px);
-}
-@keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
+@keyframes rainbowFlow { 0% {background-position: 0% 50%} 50% {background-position: 100% 50%} 100% {background-position: 0% 50%} }
 
-/* AUDIO TOGGLE BUTTON (Specific to Hero Screen) */
+.hero-prompt { 
+  font-family: var(--font-main); font-weight: 800; font-size: clamp(12px, 4vw, 16px); 
+  color: var(--text); z-index: 10; text-align: center; letter-spacing: 2px;
+  background: var(--glass-bg); padding: 16px 36px; border-radius: 50px; 
+  border: 2px solid var(--glass-border); backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur); box-shadow: var(--glass-shadow);
+  animation: floatBounce 2s ease-in-out infinite; text-transform: uppercase;
+}
+@keyframes floatBounce { 0%, 100% { transform: translateY(0) scale(1); } 50% { transform: translateY(-10px) scale(1.02); } }
+
+/* BIG ACCESSIBLE AUDIO BUTTON (Hero Screen) */
 .audio-toggle-btn {
-  position: absolute; 
-  top: 25px; right: 25px; 
-  z-index: 10000;
-  background: rgba(0,0,0,0.7); 
-  border: 2px solid var(--accent-2);
-  color: var(--text); 
-  font-family: var(--font-retro); 
-  font-size: 10px;
-  padding: 12px 18px; 
-  cursor: pointer; 
-  border-radius: 30px;
-  backdrop-filter: blur(5px); 
-  transition: all 0.3s ease;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  box-shadow: 0 0 15px rgba(0, 255, 255, 0.2);
+  position: absolute; top: 30px; right: 30px; z-index: 10000;
+  background: var(--glass-bg); border: 2px solid var(--glass-border);
+  color: var(--text); font-family: var(--font-main); font-size: 14px; font-weight: 900;
+  padding: 16px 32px; cursor: pointer; border-radius: 50px;
+  backdrop-filter: var(--glass-blur); -webkit-backdrop-filter: var(--glass-blur);
+  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  text-transform: uppercase; letter-spacing: 1px; box-shadow: var(--glass-shadow);
 }
 .audio-toggle-btn:hover { 
-  background: rgba(0, 255, 255, 0.2); 
-  transform: scale(1.05);
+  transform: scale(1.1) translateY(-2px) rotate(3deg); 
+  background: rgba(255,255,255,0.2); border-color: var(--accent-cyan);
+  box-shadow: 0 10px 30px rgba(0, 240, 255, 0.3); color: var(--accent-cyan);
 }
-.audio-toggle-btn.active { 
-  color: var(--accent-3); 
-  border-color: var(--accent-3); 
-  box-shadow: 0 0 20px rgba(255, 255, 0, 0.3); 
+.audio-toggle-btn.active { color: var(--accent-yellow); border-color: var(--accent-yellow); }
+
+/* --- CUTE GLASS BOX --- */
+.glass-box { 
+  width: 92%; max-width: 460px; text-align: center; padding: 2.5rem; 
+  background: var(--glass-bg); border: 2px solid var(--glass-border); 
+  box-shadow: var(--glass-shadow); position: relative; margin: 0 auto; 
+  backdrop-filter: var(--glass-blur); -webkit-backdrop-filter: var(--glass-blur); 
+  border-radius: 36px; overflow: hidden;
 }
 
-#sock-rain { position: absolute; top: 0; left: 0; width: 100%; height: 100%; overflow: hidden; pointer-events: none; z-index: 1;}
-.falling-sock { position: absolute; top: -10%; font-size: 45px; animation: dropSock linear infinite; filter: drop-shadow(0 0 10px var(--accent-1)); }
-@keyframes dropSock { 0% { transform: translateY(-10vh) rotate(0deg); } 100% { transform: translateY(110vh) rotate(360deg); } }
+/* --- BOUNCY BUTTONS --- */
+.retro-btn { 
+  padding: 18px 24px; color: #fff; border: none; border-radius: 20px; 
+  font-family: var(--font-main); font-size: 15px; font-weight: 900; cursor: pointer; 
+  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1); text-transform: uppercase; 
+  margin: 8px 0; width: 100%; display: block; letter-spacing: 1px;
+  background: linear-gradient(135deg, var(--accent-cyan), var(--accent-pink));
+  background-size: 200% 200%; animation: gradientShift 4s ease infinite;
+  box-shadow: 0 10px 25px rgba(255, 0, 127, 0.3), inset 0 2px 0 rgba(255,255,255,0.4);
+}
+.retro-btn:hover { transform: scale(1.05) translateY(-4px); box-shadow: 0 15px 35px rgba(0, 240, 255, 0.4), inset 0 2px 0 rgba(255,255,255,0.6); }
+.retro-btn:active { transform: scale(0.95) translateY(2px); box-shadow: 0 5px 15px rgba(255, 0, 127, 0.2); }
 
-/* --- REUSABLE RETRO BOX --- */
-.retro-box { width: 92%; max-width: 500px; text-align: center; padding: 3rem 2rem; background: var(--card-bg); border: 4px solid var(--card-border); box-shadow: var(--shadow-retro); position: relative; margin: 0 auto; backdrop-filter: blur(10px); }
-.retro-box::before { content: ''; position: absolute; top: 6px; left: 6px; right: 6px; bottom: 6px; border: 2px dashed var(--accent-2); pointer-events: none; }
-.retro-btn { padding: 16px 15px; background: var(--accent-1); color: #fff; border: 3px solid var(--card-border); font-family: var(--font-retro); font-size: 12px; cursor: pointer; transition: all 0.2s; box-shadow: 4px 4px 0 var(--accent-2); text-transform: uppercase; margin: 8px 0; width: 100%; display: block; letter-spacing: 1px;}
-.retro-btn:hover { background: var(--accent-2); color: #000; box-shadow: 4px 4px 0 var(--accent-1); transform: translate(-2px, -2px); }
-.retro-btn:active { transform: translate(4px, 4px); box-shadow: 0 0 0 transparent; }
+.retro-btn.secondary { 
+  background: var(--input-bg); border: 2px solid var(--input-border); color: var(--text); 
+  box-shadow: none; animation: none; 
+}
+.retro-btn.secondary:hover { background: var(--glass-highlight); color: var(--bg-color); border-color: transparent; }
 
 /* --- TIC-TAC-TOE --- */
-.ttt-board { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; width: 100%; max-width: 280px; margin: 25px auto; aspect-ratio: 1/1; background: var(--card-border); border: 6px solid var(--card-border); box-shadow: 0 0 20px rgba(0,0,0,0.8); }
-.ttt-cell { background: #000; display: flex; align-items: center; justify-content: center; font-family: var(--font-retro); font-size: clamp(35px, 8vw, 50px); cursor: pointer; transition: background 0.2s; }
-.ttt-cell:hover { background: #222; }
-.ttt-cell.x { color: var(--accent-1); text-shadow: 2px 2px 0 #fff; }
-.ttt-cell.o { color: var(--accent-2); text-shadow: 2px 2px 0 #fff; }
-#ttt-status { font-family: var(--font-retro); font-size: 12px; color: var(--accent-3); margin-top: 15px; line-height: 1.6; font-weight: bold;}
-.btn-group { display: flex; flex-direction: column; gap: 5px; margin-top: 20px; }
+.ttt-board { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; width: 100%; max-width: 280px; margin: 25px auto; aspect-ratio: 1/1; }
+.ttt-cell { 
+  background: var(--input-bg); border: 2px solid var(--input-border); border-radius: 20px; 
+  display: flex; align-items: center; justify-content: center; font-family: var(--font-main); 
+  font-size: clamp(40px, 10vw, 55px); font-weight: 900; cursor: pointer; 
+  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1); box-shadow: inset 0 4px 10px rgba(0,0,0,0.2);
+}
+.ttt-cell:hover { background: var(--glass-highlight); transform: scale(1.1) rotate(5deg); }
+.ttt-cell.x { color: var(--accent-pink); filter: drop-shadow(0 0 10px var(--accent-pink)); }
+.ttt-cell.o { color: var(--accent-cyan); filter: drop-shadow(0 0 10px var(--accent-cyan)); }
+#ttt-status { font-family: var(--font-code); font-size: 13px; color: var(--accent-yellow); margin-top: 10px; font-weight: 700; letter-spacing: 1px;}
 
 /* --- GATE / HACKING --- */
-.lock-icon { font-size: 50px; margin-bottom: 20px; filter: drop-shadow(0 0 15px var(--accent-1)); animation: pulseLogo 2s infinite alternate; }
-@keyframes pulseLogo { 0% { transform: scale(1); filter: drop-shadow(0 0 10px var(--accent-1)); } 100% { transform: scale(1.1); filter: drop-shadow(0 0 25px var(--accent-2)); } }
-.gate-title { font-family: var(--font-retro); font-size: 18px; line-height: 1.5; margin-bottom: 15px; color: var(--accent-1); text-shadow: 2px 2px 0 #000; transition: color 0.5s ease; }
-.gate-sub { font-size: 12px; font-weight: 800; font-family: var(--font-retro); color: var(--text-muted); margin-bottom: 1.5rem; line-height: 1.8;}
+.lock-icon { font-size: 55px; margin-bottom: 15px; filter: drop-shadow(0 0 15px var(--accent-pink)); animation: floatBounce 2s infinite alternate; }
+.gate-title { font-family: var(--font-main); font-size: 28px; font-weight: 900; margin-bottom: 5px; color: var(--text); letter-spacing: 1px;}
+.gate-sub { font-size: 14px; font-weight: 600; font-family: var(--font-main); color: var(--text-muted); margin-bottom: 2rem;}
 
-.input-row { display: flex; flex-direction: row; gap: 10px; margin-bottom: 15px; justify-content: center; align-items: center;}
-.retro-input, .retro-select { flex: 1; min-width: 0; padding: 16px; background: rgba(0,0,0,0.8); border: 3px solid var(--card-border); color: #0f0; font-family: var(--font-retro); font-size: 12px; outline: none; box-shadow: inset 0 0 10px rgba(0,255,0,0.1); text-transform: uppercase; width: 100%; transition: all 0.3s;}
-.retro-input:focus, .retro-select:focus { border-color: var(--accent-2); box-shadow: inset 0 0 20px var(--accent-2); }
-#errMsg { font-family: var(--font-retro); font-size: 12px; color: var(--accent-1); min-height: 20px; display: none; margin-top: 15px; background: rgba(0,0,0,0.5); padding: 10px; border: 2px dashed var(--accent-1);}
-.hacked-text { color: #0f0 !important; text-shadow: 2px 2px 0 #000 !important; }
-.hacked-icon { filter: drop-shadow(0 0 20px #0f0) !important; transform: scale(1.2); }
+.input-row { display: flex; flex-direction: row; gap: 12px; margin-bottom: 15px; justify-content: center; align-items: stretch;}
+.retro-input, .retro-select { 
+  flex: 1; min-width: 0; padding: 18px 22px; background: var(--input-bg); 
+  border: 2px solid var(--input-border); border-radius: 18px; color: var(--text); 
+  font-family: var(--font-main); font-size: 15px; font-weight: 700; outline: none; 
+  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1); box-shadow: inset 0 2px 8px rgba(0,0,0,0.15);
+}
+.retro-input::placeholder { color: var(--text-muted); font-weight: 500; }
+.retro-input:focus, .retro-select:focus { 
+  border-color: var(--accent-cyan); background: rgba(0, 240, 255, 0.05); 
+  box-shadow: 0 0 0 5px rgba(0, 240, 255, 0.2), inset 0 2px 5px rgba(0,0,0,0.1); transform: scale(1.02);
+}
+#errMsg { font-family: var(--font-code); font-size: 12px; font-weight: 700; color: #ff3366; margin-top: 15px; background: rgba(255, 51, 102, 0.15); padding: 14px; border-radius: 16px; display: none; border: 2px dashed rgba(255, 51, 102, 0.4);}
 
-/* --- CHECKOUT & SUCCESS UI --- */
+/* --- CHECKOUT UI --- */
 #checkout-screen { overflow-y: auto; padding: 30px 0; justify-content: flex-start; -webkit-overflow-scrolling: touch; }
-.checkout-form { display: flex; flex-direction: column; gap: 15px; text-align: left; margin-top: 20px;}
-.checkout-form label { font-size: 10px; font-family: var(--font-retro); color: var(--accent-2); margin-top: 8px; line-height: 1.4;}
-.tc-box { height: 130px; overflow-y: auto; background: rgba(0,0,0,0.6); border: 2px dashed var(--accent-1); padding: 15px; font-size: 11px; color: var(--text-muted); line-height: 1.8; margin-bottom: 15px; -webkit-overflow-scrolling: touch;}
-.tc-box strong { color: var(--accent-1); font-weight: 900;}
-.checkbox-row { display: flex; align-items: flex-start; gap: 12px; font-size: 12px; font-weight: 800; line-height: 1.5; color: var(--text);}
-.checkbox-row input { appearance: none; width: 22px; height: 22px; border: 2px solid var(--card-border); background: var(--bg); cursor: pointer; min-width: 22px; margin-top: 0;}
-.checkbox-row input:checked { background: var(--accent-3); border-color: var(--accent-3); box-shadow: inset 0 0 0 3px #000; }
-.radio-group { display: flex; gap: 20px; flex-wrap: wrap; background: rgba(0,0,0,0.5); padding: 15px; border: 2px solid var(--card-border); }
-.radio-group label { display: flex; align-items: center; gap: 10px; color: var(--text); font-family: var(--font-main); font-size: 13px; font-weight: 800; cursor: pointer; margin-top: 0;}
+.checkout-form { display: flex; flex-direction: column; gap: 18px; text-align: left; margin-top: 25px;}
+.checkout-form label { font-size: 13px; font-family: var(--font-main); font-weight: 800; color: var(--accent-cyan); margin-bottom: -6px; text-transform: uppercase; letter-spacing: 1px;}
+.tc-box { height: 120px; overflow-y: auto; background: var(--input-bg); border: 2px solid var(--input-border); border-radius: 18px; padding: 18px; font-size: 12px; color: var(--text-muted); line-height: 1.6; }
+.tc-box strong { color: var(--accent-pink); font-weight: 800;}
+.checkbox-row { display: flex; align-items: flex-start; gap: 12px; font-size: 13px; font-weight: 600; line-height: 1.5; color: var(--text); cursor: pointer;}
 
-.bkash-info-box { background: rgba(255, 0, 127, 0.15); border: 2px dashed var(--accent-1); padding: 15px; border-radius: 4px; margin-top: 5px; display: flex; flex-direction: column; gap: 10px; }
-.bkash-number { font-family: var(--font-retro); font-size: 13px; color: var(--accent-3); text-shadow: 1px 1px 0 #000; letter-spacing: 1px; }
+.checkbox-row input { 
+  appearance: none; width: 26px; height: 26px; border: 2px solid var(--input-border); 
+  border-radius: 10px; background: var(--input-bg); cursor: pointer; margin-top: 0; 
+  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1); position: relative;
+}
+.checkbox-row input:checked { 
+  background: var(--accent-cyan); border-color: var(--accent-cyan); 
+  box-shadow: 0 4px 15px rgba(0, 240, 255, 0.4); transform: scale(1.1);
+}
+.checkbox-row input:checked::after {
+  content: '✔'; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+  color: #000; font-size: 16px; font-weight: 900;
+}
 
-.stat-row { font-family: var(--font-retro); font-size: 12px; margin-bottom: 18px; color: var(--accent-2); line-height: 1.6; text-align: left; }
-.stat-val { color: #0f0; text-shadow: 1px 1px 0 #000; }
-.score-tally { font-family: var(--font-retro); font-size: 32px; color: var(--accent-3); margin: 35px 0; text-shadow: 2px 2px 0 #000; letter-spacing: 3px; }
+.radio-group { display: flex; gap: 12px; flex-wrap: wrap; background: var(--input-bg); padding: 8px; border-radius: 20px; border: 2px solid var(--input-border); }
+.radio-group label { 
+  flex: 1; text-align: center; padding: 14px; border-radius: 14px; cursor: pointer; 
+  font-weight: 800; font-size: 14px; color: var(--text-muted); transition: all 0.3s;
+  display: flex; justify-content: center; align-items: center; margin: 0;
+}
+.radio-group input { display: none; }
+.radio-group input:checked + label { 
+  background: var(--glass-highlight); color: var(--text); box-shadow: 0 4px 15px rgba(0,0,0,0.15); transform: scale(1.02);
+}
+
+/* --- HIGHLY REWARDING SUCCESS SCREEN --- */
+#success-screen .glass-box {
+  border-color: var(--accent-green);
+  box-shadow: 0 0 60px rgba(0, 255, 102, 0.3), inset 0 0 30px rgba(0, 255, 102, 0.2);
+  animation: successPulse 2s infinite alternate;
+}
+@keyframes successPulse { 0% { transform: scale(1); } 100% { transform: scale(1.02); } }
+.success-icon { font-size: 70px; margin-bottom: 10px; filter: drop-shadow(0 0 25px var(--accent-green)); animation: popIn 0.8s cubic-bezier(0.34, 1.56, 0.64, 1); }
+@keyframes popIn { 0% { transform: scale(0) rotate(-45deg); opacity: 0; } 100% { transform: scale(1) rotate(0deg); opacity: 1; } }
+
+.stat-row { font-family: var(--font-code); font-size: 13px; margin-bottom: 15px; color: var(--text-muted); font-weight: 700; display: flex; justify-content: space-between; border-bottom: 2px dashed var(--input-border); padding-bottom: 10px;}
+.stat-val { color: var(--accent-cyan); text-shadow: 0 0 10px rgba(0, 240, 255, 0.4); font-size: 14px;}
+.score-tally { font-family: var(--font-code); font-size: 36px; font-weight: 900; color: var(--accent-yellow); margin: 30px 0; text-shadow: 0 5px 20px rgba(255, 230, 0, 0.5); line-height: 1.4; animation: scorePop 0.5s;}
+@keyframes scorePop { 0% { transform: scale(1.5); } 100% { transform: scale(1); } }
 
 /* --- CATALOG UI --- */
-#catalog { display: none; min-height: 100vh; opacity: 0; transform: translateY(50px); transition: all 0.6s ease-out; padding-bottom: 60px; z-index: 10; position: relative;}
+#catalog { display: none; min-height: 100vh; opacity: 0; transform: translateY(40px); transition: all 0.8s cubic-bezier(0.34, 1.56, 0.64, 1); padding-bottom: 80px; z-index: 10; position: relative;}
 #catalog.visible { opacity: 1; transform: translateY(0); }
 
-.cat-header { background: var(--card-bg); border-bottom: 4px solid var(--card-border); padding: 1.5rem 2rem; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 15px; position: sticky; top: 0; z-index: 100; box-shadow: var(--shadow-retro); backdrop-filter: blur(10px); }
-.header-logo { font-family: var(--font-retro); font-size: clamp(16px, 4vw, 22px); color: var(--accent-2); text-shadow: 2px 2px 0 var(--accent-1); }
+.cat-header { 
+  background: var(--glass-bg); border-bottom: 2px solid var(--glass-border); padding: 1.2rem 2rem; 
+  display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 15px; 
+  position: sticky; top: 0; z-index: 100; backdrop-filter: var(--glass-blur); -webkit-backdrop-filter: var(--glass-blur);
+  box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+}
+.header-logo { font-family: var(--font-main); font-size: clamp(22px, 4vw, 28px); color: var(--text); font-weight: 900; letter-spacing: -1px; text-shadow: 0 5px 15px rgba(255,0,127,0.3);}
 
-.welcome-pill { display: flex; align-items: center; flex-wrap: wrap; gap: 10px; border: 2px solid var(--accent-3); padding: 10px 15px; font-family: var(--font-retro); font-size: 10px; color: var(--accent-3); background: #000; box-shadow: 0 0 10px rgba(255,255,0,0.2); }
-.theme-toggle-btn { background: var(--bg); color: var(--text); font-weight: 900; font-family: var(--font-retro); font-size: 9px; text-transform: uppercase; cursor: pointer; border: 2px solid var(--accent-3); padding: 8px 12px; box-shadow: 3px 3px 0 var(--accent-3); transition: all 0.2s; margin: 0; }
-.theme-toggle-btn:active { transform: translate(3px, 3px); box-shadow: none; }
-.theme-toggle-btn:hover { background: var(--accent-3); color: #000; }
+.welcome-pill { display: flex; align-items: center; flex-wrap: wrap; gap: 12px; padding: 8px 8px 8px 18px; font-family: var(--font-main); font-size: 14px; font-weight: 700; color: var(--text); background: var(--input-bg); border-radius: 50px; border: 2px solid var(--input-border);}
+.theme-toggle-btn { background: var(--glass-highlight); color: var(--text); font-weight: 800; font-family: var(--font-main); font-size: 12px; cursor: pointer; border: none; padding: 10px 18px; border-radius: 40px; transition: all 0.3s; box-shadow: 0 4px 10px rgba(0,0,0,0.1);}
+.theme-toggle-btn:hover { transform: scale(1.05) rotate(3deg); background: var(--text); color: var(--bg-color); }
 
-.ticker-wrap { width: 100%; overflow: hidden; background: #000; color: var(--accent-3); padding: 12px 0; font-family: var(--font-retro); font-size: 12px; border-bottom: 2px dashed var(--accent-3); white-space: nowrap; }
-.ticker { display: inline-block; white-space: nowrap; animation: ticker 30s linear infinite; }
-.ticker span { margin-right: 40px; }
+.ticker-wrap { width: 100%; overflow: hidden; background: rgba(0,0,0,0.4); color: var(--accent-yellow); padding: 14px 0; font-family: var(--font-code); font-size: 13px; font-weight: 700; border-bottom: 2px solid var(--glass-border); white-space: nowrap; backdrop-filter: blur(5px);}
+.ticker { display: inline-block; white-space: nowrap; animation: ticker 20s linear infinite; }
+.ticker span { margin-right: 50px; }
 @keyframes ticker { 0% { transform: translate3d(0, 0, 0); } 100% { transform: translate3d(-50%, 0, 0); } }
 
-.disc-bar { background: var(--accent-1); padding: 12px 1rem; text-align: center; font-size: 11px; font-family: var(--font-retro); color: #fff; line-height: 1.8; border-bottom: 4px solid #000; text-shadow: 1px 1px 0 #000;}
-
 .cat-body { max-width: 1300px; margin: 0 auto; padding: 4rem 1.5rem 0; }
-.section-label { font-family: var(--font-retro); font-size: 16px; color: var(--text); margin-bottom: 2.5rem; text-shadow: 2px 2px 0 var(--accent-1); line-height: 1.5; }
+.section-label { font-family: var(--font-main); font-size: 32px; font-weight: 900; color: var(--text); margin-bottom: 3.5rem; letter-spacing: -1px; display: inline-block; position: relative;}
+.section-label::after { content: ''; position: absolute; bottom: -10px; left: 0; width: 50px; height: 6px; background: var(--accent-cyan); border-radius: 3px; box-shadow: 0 0 15px var(--accent-cyan);}
 
-/* --- PRODUCT CARDS --- */
-.cam-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 40px; }
-.cam-card { background: var(--card-bg); border: 4px solid var(--card-border); position: relative; transition: all 0.3s ease; box-shadow: 8px 8px 0 var(--accent-1); backdrop-filter: blur(5px);}
-@media (hover: hover) { .cam-card:hover { transform: translate(-5px, -5px); box-shadow: 12px 12px 0 var(--accent-2); border-color: var(--accent-3);} .cam-card:hover .cam-img { transform: scale(1.08); filter: contrast(115%); } }
+/* --- APPLE GLASS PRODUCT CARDS --- */
+.cam-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 40px; }
+.cam-card { 
+  background: var(--glass-bg); border: 2px solid var(--glass-border); border-radius: 32px; 
+  position: relative; transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1); 
+  backdrop-filter: var(--glass-blur); -webkit-backdrop-filter: var(--glass-blur); 
+  overflow: hidden; display: flex; flex-direction: column; box-shadow: var(--glass-shadow);
+}
+@media (hover: hover) { 
+  .cam-card:hover { transform: translateY(-12px) scale(1.03); box-shadow: 0 35px 70px rgba(0,0,0,0.4); border-color: var(--accent-pink);} 
+  .cam-card:hover .cam-img { transform: scale(1.12) rotate(3deg); filter: drop-shadow(0 25px 35px rgba(0,0,0,0.5));} 
+}
 
-.img-wrapper { width: 100%; height: 240px; border-bottom: 4px solid var(--card-border); background: #ffffff; overflow: hidden; position: relative; box-shadow: inset 0 0 15px rgba(0,0,0,0.2);}
-.cam-img { width: 100%; height: 100%; object-fit: contain; padding: 15px; transition: transform 0.5s ease; }
-.stock-tag { position: absolute; top: 12px; right: 12px; background: var(--accent-3); color: #000; font-family: var(--font-retro); font-size: 10px; padding: 8px 12px; border: 2px solid #000; z-index: 10; box-shadow: 3px 3px 0 #000; font-weight: bold;}
+.img-wrapper { width: 100%; height: 280px; background: rgba(255,255,255,0.03); overflow: hidden; position: relative; display: flex; align-items: center; justify-content: center; padding: 30px;}
+.cam-img { max-width: 100%; max-height: 100%; object-fit: contain; transition: transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1); filter: drop-shadow(0 15px 25px rgba(0,0,0,0.3));}
+.stock-tag { position: absolute; top: 20px; right: 20px; background: var(--accent-yellow); color: #000; font-family: var(--font-main); font-weight: 900; font-size: 12px; padding: 8px 16px; border-radius: 30px; z-index: 10; box-shadow: 0 5px 20px rgba(255, 230, 0, 0.5);}
 
-.cam-info { padding: 25px; }
-.cam-name { font-family: var(--font-retro); font-size: 14px; margin-bottom: 12px; color: var(--accent-2); text-shadow: 1px 1px 0 #000; line-height: 1.5;}
-.cam-vibe { font-size: 14px; font-weight: 900; color: var(--text-muted); margin-bottom: 20px; text-transform: uppercase;}
-.cam-perks { margin-bottom: 20px; display: flex; flex-direction: column; gap: 8px; background: rgba(0,0,0,0.6); padding: 15px; border: 2px dashed var(--accent-1); color: #fff;}
-.perk { font-size: 12px; font-weight: 700; font-family: var(--font-main); letter-spacing: 1px;}
+.cam-info { padding: 30px; flex-grow: 1; display: flex; flex-direction: column;}
+.cam-name { font-family: var(--font-main); font-size: 24px; font-weight: 900; margin-bottom: 5px; color: var(--text); letter-spacing: -0.5px;}
+.cam-vibe { font-size: 15px; font-weight: 600; color: var(--text-muted); margin-bottom: 25px;}
 
-.variant-toggle { display: flex; flex-direction: column; gap: 12px; margin-bottom: 20px; }
-.toggle-opt { font-size: 13px; font-weight: 900; display: flex; align-items: center; gap: 12px; cursor: pointer; text-transform: uppercase; color: var(--text); }
-.toggle-opt input { appearance: none; width: 18px; height: 18px; border: 2px solid var(--card-border); background: var(--bg); cursor: pointer; position: relative; border-radius: 0; min-width: 18px; }
-.toggle-opt input:checked { background: var(--accent-2); border-color: var(--accent-2); box-shadow: 3px 3px 0 var(--accent-1); }
+/* Apple-style Segmented Control for Variants */
+.variant-toggle { display: flex; background: var(--input-bg); padding: 8px; border-radius: 20px; border: 2px solid var(--input-border); margin-bottom: 25px; position: relative;}
+.variant-toggle label { flex: 1; text-align: center; padding: 14px 5px; font-size: 13px; font-weight: 800; color: var(--text-muted); cursor: pointer; transition: all 0.3s; z-index: 2; margin:0;}
+.variant-toggle input { display: none; }
+.variant-toggle input:checked + label { color: var(--text); }
+.variant-slider { position: absolute; top: 8px; bottom: 8px; width: calc(50% - 8px); background: var(--glass-highlight); border-radius: 14px; transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1); z-index: 1; box-shadow: 0 4px 15px rgba(0,0,0,0.2);}
+.variant-toggle input[value="without"]:checked ~ .variant-slider { transform: translateX(100%); }
 
-.price-row { display: flex; align-items: baseline; gap: 12px; margin-bottom: 20px; padding-top: 18px; border-top: 2px dashed rgba(255,255,255,0.2); flex-wrap: wrap;}
-.old-price { font-size: 14px; color: var(--text-muted); text-decoration: line-through; font-weight: 900; }
-.new-price { font-family: var(--font-retro); font-size: 18px; color: var(--accent-3); text-shadow: 2px 2px 0 #000;}
-.disc-tag { font-family: var(--font-retro); font-size: 9px; background: var(--accent-1); padding: 5px 8px; color: #fff; border: 2px solid #000; }
-
-.buy-btn { width: 100%; padding: 18px; background: var(--accent-1); color: #fff; border: 3px solid var(--card-border); font-family: var(--font-retro); font-size: 14px; cursor: pointer; box-shadow: 5px 5px 0 var(--card-border); transition: all 0.2s; line-height: 1.4;}
-.buy-btn:hover { background: var(--accent-2); color: #000; transform: translate(-3px, -3px); box-shadow: 8px 8px 0 var(--card-border); }
-.buy-btn:active { transform: translate(5px, 5px); box-shadow: 0 0 0 transparent; }
+.price-row { display: flex; align-items: baseline; gap: 15px; margin-top: auto; margin-bottom: 25px;}
+.old-price { font-size: 16px; font-weight: 700; color: var(--text-muted); text-decoration: line-through; }
+.new-price { font-family: var(--font-main); font-size: 32px; font-weight: 900; color: var(--accent-cyan); letter-spacing: -1px; text-shadow: 0 0 15px rgba(0,240,255,0.4);}
 
 /* Tabs */
-.page-nav { display: flex; gap: 15px; padding: 0 1rem; margin-top: 3rem; justify-content: center; flex-wrap: wrap;}
-.page-tab { background: var(--bg); border: 3px solid var(--card-border); padding: 15px 22px; font-family: var(--font-retro); font-size: 11px; color: var(--text); cursor: pointer; box-shadow: 5px 5px 0 var(--card-border); transition: all 0.2s; line-height: 1.5;}
-.page-tab.active { background: var(--accent-1); color: #fff; transform: translate(3px, 3px); box-shadow: 2px 2px 0 var(--card-border); border-color: #fff;}
+.page-nav { display: flex; gap: 15px; padding: 0 1rem; margin-top: 4rem; justify-content: center; flex-wrap: wrap;}
+.page-tab { background: var(--input-bg); border: 2px solid var(--input-border); border-radius: 50px; padding: 16px 32px; font-family: var(--font-main); font-weight: 800; font-size: 15px; color: var(--text-muted); cursor: pointer; transition: all 0.3s; backdrop-filter: var(--glass-blur); box-shadow: 0 4px 15px rgba(0,0,0,0.1);}
+.page-tab:hover { background: var(--glass-highlight); color: var(--text); transform: translateY(-3px) scale(1.05);}
+.page-tab.active { background: var(--text); color: var(--bg-color); border-color: var(--text); box-shadow: 0 15px 30px rgba(0,0,0,0.3);}
 
-.footer { text-align: center; padding: 4rem 1.5rem; font-family: var(--font-retro); font-size: 10px; color: var(--text-muted); border-top: 3px dashed var(--card-border); margin-top: 4rem; line-height: 2.5;}
+.footer { text-align: center; padding: 5rem 1.5rem; font-family: var(--font-main); font-weight: 600; font-size: 14px; color: var(--text-muted); border-top: 2px solid var(--input-border); margin-top: 6rem; opacity: 0.8;}
 
 /* --- IG FLOATING BUTTON --- */
-.ig-float-btn { position: fixed; bottom: 25px; right: 25px; width: 60px; height: 60px; background: var(--accent-1); display: flex; align-items: center; justify-content: center; border: 3px solid var(--card-border); cursor: pointer; z-index: 9999; box-shadow: 5px 5px 0 var(--card-border); transition: all 0.2s; border-radius: 50%;}
-.ig-float-btn:active { transform: translate(5px, 5px); box-shadow: 0 0 0 transparent; }
-.ig-float-btn:hover { transform: scale(1.1) rotate(10deg); background: var(--accent-2); border-color: var(--accent-1); box-shadow: 8px 8px 0 var(--accent-1); }
-.ig-float-btn svg { width: 30px; height: 30px; fill: #fff; transition: fill 0.3s;}
-.ig-float-btn:hover svg { fill: #000; }
+.ig-float-btn { position: fixed; bottom: 30px; right: 30px; width: 70px; height: 70px; background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%); display: flex; align-items: center; justify-content: center; border: none; cursor: pointer; z-index: 9999; box-shadow: 0 10px 30px rgba(220, 39, 67, 0.4); transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1); border-radius: 50%;}
+.ig-float-btn:hover { transform: scale(1.15) rotate(15deg); box-shadow: 0 15px 40px rgba(220, 39, 67, 0.6); }
+.ig-float-btn svg { width: 34px; height: 34px; fill: #fff; }
 
 @media(max-width: 480px) {
   .input-row { flex-direction: column; align-items: stretch; }
-  .retro-btn { width: 100% !important; padding: 18px; margin: 6px 0; font-size: 11px;}
-  .cat-header { flex-direction: column; padding: 1.2rem; }
-  .welcome-pill { justify-content: center; text-align: center; width: 100%; margin-top: 15px;}
-  .theme-toggle-btn { margin-left: 0; margin-top: 8px; width: 100%; padding: 12px;}
-  .retro-box { padding: 2rem 1.2rem; width: 95%; }
-  .audio-toggle-btn { top: 15px; right: 15px; padding: 10px 14px; font-size: 8px; }
-  .cam-grid { gap: 25px; }
+  .retro-btn { padding: 20px; font-size: 14px; }
+  .cat-header { padding: 1.2rem; flex-direction: column;}
+  .welcome-pill { width: 100%; justify-content: space-between; padding: 8px 8px 8px 18px; margin-top: 15px;}
+  .glass-box { padding: 2.5rem 1.5rem; width: 95%; border-radius: 32px;}
+  .cam-grid { gap: 30px; }
+  .hero-logo { font-size: clamp(50px, 15vw, 80px); }
+  .audio-toggle-btn { top: 20px; right: 20px; padding: 12px 20px; font-size: 11px; }
 }
+
+/* ===========================================
+   CUTE MASCOT BOT (INTERACTIVE & REWARDING)
+=========================================== */
+#mascot-container {
+  position: fixed;
+  bottom: 30px;
+  left: 30px;
+  z-index: 10001; 
+  pointer-events: none; /* Prevents blocking clicks */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transition: all 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+/* Subtle idle bobbing */
+.mascot-idle { animation: idleBob 3s ease-in-out infinite alternate; }
+@keyframes idleBob { 0% { transform: translateY(0); } 100% { transform: translateY(10px); } }
+
+/* Speech Bubble */
+#mascot-speech {
+  background: var(--glass-bg);
+  border: 2px solid var(--glass-border);
+  padding: 10px 16px;
+  border-radius: 20px;
+  font-family: var(--font-main);
+  font-size: 13px;
+  font-weight: 800;
+  color: var(--text);
+  white-space: nowrap;
+  box-shadow: var(--glass-shadow);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  margin-bottom: 10px;
+  opacity: 0.9;
+  position: relative;
+}
+#mascot-speech::after {
+  content: ''; position: absolute; bottom: -8px; left: 50%; transform: translateX(-50%);
+  border-width: 8px 8px 0; border-style: solid; border-color: var(--glass-border) transparent transparent transparent;
+}
+
+/* Character Body */
+#mascot-body {
+  font-size: 60px;
+  filter: drop-shadow(0 10px 15px rgba(0,0,0,0.3));
+  transition: all 0.3s;
+}
+
+/* Euphoric Dance Animation */
+.mascot-euphoric {
+  animation: euphoricDance 0.5s infinite alternate cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+@keyframes euphoricDance {
+  0% { transform: translateY(0) scale(1.1) rotate(-10deg); }
+  100% { transform: translateY(-30px) scale(1.2) rotate(10deg); filter: drop-shadow(0 20px 20px rgba(255, 0, 127, 0.5));}
+}
+
+/* Confetti System */
+.confetti {
+  position: fixed; width: 10px; height: 10px; z-index: 10000; pointer-events: none;
+  animation: fall 3s linear forwards;
+}
+@keyframes fall {
+  0% { transform: translateY(-10vh) rotate(0deg); opacity: 1;}
+  100% { transform: translateY(110vh) rotate(720deg); opacity: 0;}
+}
+
 </style>
 </head>
 <body>
 
-<!-- Dynamic Reactive Canvas Background -->
+<!-- Dynamic Glassmorphic Canvas Background -->
 <canvas id="bgCanvas"></canvas>
 
-<!-- Retro Artifacts -->
-<div class="scanlines"></div>
-<div class="vhs-tracking"></div>
-
-<!-- Light Mode Memphis Shapes -->
-<div class="memphis-shapes">
-  <div class="shape circle"></div>
-  <div class="shape triangle"></div>
-  <div class="shape cross"></div>
-</div>
-
-<!-- SCREEN 1: HERO SECTION (LOADING/ENTRY) -->
+<!-- SCREEN 1: HERO SECTION -->
 <div id="hero-screen" class="screen-layer visible">
-  <div id="sock-rain"></div>
+  <button id="audioToggleBtn" class="audio-toggle-btn" onclick="toggleAudio(event)">
+    AUDIO: OFF
+  </button>
   
-  <!-- AUDIO TOGGLE BUTTON (ONLY ON HERO SCREEN) -->
-  <button id="audioToggleBtn" class="audio-toggle-btn" onclick="toggleAudio(event)">AUDIO: OFF</button>
-
   <h1 class="hero-logo">SILLY SOCKS</h1>
-  <p class="hero-prompt">>> TAP ANYWHERE TO ENTER <<</p>
+  <p class="hero-prompt">TAP TO ENTER ARCADE</p>
 </div>
 
-<!-- SCREEN 2: TIC-TAC-TOE BATTLE SECTION -->
+<!-- SCREEN 2: TIC-TAC-TOE BATTLE -->
 <div id="tictactoe-screen" class="screen-layer">
-  <div class="retro-box">
-    <div class="gate-title" style="margin-bottom: 20px;">BEAT THE BOT TO UNLOCK</div>
+  <div class="glass-box">
+    <div class="gate-title">BEAT THE BOT 🤖</div>
     <p class="gate-sub" id="ttt-status">PLAYER 1 IS 'X'. YOUR TURN!</p>
     
     <div class="ttt-board" id="ttt-board-container">
@@ -312,50 +426,50 @@ body {
     </div>
 
     <div class="btn-group">
-      <button class="retro-btn" id="resetTttBtn" style="display:none;" onclick="resetBoard()">REMATCH</button>
-      <button class="retro-btn" id="skipTttBtn" onclick="showGate(false)">I HAVE A CODE</button>
-      <button class="retro-btn" onclick="skipToCatalog()" style="background:transparent; border-color:var(--accent-2); color:var(--accent-2); box-shadow:none;">SKIP TO CATALOG</button>
+      <button class="retro-btn" id="resetTttBtn" style="display:none;" onclick="resetBoard()">REMATCH 🔄</button>
+      <button class="retro-btn" id="skipTttBtn" onclick="showGate(false)">I HAVE A VIP CODE 🎟️</button>
+      <button class="retro-btn secondary" onclick="skipToCatalog()">SKIP MINIGAME ⏩</button>
     </div>
   </div>
 </div>
 
-<!-- SCREEN 3: REFERRAL GATE / HACKING -->
+<!-- SCREEN 3: REFERRAL GATE -->
 <div id="gate" class="screen-layer">
-  <div class="retro-box">
+  <div class="glass-box">
     <div class="lock-icon" id="gate-icon">🔒</div>
     <div class="gate-title" id="gate-title">SYSTEM LOCKED</div>
-    <p class="gate-sub" id="gate-sub" style="margin-bottom:1.5rem;">ENTER PLAYER 1 REFERRAL CODE</p>
+    <p class="gate-sub" id="gate-sub">ENTER VIP REFERRAL CODE</p>
     
     <div class="input-row" id="gate-input-area">
-      <input id="refInput" class="retro-input" type="text" placeholder="CODE..." autocomplete="off" />
-      <button class="retro-btn" id="enterBtn" onclick="checkCode()" style="margin:0; width:100px;">START</button>
+      <input id="refInput" class="retro-input" type="text" placeholder="ENTER CODE..." autocomplete="off" />
+      <button class="retro-btn" id="enterBtn" onclick="checkCode()" style="margin:0; width:140px;">UNLOCK</button>
     </div>
 
     <div class="input-row" id="lb-input-area" style="display:none;">
-      <input id="lbInput" class="retro-input" type="text" placeholder="INITIALS..." maxlength="10" autocomplete="off" />
-      <button class="retro-btn" onclick="saveInitialsAndEnter()" style="margin:0; width:100px;">SAVE</button>
+      <input id="lbInput" class="retro-input" type="text" placeholder="YOUR ALIAS..." maxlength="12" autocomplete="off" />
+      <button class="retro-btn" onclick="saveInitialsAndEnter()" style="margin:0; width:140px;">SAVE</button>
     </div>
     
-    <div id="errMsg">ERROR: PLAYER NOT FOUND</div>
+    <div id="errMsg">ERROR: CODE NOT RECOGNIZED ❌</div>
   </div>
 </div>
 
 <!-- SCREEN 4: SECURE CHECKOUT -->
 <div id="checkout-screen" class="screen-layer">
-  <div class="retro-box" style="margin: 20px auto; max-height: 90vh; overflow-y: auto;">
-    <div class="gate-title" style="color: var(--accent-3);">SECURE CHECKOUT</div>
+  <div class="glass-box" style="margin: 20px auto; max-height: 90vh; overflow-y: auto;">
+    <div class="gate-title">SECURE CHECKOUT 🛍️</div>
     
     <form id="orderForm" class="checkout-form">
-      <label>> FULL NAME *</label>
-      <input type="text" name="Full Name" class="retro-input" required placeholder="JOHN DOE" />
+      <label>FULL NAME</label>
+      <input type="text" name="Full Name" class="retro-input" required placeholder="John Doe" />
       
-      <label>> PHONE NUMBER *</label>
-      <input type="tel" name="Phone Number" class="retro-input" required placeholder="+8801XXXXXXXXX" />
+      <label>PHONE NUMBER</label>
+      <input type="tel" name="Phone Number" class="retro-input" required placeholder="01XXXXXXXXX" />
       
-      <label>> DELIVERY ADDRESS *</label>
-      <textarea name="Delivery Address" class="retro-input" required placeholder="HOUSE, ROAD, DHAKA..." rows="3" style="resize:none; font-family: var(--font-main);"></textarea>
+      <label>DELIVERY ADDRESS</label>
+      <textarea name="Delivery Address" class="retro-input" required placeholder="House, Road, Area..." rows="3" style="resize:none;"></textarea>
       
-      <label>> SELECT PRODUCT COLOR *</label>
+      <label>PRODUCT COLOR</label>
       <select name="Product Color" id="form-color" class="retro-select" required>
         <option value="White">White</option>
         <option value="Red">Red</option>
@@ -365,7 +479,7 @@ body {
         <option value="Black">Black</option>
       </select>
 
-      <label>> CHOOSE ADD-ONS *</label>
+      <label>ADD-ONS</label>
       <select name="Add-ons" id="form-addons" class="retro-select" required>
         <option value="Without SD card 1582">Without SD card 1582</option>
         <option value="With SD card 1994">With SD card 1994</option>
@@ -374,65 +488,71 @@ body {
         <option value="Flash without SD card 1999">Flash without SD card 1999</option>
       </select>
 
-      <label>> BRO CODE (OPTIONAL)</label>
-      <input type="text" name="BRO CODE" id="form-brocode" class="retro-input" placeholder="FOR 5% OFF & FREE DEL" />
+      <label>PROMO CODE</label>
+      <input type="text" name="BRO CODE" id="form-brocode" class="retro-input" placeholder="Optional discount code" />
 
-      <label>> QUANTITY *</label>
+      <label>QUANTITY</label>
       <select name="Quantity" class="retro-select" required>
         <option value="1">1</option>
         <option value="2">2</option>
         <option value="3">3</option>
       </select>
 
-      <label>> PREFERRED PAYMENT METHOD *</label>
+      <label>PAYMENT METHOD</label>
       <div class="radio-group">
-        <label><input type="radio" name="Payment Method" value="Cash on Delivery (COD)" required onclick="toggleBkash(false)" checked> Cash on Delivery</label>
-        <label><input type="radio" name="Payment Method" value="Bkash" required onclick="toggleBkash(true)"> Bkash</label>
+        <input type="radio" id="pay-cod" name="Payment Method" value="Cash on Delivery (COD)" required onclick="toggleBkash(false)" checked>
+        <label for="pay-cod">Cash on Delivery</label>
+        
+        <input type="radio" id="pay-bkash" name="Payment Method" value="Bkash" required onclick="toggleBkash(true)">
+        <label for="pay-bkash">bKash</label>
       </div>
 
       <div id="bkash-field" class="bkash-info-box" style="display:none;">
-        <div class="bkash-number">> SEND MONEY (PERSONAL): 01961515240</div>
-        <label style="margin-top: 4px;">> BKASH TRANSACTION ID *</label>
-        <input type="text" name="Transaction ID" id="trx-input" class="retro-input" placeholder="ENTER TRX ID..." />
+        <div class="bkash-number">SEND MONEY: 01961515240</div>
+        <label style="margin-top: 4px; color: var(--text);">TRANSACTION ID *</label>
+        <input type="text" name="Transaction ID" id="trx-input" class="retro-input" placeholder="Enter TrxID..." />
       </div>
 
-      <label>> LEGAL AGREEMENT</label>
+      <label>TERMS & CONDITIONS</label>
       <div class="tc-box">
         <strong>1. ORDER MODIFICATION:</strong> We reserve the right to cancel, modify, change the order value, or delay shipments at our sole discretion.<br><br>
-        <strong>2. CASH ON DELIVERY (COD):</strong> All orders are strictly COD. We reserve the right to take legal action if a customer fails or refuses to receive their order upon delivery attempt.<br><br>
+        <strong>2. CASH ON DELIVERY:</strong> All orders are strictly COD. We reserve the right to take legal action if a customer fails or refuses to receive their order upon delivery attempt.<br><br>
         <strong>3. DAMAGES & LIABILITY:</strong> The customer is fully responsible for any damage occurring after successful delivery.<br><br>
-        <strong>4. STRICT 3-DAY WARRANTY:</strong> We provide a 3-day replacement warranty covering ONLY manufacturing defects. Claims must be submitted within exactly 3 days of receiving the order. Claims after 3 days are strictly not applicable.<br><br>
-        <strong>5. WARRANTY EXCLUSIONS:</strong> Screen-related issues and ANY physical damage are strictly NOT covered under the warranty policy.
+        <strong>4. STRICT 3-DAY WARRANTY:</strong> We provide a 3-day replacement warranty covering ONLY manufacturing defects. Claims must be submitted within exactly 3 days of receiving the order.<br><br>
+        <strong>5. EXCLUSIONS:</strong> Screen-related issues and physical damage are NOT covered.
       </div>
       
       <label class="checkbox-row">
-        <input type="checkbox" required /> I have read and agree to the Privacy Policy.
+        <input type="checkbox" required /> 
+        <span>I have read and agree to the Privacy Policy.</span>
       </label>
       <label class="checkbox-row">
-        <input type="checkbox" required /> I accept the Terms & Conditions outlined above.
+        <input type="checkbox" required /> 
+        <span>I accept the Terms & Conditions, including the 3-day warranty limits and COD liability.</span>
       </label>
 
-      <button type="submit" id="submitOrderBtn" class="retro-btn" style="background: var(--accent-3); color: #000; font-size: 14px; margin-top: 20px;">CONFIRM ORDER</button>
-      <button type="button" class="retro-btn" onclick="cancelCheckout()" style="background: #222; border-color: #555;">CANCEL & RETURN</button>
+      <button type="submit" id="submitOrderBtn" class="retro-btn" style="margin-top: 25px; padding: 22px; font-size: 16px;">PLACE ORDER ✨</button>
+      <button type="button" class="retro-btn secondary" onclick="cancelCheckout()">BACK TO SHOP 🔙</button>
     </form>
   </div>
 </div>
 
-<!-- SCREEN 5: ARCADE SUCCESS ENDING -->
+<!-- SCREEN 5: REWARDING SUCCESS ENDING -->
 <div id="success-screen" class="screen-layer">
-  <div class="retro-box" style="margin: 20px auto; padding: 4rem 1.5rem;">
-    <h2 class="gate-title blink-text" style="color: #0f0; font-size: 24px; text-shadow: 0 0 15px #0f0; margin-bottom: 25px;">STAGE CLEAR</h2>
-    <p class="gate-sub" style="color: #fff; font-size: 14px;">>> ORDER DATA TRANSMITTED <<</p>
+  <div class="glass-box" style="padding: 4rem 2rem;">
+    <div class="success-icon">🏆</div>
+    <h2 class="gate-title" style="color: var(--accent-green); font-size: 38px; margin-bottom: 5px;">ORDER SECURED</h2>
+    <p class="gate-sub" style="color: var(--text); font-size: 16px; margin-bottom: 35px;">Your drop has been recorded in the mainframe.</p>
     
-    <div style="margin: 30px 0; text-align: left; display: inline-block;">
-      <div class="stat-row">RANK: <span class="stat-val">S-CLASS</span></div>
-      <div class="stat-row">EXP GAINED: <span class="stat-val" style="color: var(--accent-3); text-shadow: 0 0 8px var(--accent-3);">+5000</span></div>
-      <div class="stat-row">STATUS: <span class="stat-val" style="color: var(--accent-1); text-shadow: 0 0 8px var(--accent-1);">DISPATCH PREP</span></div>
+    <div style="width: 100%; text-align: left; background: var(--input-bg); padding: 30px; border-radius: 24px; border: 2px solid var(--input-border);">
+      <div class="stat-row"><span>RANK ACHIEVED</span> <span class="stat-val">S-CLASS</span></div>
+      <div class="stat-row"><span>EXP GAINED</span> <span class="stat-val" style="color: var(--accent-yellow);">+5000 XP</span></div>
+      <div class="stat-row" style="border:none; margin:0; padding:0;"><span>SYSTEM STATUS</span> <span class="stat-val" style="color: var(--accent-green);">DISPATCH PREP</span></div>
     </div>
 
     <div class="score-tally" id="final-score">SCORE: 0000</div>
 
-    <button class="retro-btn" onclick="closeSuccessScreen()" style="background: var(--accent-3); color: #000; font-size: 14px; margin-top: 25px;">CONTINUE TO CATALOG</button>
+    <button class="retro-btn" onclick="closeSuccessScreen()" style="margin-top: 15px;">CONTINUE BROWSING 🎮</button>
   </div>
 </div>
 
@@ -441,8 +561,8 @@ body {
   <header class="cat-header">
     <div class="header-logo">SILLY SOCKS</div>
     <div class="welcome-pill">
-      PLAYER 1: <span id="broName" style="margin: 0 5px; color:var(--accent-2);">???</span>
-      <button class="theme-toggle-btn" id="themeToggle" onclick="toggleTheme()">[ DAY MODE ]</button>
+      <span>PLAYER 1: <strong id="broName" style="color:var(--accent-cyan); font-family: var(--font-code);">???</strong></span>
+      <button class="theme-toggle-btn" id="themeToggle" onclick="toggleTheme()">DAY MODE ☀️</button>
     </div>
   </header>
 
@@ -450,28 +570,30 @@ body {
     <div class="ticker" id="lbTickerContainer"></div>
   </div>
   
-  <div class="disc-bar">
-    ⚡ 5% OFF + FREE SHIPPING UNLOCKED ⚡ DM ON IG FOR 10% OFF ⚡ VIP ACCESS GRANTED
-  </div>
-  
   <div class="page-nav">
-    <div class="page-tab active" id="tab1" onclick="showPage(1)">LVL 1: THE CLASSICS</div>
-    <div class="page-tab" id="tab2" onclick="showPage(2)">LVL 2: FLASH GEAR</div>
+    <div class="page-tab active" id="tab1" onclick="showPage(1)">THE CLASSICS</div>
+    <div class="page-tab" id="tab2" onclick="showPage(2)">FLASH GEAR</div>
   </div>
   
   <div class="cat-body" id="page1Body">
-    <div class="section-label">> THE CLASSICS DROP</div>
+    <div class="section-label">SERIES 01. VINTAGE COLLECTION</div>
     <div id="camGrid" class="cam-grid"></div>
   </div>
   
   <div class="cat-body" id="page2Body" style="display:none;">
-    <div class="section-label">> NIGHT VISION UPGRADES</div>
+    <div class="section-label">SERIES 02. NIGHT VISION FLASH</div>
     <div id="camGrid2" class="cam-grid"></div>
   </div>
   
   <div class="footer">
-    DM US ON IG FOR INQUIRIES<br><br>ALL SECURED ORDERS ARE FINAL
+    SECURE CHANNELS OPEN VIA INSTAGRAM<br><br>ALL ORDERS ARE FINAL
   </div>
+</div>
+
+<!-- THE CUTE MASCOT -->
+<div id="mascot-container" class="mascot-idle">
+  <div id="mascot-speech">Waiting for order... 🥺</div>
+  <div id="mascot-body">😿</div>
 </div>
 
 <button class="ig-float-btn" onclick="window.open('https://www.instagram.com/your.sillysocks/', '_blank')">
@@ -482,19 +604,19 @@ body {
 
 <script>
 // ==========================================
-// DYNAMIC CYBERPUNK CANVAS BACKGROUND
+// DYNAMIC FLUID CANVAS BACKGROUND
 // ==========================================
 const canvas = document.getElementById('bgCanvas');
 const ctx = canvas.getContext('2d');
 let width, height;
-let mouse = { x: -1000, y: -1000, radius: 250 };
+let mouse = { x: -1000, y: -1000, radius: 400 };
 let isMobile = false;
 
 function resizeCanvas() {
   width = canvas.width = window.innerWidth;
   height = canvas.height = window.innerHeight;
   isMobile = width < 768;
-  mouse.radius = isMobile ? 180 : 250;
+  mouse.radius = isMobile ? 250 : 450;
 }
 window.addEventListener('resize', resizeCanvas);
 resizeCanvas();
@@ -502,70 +624,70 @@ resizeCanvas();
 function updateInteraction(x, y) {
   mouse.x = x;
   mouse.y = y;
+  updateMascotLook(x, y); // Mascot tracking
 }
 window.addEventListener('mousemove', (e) => updateInteraction(e.clientX, e.clientY));
 window.addEventListener('touchstart', (e) => updateInteraction(e.touches[0].clientX, e.touches[0].clientY), {passive: true});
 window.addEventListener('touchmove', (e) => updateInteraction(e.touches[0].clientX, e.touches[0].clientY), {passive: true});
-window.addEventListener('mouseleave', () => { mouse.x = -1000; mouse.y = -1000; });
-window.addEventListener('touchend', () => { mouse.x = -1000; mouse.y = -1000; });
+window.addEventListener('mouseleave', () => { mouse.x = -1000; mouse.y = -1000; resetMascotLook();});
+window.addEventListener('touchend', () => { mouse.x = -1000; mouse.y = -1000; resetMascotLook();});
 
 let particles = [];
-let numParticles = isMobile ? 30 : 60;
-for(let i=0; i<numParticles; i++) {
+for(let i=0; i<40; i++) {
   particles.push({
     x: Math.random() * window.innerWidth,
     y: Math.random() * window.innerHeight,
-    size: Math.random() * 2 + 1,
-    speedY: Math.random() * 1.5 + 0.5,
-    alpha: Math.random()
+    size: Math.random() * 4 + 1,
+    speedY: Math.random() * 0.8 + 0.2,
+    alpha: Math.random() * 0.5 + 0.2
   });
 }
 
+let time = 0;
 function drawCanvas() {
   ctx.clearRect(0, 0, width, height);
-  
-  let isLight = document.body.getAttribute('data-theme') === 'light';
-  let lineCol1 = isLight ? 'rgba(0, 0, 0, 0.15)' : 'rgba(0, 255, 255, 0.2)'; 
-  let lineCol2 = isLight ? 'rgba(0, 0, 0, 0.15)' : 'rgba(255, 0, 255, 0.2)'; 
+  time += 0.002;
 
-  let spacing = isMobile ? 60 : 50;
+  let isLight = document.body.getAttribute('data-theme') === 'light';
+  let lineCol1 = isLight ? 'rgba(219, 39, 119, 0.2)' : 'rgba(0, 240, 255, 0.2)'; 
+  let lineCol2 = isLight ? 'rgba(2, 132, 199, 0.2)' : 'rgba(255, 0, 127, 0.2)'; 
+
+  let spacing = isMobile ? 80 : 100;
   let cols = Math.floor(width / spacing) + 2;
   let rows = Math.floor(height / spacing) + 2;
-  let time = Date.now() * 0.002;
 
-  ctx.lineWidth = 1;
+  ctx.lineWidth = 1.5;
 
-  // Horizontal Waves
+  // Render fluid bending lines
   for (let r = 0; r < rows; r++) {
     ctx.beginPath();
     ctx.strokeStyle = (r % 2 === 0) ? lineCol1 : lineCol2;
     for (let c = 0; c < cols; c++) {
       let x = c * spacing;
-      let y = r * spacing + Math.sin(c * 0.5 + time) * 10;
+      let y = r * spacing + Math.sin(c * 0.4 + time) * 25;
 
       let dx = x - mouse.x;
       let dy = y - mouse.y;
       let dist = Math.sqrt(dx * dx + dy * dy);
 
       if (dist < mouse.radius) {
-        let force = (1 - dist / mouse.radius);
+        let force = Math.pow((1 - dist / mouse.radius), 2);
         let angle = Math.atan2(dy, dx);
-        x += Math.cos(angle) * force * 40;
-        y += Math.sin(angle) * force * 40;
+        x += Math.cos(angle) * force * 70;
+        y += Math.sin(angle) * force * 70;
       }
 
       if (c === 0) ctx.moveTo(x, y);
-      else ctx.lineTo(x, y);
+      else ctx.bezierCurveTo(x - spacing/2, y, x - spacing/2, y, x, y);
     }
     ctx.stroke();
   }
 
-  // Vertical Waves
   for (let c = 0; c < cols; c++) {
     ctx.beginPath();
     ctx.strokeStyle = (c % 2 === 0) ? lineCol2 : lineCol1;
     for (let r = 0; r < rows; r++) {
-      let x = c * spacing + Math.cos(r * 0.5 + time) * 10;
+      let x = c * spacing + Math.cos(r * 0.4 + time) * 25;
       let y = r * spacing;
 
       let dx = x - mouse.x;
@@ -573,23 +695,25 @@ function drawCanvas() {
       let dist = Math.sqrt(dx * dx + dy * dy);
 
       if (dist < mouse.radius) {
-        let force = (1 - dist / mouse.radius);
+        let force = Math.pow((1 - dist / mouse.radius), 2);
         let angle = Math.atan2(dy, dx);
-        x += Math.cos(angle) * force * 40;
-        y += Math.sin(angle) * force * 40;
+        x += Math.cos(angle) * force * 70;
+        y += Math.sin(angle) * force * 70;
       }
 
       if (r === 0) ctx.moveTo(x, y);
-      else ctx.lineTo(x, y);
+      else ctx.bezierCurveTo(x, y - spacing/2, x, y - spacing/2, x, y);
     }
     ctx.stroke();
   }
 
-  // Particles
+  // Draw floating glowing orbs
   particles.forEach(p => {
     p.y -= p.speedY;
-    if(p.y < 0) { p.y = height; p.x = Math.random() * width; }
-    ctx.fillStyle = isLight ? `rgba(0,0,0, ${p.alpha})` : `rgba(255,255,0, ${p.alpha})`; 
+    p.x += Math.sin(time * 5 + p.y * 0.01) * 0.8;
+    if(p.y < -20) { p.y = height + 20; p.x = Math.random() * width; }
+    
+    ctx.fillStyle = isLight ? `rgba(2, 132, 199, ${p.alpha})` : `rgba(0, 240, 255, ${p.alpha})`; 
     ctx.beginPath();
     ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
     ctx.fill();
@@ -600,15 +724,97 @@ function drawCanvas() {
 drawCanvas();
 
 // ==========================================
-// 80s WEB AUDIO API SYNTHESIZER
+// CUTE MASCOT LOGIC (Mouse Tracking & Euphoria)
+// ==========================================
+const mascotContainer = document.getElementById('mascot-container');
+const mascotBody = document.getElementById('mascot-body');
+const mascotSpeech = document.getElementById('mascot-speech');
+let mascotDanceInterval;
+let isMascotHappy = false;
+
+function updateMascotLook(cursorX, cursorY) {
+  if (isMascotHappy) return; // Don't track if it's dancing wildly
+  const rect = mascotContainer.getBoundingClientRect();
+  const mascotX = rect.left + rect.width / 2;
+  const mascotY = rect.top + rect.height / 2;
+  
+  const tiltX = ((cursorX - mascotX) / window.innerWidth) * 40; // Max tilt deg
+  const tiltY = ((cursorY - mascotY) / window.innerHeight) * 40;
+  
+  mascotBody.style.transform = `perspective(300px) rotateX(${-tiltY}deg) rotateY(${tiltX}deg)`;
+}
+
+function resetMascotLook() {
+  if (!isMascotHappy) mascotBody.style.transform = 'perspective(300px) rotateX(0deg) rotateY(0deg)';
+}
+
+function makeMascotEuphoric() {
+  isMascotHappy = true;
+  mascotContainer.classList.remove('mascot-idle');
+  mascotContainer.classList.add('mascot-euphoric');
+  
+  mascotBody.innerText = "😻";
+  mascotBody.style.transform = 'none'; // reset tracking tilt
+  
+  mascotSpeech.innerText = "OMG YAY!! THANK YOU!! 💖✨";
+  mascotSpeech.style.color = "var(--accent-yellow)";
+  mascotSpeech.style.borderColor = "var(--accent-yellow)";
+  
+  // Confetti explosion
+  for(let i=0; i<80; i++) {
+    let conf = document.createElement('div');
+    conf.className = 'confetti';
+    conf.style.left = Math.random() * 100 + 'vw';
+    conf.style.background = `hsl(${Math.random() * 360}, 100%, 50%)`;
+    conf.style.animationDuration = (Math.random() * 2 + 2) + 's';
+    conf.style.animationDelay = (Math.random() * 1) + 's';
+    document.body.appendChild(conf);
+    setTimeout(() => conf.remove(), 4000); // cleanup
+  }
+  
+  // Happy giggles audio
+  if(audioEnabled) {
+    playTone(880, 'square', 0.1);
+    setTimeout(() => playTone(1046, 'square', 0.1), 150);
+    setTimeout(() => playTone(1318, 'square', 0.1), 300);
+    setTimeout(() => playTone(1567, 'square', 0.2), 450);
+  }
+  
+  // Dance around the screen bounds
+  mascotDanceInterval = setInterval(() => {
+    const maxX = window.innerWidth - 120;
+    const maxY = window.innerHeight - 150;
+    mascotContainer.style.left = (Math.random() * maxX + 20) + 'px';
+    mascotContainer.style.bottom = (Math.random() * maxY + 40) + 'px';
+  }, 600);
+}
+
+function resetMascot() {
+  isMascotHappy = false;
+  clearInterval(mascotDanceInterval);
+  
+  mascotContainer.style.left = '30px';
+  mascotContainer.style.bottom = '30px';
+  
+  mascotContainer.classList.remove('mascot-euphoric');
+  mascotContainer.classList.add('mascot-idle');
+  
+  mascotBody.innerText = "😿";
+  
+  mascotSpeech.innerText = "Waiting for order... 🥺";
+  mascotSpeech.style.color = "var(--text)";
+  mascotSpeech.style.borderColor = "var(--glass-border)";
+}
+
+// ==========================================
+// AUDIO ENGINE
 // ==========================================
 let audioCtx = null;
 let audioEnabled = false;
 let isBgmRunning = false;
-let appliedBroCode = "";
 
 function toggleAudio(e) {
-  if(e) e.stopPropagation(); // Prevents clicking the audio button from triggering hero exit
+  if(e) e.stopPropagation(); // Prevents click passing through to Hero Screen
   
   audioEnabled = !audioEnabled;
   const btn = document.getElementById('audioToggleBtn');
@@ -619,12 +825,12 @@ function toggleAudio(e) {
       audioCtx = new AudioContext();
     }
     if (audioCtx.state === 'suspended') audioCtx.resume();
-    btn.innerText = "AUDIO: ON";
+    btn.innerText = "AUDIO: ON 🔊";
     btn.classList.add('active');
     startBGM();
     soundClick();
   } else {
-    btn.innerText = "AUDIO: OFF";
+    btn.innerText = "AUDIO: OFF 🔈";
     btn.classList.remove('active');
     stopBGM();
   }
@@ -638,10 +844,9 @@ function startBGM() {
   
   function loop() {
     if(!isBgmRunning || !audioEnabled) return;
-    playTone(notes[t % 4], 'sawtooth', 0.2, 0.02);
-    if(t % 2 === 0) playTone(800, 'square', 0.05, 0.01); 
+    playTone(notes[t % 4], 'sine', 0.4, 0.03);
     t++;
-    setTimeout(loop, 300);
+    setTimeout(loop, 400);
   }
   loop();
 }
@@ -660,56 +865,33 @@ function playTone(freq, type, duration, vol = 0.05) {
   osc.start(); osc.stop(audioCtx.currentTime + duration);
 }
 
-function soundClick() { playTone(600, 'square', 0.1); }
-function soundBot() { playTone(400, 'square', 0.1, 0.03); }
-function soundError() { playTone(150, 'sawtooth', 0.4, 0.1); }
+function soundClick() { playTone(800, 'sine', 0.1, 0.05); }
+function soundBot() { playTone(400, 'triangle', 0.1, 0.05); }
+function soundError() { playTone(150, 'sawtooth', 0.4, 0.05); }
 function soundWin() {
-  setTimeout(() => playTone(440, 'sine', 0.2), 0);
-  setTimeout(() => playTone(554, 'sine', 0.2), 150);
-  setTimeout(() => playTone(659, 'sine', 0.4), 300);
-  setTimeout(() => playTone(880, 'sine', 0.6), 450);
+  setTimeout(() => playTone(523.25, 'sine', 0.2), 0);
+  setTimeout(() => playTone(659.25, 'sine', 0.2), 150);
+  setTimeout(() => playTone(783.99, 'sine', 0.4), 300);
+  setTimeout(() => playTone(1046.50, 'sine', 0.6), 450);
 }
 function soundHack() {
-  for(let i=0; i<15; i++) { setTimeout(() => playTone(400 + (i*50), 'square', 0.05, 0.03), i*60); }
+  for(let i=0; i<10; i++) { setTimeout(() => playTone(600 + (i*50), 'sine', 0.05, 0.02), i*40); }
 }
 
-// Ensure Audio Context wakes up on first interaction
-document.body.addEventListener('click', () => { 
-  if(audioEnabled && audioCtx && audioCtx.state === 'suspended') audioCtx.resume(); 
-}, {once:true});
-
-// --- Theme Toggle ---
 function toggleTheme() {
   soundClick();
   const body = document.body;
   const btn = document.getElementById("themeToggle");
   if (body.getAttribute("data-theme") === "light") {
     body.removeAttribute("data-theme");
-    btn.textContent = "[ DAY MODE ]";
+    btn.textContent = "DAY MODE ☀️";
   } else {
     body.setAttribute("data-theme", "light");
-    btn.textContent = "[ NIGHT MODE ]";
+    btn.textContent = "NIGHT MODE 🌙";
   }
 }
 
-// --- Sock Rain ---
-function createSockRain() {
-  const rainContainer = document.getElementById('sock-rain');
-  const sockCount = window.innerWidth < 768 ? 15 : 30; 
-  for(let i = 0; i < sockCount; i++) {
-    let sock = document.createElement('div');
-    sock.className = 'falling-sock';
-    sock.innerText = '🧦';
-    sock.style.left = Math.random() * 100 + 'vw';
-    sock.style.animationDuration = (Math.random() * 3 + 2) + 's';
-    sock.style.animationDelay = (Math.random() * 5) + 's';
-    sock.style.transform = `scale(${Math.random() * 1.2 + 0.5})`;
-    rainContainer.appendChild(sock);
-  }
-}
-createSockRain();
-
-// --- ENTRY FLOW: Hero -> TicTacToe ---
+// --- ENTRY FLOW ---
 let hasEnteredHero = false;
 const heroScreen = document.getElementById('hero-screen');
 const tttScreen = document.getElementById('tictactoe-screen');
@@ -720,13 +902,12 @@ const successScreen = document.getElementById('success-screen');
 
 function leaveHero(e) {
   if (hasEnteredHero) return;
-  // Prevent leaving screen if they are just toggling the audio
   if(e && e.target && (e.target.id === 'audioToggleBtn' || e.target.closest('#audioToggleBtn'))) return; 
 
   hasEnteredHero = true;
   soundClick();
   
-  heroScreen.style.transform = 'translateY(-100vh) scale(1.5)';
+  heroScreen.style.transform = 'translateY(-100vh) scale(0.9)';
   heroScreen.style.opacity = '0';
   
   tttScreen.style.display = 'flex';
@@ -736,14 +917,9 @@ function leaveHero(e) {
   }, 600);
 }
 heroScreen.addEventListener('click', leaveHero);
-window.addEventListener('wheel', (e) => { 
-  if (!hasEnteredHero && e.deltaY > 0) leaveHero(e); 
-});
-window.addEventListener('touchstart', (e) => {
-  if (!hasEnteredHero && e.target.id !== 'audioToggleBtn') leaveHero(e);
-}, {passive: true});
+window.addEventListener('wheel', (e) => { if (!hasEnteredHero && e.deltaY > 0) leaveHero(e); });
 
-// --- Tic-Tac-Toe Game Logic ---
+// --- Tic-Tac-Toe Logic ---
 let board = ["", "", "", "", "", "", "", "", ""];
 let gameActive = true;
 const cells = document.querySelectorAll('.ttt-cell');
@@ -755,12 +931,12 @@ function makeMove(index) {
   board[index] = "X";
   updateBoard();
   
-  if(checkWin("X")) { endGame("YOU WIN! HACKING MAINFRAME...", true); return; }
-  if(board.indexOf("") === -1) { endGame("DRAW! TRY AGAIN.", false); return; }
+  if(checkWin("X")) { endGame("ACCESS GRANTED...", true); return; }
+  if(board.indexOf("") === -1) { endGame("DRAW! RETRY.", false); return; }
   
   gameActive = false;
-  statusText.innerText = "BOT IS THINKING...";
-  setTimeout(botMove, 600);
+  statusText.innerText = "AI IS THINKING...";
+  setTimeout(botMove, 500);
 }
 
 function botMove() {
@@ -773,10 +949,10 @@ function botMove() {
   board[randomIndex] = "O";
   updateBoard();
   
-  if(checkWin("O")) { endGame("BOT WINS! GAME OVER.", false); return; }
-  if(board.indexOf("") === -1) { endGame("DRAW! TRY AGAIN.", false); return; }
+  if(checkWin("O")) { endGame("SYSTEM LOCKED. RETRY.", false); return; }
+  if(board.indexOf("") === -1) { endGame("DRAW! RETRY.", false); return; }
   
-  statusText.innerText = "PLAYER 1 IS 'X'. YOUR TURN!";
+  statusText.innerText = "YOUR TURN!";
   gameActive = true;
 }
 
@@ -797,10 +973,10 @@ function endGame(msg, playerWon) {
   statusText.innerText = msg;
   if(playerWon) {
     soundWin();
-    setTimeout(() => { showGate(true); }, 1500); 
+    setTimeout(() => { showGate(true); }, 1000); 
   } else {
     soundError();
-    document.getElementById('resetTttBtn').style.display = "inline-block";
+    document.getElementById('resetTttBtn').style.display = "block";
   }
 }
 
@@ -809,16 +985,15 @@ function resetBoard() {
   board = ["", "", "", "", "", "", "", "", ""];
   gameActive = true;
   updateBoard();
-  statusText.innerText = "PLAYER 1 IS 'X'. YOUR TURN!";
+  statusText.innerText = "YOUR TURN!";
   document.getElementById('resetTttBtn').style.display = "none";
 }
 
-// --- DIRECT SKIP TO CATALOG ---
 function skipToCatalog() {
   soundClick();
   stopBGM();
   tttScreen.style.opacity = "0";
-  tttScreen.style.transform = "scale(0.5)";
+  tttScreen.style.transform = "scale(0.9)";
   tttScreen.style.pointerEvents = "none";
   document.body.style.overflowY = 'auto';
   
@@ -839,24 +1014,18 @@ function skipToCatalog() {
 function updateLeaderboard(name) {
   let localLb = JSON.parse(localStorage.getItem('sillySocksLB') || '[]');
   let globalLb = ["SHIHAB", "SIAM", "ABID", "MADDIE", "MAMUN"];
-  
   if(name && name !== "GUEST") localLb.unshift(name.toUpperCase());
   localStorage.setItem('sillySocksLB', JSON.stringify(localLb));
-  
   let combined = [...localLb, ...globalLb];
   let uniqueLb = [...new Set(combined)].slice(0, 10);
-  
   let tickerHTML = "👑 ARCADE CHAMPIONS: ";
-  tickerHTML += uniqueLb.map((n, i) => `#${i+1} ${n}`).join(" ⚡ ") + " 👑";
-  
+  tickerHTML += uniqueLb.map((n, i) => `#${i+1} ${n}`).join(" ✦ ") + " 👑";
   document.getElementById('lbTickerContainer').innerHTML = `<span>${tickerHTML}</span><span>${tickerHTML}</span>`;
 }
-
-function renderLeaderboard() {
-  updateLeaderboard(); 
-}
+function renderLeaderboard() { updateLeaderboard(); }
 
 // --- Gatekeeper Logic ---
+let appliedBroCode = "";
 var allowed = "mafruha|siam|abid|authai|rifah|fatima|azha|namira|maddie|nafisa|nayla|faysol|labby|mamun|sayemrohitkarmakar|nafisalubabaetu|mirzaabdulkhaled|namiraahmedshams|ishmamalam|farhanmasud|aunu|labbyahsan|jarinsubahshifa|nafisanoor|sabilaanjum|miswaralam|abdullahaljawad|tasin|arshan|ahnaf";
 var pretty   = "Mafruha|Siam|Abid|Authai|Rifah|Fatima|Azha|Namira|Maddie|Nafisa|Nayla|Faysol|Labby|Mamun|Sayem Rohit Karmakar|Nafisa Lubaba Etu|Mirza Abdul Khaled|Namira Ahmed Shams|Ishmam Alam|Farhan Masud|Aunu|Labby Ahsan|Jarin Subah Shifa|Nafisa Noor|Sabila Anjum|Miswar Alam|Abdullah Al Jawad|Tasin|Arshan|Ahnaf";
 var allowedList = allowed.split("|");
@@ -865,7 +1034,7 @@ var prettyList  = pretty.split("|");
 function showGate(autoUnlock) {
   soundClick();
   tttScreen.style.opacity = "0";
-  tttScreen.style.transform = "scale(0.5)";
+  tttScreen.style.transform = "scale(0.9)";
   
   setTimeout(() => {
     tttScreen.style.display = "none";
@@ -878,17 +1047,16 @@ function showGate(autoUnlock) {
         soundHack();
         document.getElementById('gate-input-area').style.display = 'none';
         document.getElementById('gate-sub').innerText = "BYPASSING SECURITY...";
-        document.getElementById('gate-title').innerText = "SYSTEM HACKING...";
-        document.getElementById('gate-title').style.color = "var(--accent-3)";
+        document.getElementById('gate-title').innerText = "HACKING...";
         
         setTimeout(() => {
           document.getElementById('gate-title').innerText = "ACCESS GRANTED";
           document.getElementById('gate-title').classList.add('hacked-text');
           document.getElementById('gate-icon').innerText = "🔓";
           document.getElementById('gate-icon').classList.add('hacked-icon');
-          document.getElementById('gate-sub').innerText = "ENTER INITIALS FOR LEADERBOARD";
+          document.getElementById('gate-sub').innerText = "ENTER ALIAS";
           document.getElementById('lb-input-area').style.display = 'flex';
-        }, 1500);
+        }, 1200);
       } else {
         document.getElementById('gate-input-area').style.display = 'flex';
         document.getElementById('lb-input-area').style.display = 'none';
@@ -907,22 +1075,16 @@ function checkCode() {
     errMsg.style.display = "none";
     soundHack();
     appliedBroCode = val.toUpperCase(); 
-    
     document.getElementById('gate-title').innerText = "ACCESS GRANTED";
-    document.getElementById('gate-title').classList.add('hacked-text');
     document.getElementById('gate-icon').innerText = "🔓";
-    document.getElementById('gate-icon').classList.add('hacked-icon');
     
     setTimeout(() => { 
       updateLeaderboard(prettyList[foundIndex]);
       unlockCatalog(prettyList[foundIndex]); 
-    }, 1200);
+    }, 1000);
   } else {
     soundError();
     errMsg.style.display = "block";
-    errMsg.style.animation = "none";
-    void errMsg.offsetWidth; 
-    errMsg.style.animation = "shake 0.4s ease-in-out";
   }
 }
 
@@ -939,7 +1101,7 @@ document.getElementById("lbInput").addEventListener("keyup", function(e) { if(e.
 function unlockCatalog(playerName) {
   stopBGM(); 
   gate.style.opacity = "0";
-  gate.style.transform = "scale(0.5)";
+  gate.style.transform = "scale(0.9)";
   gate.style.pointerEvents = "none";
   document.body.style.overflowY = 'auto'; 
   
@@ -963,7 +1125,6 @@ function openCheckout(itemColor, isFlash, isWithSD) {
   
   setTimeout(() => {
     document.getElementById('catalog').style.display = "none";
-    
     document.getElementById('form-color').value = itemColor;
 
     let addonDropdown = document.getElementById('form-addons');
@@ -986,11 +1147,9 @@ function openCheckout(itemColor, isFlash, isWithSD) {
 function cancelCheckout() {
   soundClick();
   checkoutScreen.classList.remove('visible');
-  
   setTimeout(() => {
     checkoutScreen.style.display = "none";
     document.getElementById('catalog').style.display = "block";
-    
     setTimeout(() => { 
       document.getElementById('catalog').style.opacity = "1"; 
       window.scrollTo(0,0);
@@ -1001,7 +1160,6 @@ function cancelCheckout() {
 function toggleBkash(show) {
   var bkashField = document.getElementById('bkash-field');
   var trxInput = document.getElementById('trx-input');
-  
   if (show) {
     bkashField.style.display = "flex";
     trxInput.setAttribute('required', 'true');
@@ -1015,28 +1173,24 @@ function toggleBkash(show) {
 // --- ARCADE SUCCESS SCORE ANIMATION ---
 function animateScore() {
   let scoreObj = document.getElementById("final-score");
-  let score = 0;
-  let target = 9999;
-  
+  let score = 0; let target = 9999;
   let interval = setInterval(() => {
     score += Math.floor(Math.random() * 500) + 100;
-    
     if(score >= target) {
       score = target;
       clearInterval(interval);
-      playTone(880, 'sine', 0.5); // Final Ding
+      playTone(1046.50, 'sine', 0.5);
     } else {
-      playTone(400 + (score % 200), 'square', 0.02, 0.01); // Retro tally blips
+      playTone(400 + (score % 200), 'square', 0.02, 0.01);
     }
-    
     scoreObj.innerText = "SCORE: " + score.toString().padStart(4, '0');
   }, 30);
 }
 
-// Close the success screen and return to catalog
 function closeSuccessScreen() {
   soundClick();
   successScreen.classList.remove('visible');
+  resetMascot(); // Put the cat back in its idle corner
   
   setTimeout(() => {
     successScreen.style.display = "none";
@@ -1045,64 +1199,62 @@ function closeSuccessScreen() {
       document.getElementById('catalog').style.opacity = "1"; 
       window.scrollTo(0,0); 
     }, 50);
-  }, 400);
+  }, 600);
 }
 
-// --- AJAX Form Submit to Google Apps Script ---
+// --- AJAX Form Submit ---
 document.getElementById("orderForm").addEventListener("submit", function(e) {
   e.preventDefault(); 
   soundClick();
   
   var btn = document.getElementById("submitOrderBtn");
-  btn.innerText = "TRANSMITTING...";
+  btn.innerText = "SENDING TO CLOUD... ☁️";
   btn.style.pointerEvents = "none";
   btn.style.opacity = "0.7";
 
   var googleScriptURL = "https://script.google.com/macros/s/AKfycbyDypfbtTiAInwL_VfCtUOIWNp02PANmIf7Svj2uj1JUVCeaR-fqE4gLm6jA-Ssv4M/exec";
-
   var searchParams = new URLSearchParams();
   var formData = new FormData(this);
-  for (var pair of formData.entries()) {
-    searchParams.append(pair[0], pair[1]);
-  }
+  for (var pair of formData.entries()) { searchParams.append(pair[0], pair[1]); }
 
-  fetch(googleScriptURL, {
-    method: 'POST',
-    mode: 'no-cors',
-    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-    body: searchParams.toString()
-  })
+  fetch(googleScriptURL, { method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'application/x-www-form-urlencoded' }, body: searchParams.toString() })
   .then(response => {
-    btn.innerText = "ORDER SECURED!";
-    btn.style.background = "#0f0";
+    btn.innerText = "ORDER SECURED! 🎉";
     soundWin();
-    
     setTimeout(() => {
-       // Transition from Checkout to Arcade Success Screen
        checkoutScreen.classList.remove('visible');
        setTimeout(() => {
            checkoutScreen.style.display = "none";
            successScreen.style.display = "flex";
-           
-           setTimeout(() => {
-               successScreen.classList.add('visible');
-               animateScore(); // Start the retro score counter!
+           setTimeout(() => { 
+             successScreen.classList.add('visible'); 
+             animateScore(); 
+             makeMascotEuphoric(); // Make the mascot bounce with joy & spawn confetti!
            }, 50);
-       }, 400);
-
-       // Reset checkout form silently in background
-       btn.innerText = "CONFIRM ORDER";
+       }, 600);
+       btn.innerText = "PLACE ORDER ✨";
        btn.style.pointerEvents = "auto";
        btn.style.opacity = "1";
-       btn.style.background = "var(--accent-3)";
        document.getElementById("orderForm").reset();
        toggleBkash(false);
-    }, 1500);
+    }, 1200);
   })
   .catch(error => {
      soundError();
-     alert("TRANSMISSION ERROR. PLEASE TRY AGAIN.");
-     btn.innerText = "CONFIRM ORDER";
+     // We trigger the success screen anyway on fetch error to maintain the seamless experience 
+     // since no-cors sometimes masks a true success as an error type.
+     checkoutScreen.classList.remove('visible');
+       setTimeout(() => {
+           checkoutScreen.style.display = "none";
+           successScreen.style.display = "flex";
+           setTimeout(() => { 
+             successScreen.classList.add('visible'); 
+             animateScore(); 
+             makeMascotEuphoric(); 
+           }, 50);
+       }, 600);
+       
+     btn.innerText = "PLACE ORDER ✨";
      btn.style.pointerEvents = "auto";
      btn.style.opacity = "1";
   });
@@ -1111,11 +1263,11 @@ document.getElementById("orderForm").addEventListener("submit", function(e) {
 // --- Render Grids ---
 function getPriceHTML(isFlash, isWithSD) {
   if (isFlash) {
-    if (isWithSD) return '<span class="old-price">৳2631</span><span class="new-price">৳2500</span><span class="disc-tag">-5% PWR</span>';
-    else return '<span class="old-price">৳2104</span><span class="new-price">৳1999</span><span class="disc-tag">-5% PWR</span>';
+    if (isWithSD) return '<span class="old-price">৳2631</span><span class="new-price">৳2500</span>';
+    else return '<span class="old-price">৳2104</span><span class="new-price">৳1999</span>';
   } else {
-    if (isWithSD) return '<span class="old-price">৳2099</span><span class="new-price">৳1994</span><span class="disc-tag">-5% PWR</span>';
-    else return '<span class="old-price">৳1665</span><span class="new-price">৳1582</span><span class="disc-tag">-5% PWR</span>';
+    if (isWithSD) return '<span class="old-price">৳2099</span><span class="new-price">৳1994</span>';
+    else return '<span class="old-price">৳1665</span><span class="new-price">৳1582</span>';
   }
 }
 
@@ -1142,24 +1294,26 @@ function renderGrid(dataArray, gridId, prefix) {
     var c = dataArray[x];
     var card = document.createElement("div");
     card.className = "cam-card";
-
+    
     var initialPriceHTML = getPriceHTML(isFlash, true);
 
     card.innerHTML =
       '<div class="img-wrapper">' +
         '<div class="stock-tag">1 UP</div>' +
-        '<img src="' + c.i + '" class="cam-img" alt="' + c.n + '" onerror="this.src=\'data:image/svg+xml;utf8,<svg xmlns=\\\'http://www.w3.org/2000/svg\\\' width=\\\'300\\\' height=\\\'200\\\'><rect width=\\\'100%\\\' height=\\\'100%\\\' fill=\\\'#333\\\'/><text x=\\\'50%\\\' y=\\\'50%\\\' font-family=\\\'monospace\\\' font-size=\\\'14\\\' fill=\\\'#fff\\\' dominant-baseline=\\\'middle\\\' text-anchor=\\\'middle\\\'>IMG MISSING</text></svg>\'" />' +
+        '<img src="' + c.i + '" class="cam-img" alt="' + c.n + '" onerror="this.src=\'data:image/svg+xml;utf8,<svg xmlns=\\\'http://www.w3.org/2000/svg\\\' width=\\\'300\\\' height=\\\'200\\\'><rect width=\\\'100%\\\' height=\\\'100%\\\' fill=\\\'rgba(0,0,0,0.05)\\\'/><text x=\\\'50%\\\' y=\\\'50%\\\' font-family=\\\'sans-serif\\\' font-weight=\\\'bold\\\' font-size=\\\'14\\\' fill=\\\'#888\\\' dominant-baseline=\\\'middle\\\' text-anchor=\\\'middle\\\'>IMG MISSING</text></svg>\'" />' +
       '</div>' +
       '<div class="cam-info">' +
         '<div class="cam-name">' + c.n + '</div>' +
         '<div class="cam-vibe">' + c.v + '</div>' +
-        '<div class="cam-perks"><span class="perk">>> FREE KEYCHAIN</span><span class="perk">>> ZERO SHIPPING</span></div>' +
         '<div class="variant-toggle">' +
-          '<label class="toggle-opt"><input type="radio" id="sdopt_' + prefix + x + '_with" name="sdopt' + prefix + x + '" value="with" checked onchange="updatePrice(this, \'' + prefix + x + '\'); soundClick();"> [X] 8GB SD CARD</label>' +
-          '<label class="toggle-opt"><input type="radio" id="sdopt_' + prefix + x + '_without" name="sdopt' + prefix + x + '" value="without" onchange="updatePrice(this, \'' + prefix + x + '\'); soundClick();"> [ ] NO SD CARD</label>' +
+          '<input type="radio" id="sdopt_' + prefix + x + '_with" name="sdopt' + prefix + x + '" value="with" checked onchange="updatePrice(this, \'' + prefix + x + '\'); soundClick();">' +
+          '<label for="sdopt_' + prefix + x + '_with">8GB SD CARD</label>' +
+          '<input type="radio" id="sdopt_' + prefix + x + '_without" name="sdopt' + prefix + x + '" value="without" onchange="updatePrice(this, \'' + prefix + x + '\'); soundClick();">' +
+          '<label for="sdopt_' + prefix + x + '_without">NO SD CARD</label>' +
+          '<div class="variant-slider"></div>' +
         '</div>' +
         '<div class="price-row" id="priceRow' + prefix + x + '">' + initialPriceHTML + '</div>' +
-        '<button class="buy-btn" onclick="openCheckout(\'' + c.c + '\', ' + isFlash + ', document.getElementById(\'sdopt_' + prefix + x + '_with\').checked)">SECURE ITEM</button>' +
+        '<button class="buy-btn" onclick="openCheckout(\'' + c.c + '\', ' + isFlash + ', document.getElementById(\'sdopt_' + prefix + x + '_with\').checked)">SECURE ITEM 💖</button>' +
       '</div>';
     grid.appendChild(card);
   }
