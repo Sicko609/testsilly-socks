@@ -11,7 +11,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Montserrat:ital,wght@0,400;0,800;0,900;1,900&display=swap');
 
 :root {
-  /* DARK MODE: SYNTHWAVE */
   --bg: #0b0c10;
   --text: #ffffff;
   --text-muted: #aaaaaa;
@@ -28,7 +27,6 @@
 }
 
 [data-theme="light"] {
-  /* LIGHT MODE: 80s MEMPHIS DESIGN */
   --bg: #f4f4f4;
   --text: #111111;
   --text-muted: #555555;
@@ -50,7 +48,7 @@ body {
   color: var(--text);
   overflow-x: hidden;
   height: 100vh;
-  overflow-y: hidden; /* Prevents scroll until catalog unlocks */
+  overflow-y: hidden;
   transition: background-color 0.5s, color 0.5s;
   -webkit-tap-highlight-color: transparent;
 }
@@ -73,7 +71,6 @@ body {
   100% { transform: perspective(600px) rotateX(70deg) translateY(50px); }
 }
 
-/* Memphis background elements for Light Mode */
 .memphis-shapes { position: fixed; top:0; left:0; width:100%; height:100%; z-index:-1; pointer-events: none; opacity: 0; transition: opacity 0.5s; }
 [data-theme="light"] .memphis-shapes { opacity: 1; }
 .shape { position: absolute; border: 4px solid var(--card-border); }
@@ -100,17 +97,10 @@ body {
   animation: blink 1s infinite; text-align: center; padding: 20px; text-shadow: 0 0 10px var(--accent-2);
 }
 
-/* --- SCREEN 2: HERO (SOCKS) --- */
+/* --- SCREEN 2: HERO --- */
 #hero-screen { cursor: pointer; }
-.hero-logo {
-  font-family: var(--font-retro); font-size: clamp(24px, 6vw, 60px); text-align: center;
-  color: #fff; text-shadow: 0 0 10px var(--accent-1), 4px 4px 0px var(--accent-2);
-  margin-bottom: 20px; z-index: 10; animation: pulseLogo 2s infinite alternate; padding: 0 15px;
-}
-@keyframes pulseLogo {
-  0% { transform: scale(1) skewX(0deg); text-shadow: 0 0 10px var(--accent-1), 4px 4px 0px var(--accent-2); }
-  100% { transform: scale(1.05) skewX(-5deg); text-shadow: 0 0 25px var(--accent-1), 6px 6px 0px var(--accent-2); }
-}
+.hero-logo { font-family: var(--font-retro); font-size: clamp(24px, 6vw, 60px); text-align: center; color: #fff; text-shadow: 0 0 10px var(--accent-1), 4px 4px 0px var(--accent-2); margin-bottom: 20px; z-index: 10; animation: pulseLogo 2s infinite alternate; padding: 0 15px; }
+@keyframes pulseLogo { 0% { transform: scale(1) skewX(0deg); text-shadow: 0 0 10px var(--accent-1), 4px 4px 0px var(--accent-2); } 100% { transform: scale(1.05) skewX(-5deg); text-shadow: 0 0 25px var(--accent-1), 6px 6px 0px var(--accent-2); } }
 .hero-prompt { font-family: var(--font-retro); font-size: clamp(10px, 3vw, 14px); color: var(--accent-3); animation: blink 1s steps(2, start) infinite; z-index: 10; text-align: center; padding: 0 10px; line-height: 1.5; }
 @keyframes blink { to { visibility: hidden; } }
 
@@ -119,17 +109,9 @@ body {
 @keyframes dropSock { 0% { transform: translateY(-10vh) rotate(0deg); } 100% { transform: translateY(110vh) rotate(360deg); } }
 
 /* --- REUSABLE RETRO BOX --- */
-.retro-box {
-  width: 90%; max-width: 500px; text-align: center; padding: 2.5rem 1.5rem;
-  background: var(--card-bg); border: 4px solid var(--card-border);
-  box-shadow: var(--shadow-retro); position: relative; margin: 0 auto;
-}
+.retro-box { width: 90%; max-width: 500px; text-align: center; padding: 2.5rem 1.5rem; background: var(--card-bg); border: 4px solid var(--card-border); box-shadow: var(--shadow-retro); position: relative; margin: 0 auto; }
 .retro-box::before { content: ''; position: absolute; top: 5px; left: 5px; right: 5px; bottom: 5px; border: 1px dashed var(--accent-2); pointer-events: none; }
-.retro-btn {
-  padding: 12px 15px; background: var(--accent-1); color: #fff; border: 3px solid var(--card-border);
-  font-family: var(--font-retro); font-size: 10px; cursor: pointer;
-  transition: all 0.2s; box-shadow: 4px 4px 0 var(--accent-2); text-transform: uppercase; margin: 5px; width: calc(100% - 10px); display: inline-block;
-}
+.retro-btn { padding: 12px 15px; background: var(--accent-1); color: #fff; border: 3px solid var(--card-border); font-family: var(--font-retro); font-size: 10px; cursor: pointer; transition: all 0.2s; box-shadow: 4px 4px 0 var(--accent-2); text-transform: uppercase; margin: 5px 0; width: 100%; display: block; }
 .retro-btn:hover { background: var(--accent-2); color: #000; box-shadow: 4px 4px 0 var(--accent-1); transform: translate(-2px, -2px); }
 .retro-btn:active { transform: translate(2px, 2px); box-shadow: 0 0 0 transparent; }
 
@@ -151,8 +133,6 @@ body {
 .retro-input, .retro-select { flex: 1; min-width: 0; padding: 12px; background: #000; border: 3px solid var(--card-border); color: #0f0; font-family: var(--font-retro); font-size: 10px; outline: none; box-shadow: inset 0 0 10px rgba(0,255,0,0.2); text-transform: uppercase; width: 100%;}
 .retro-input:focus, .retro-select:focus { border-color: var(--accent-2); box-shadow: inset 0 0 15px var(--accent-2); }
 #errMsg { font-family: var(--font-retro); font-size: 10px; color: var(--accent-1); min-height: 20px; display: none; margin-top: 10px; }
-
-/* Hacking animation classes */
 .hacked-text { color: #0f0 !important; text-shadow: 0 0 15px #0f0 !important; }
 .hacked-icon { filter: drop-shadow(0 0 15px #0f0) !important; transform: scale(1.2); }
 
@@ -169,23 +149,8 @@ body {
 .radio-group label { display: flex; align-items: center; gap: 8px; color: #fff; font-family: var(--font-main); font-size: 11px; margin-top: 0; font-weight: 800; cursor: pointer;}
 
 /* bKash Alert Box */
-.bkash-info-box {
-  background: rgba(255, 0, 127, 0.15);
-  border: 2px dashed var(--accent-1);
-  padding: 12px;
-  border-radius: 4px;
-  margin-top: 5px;
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-.bkash-number {
-  font-family: var(--font-retro);
-  font-size: 11px;
-  color: var(--accent-3);
-  text-shadow: 0 0 8px var(--accent-3);
-  letter-spacing: 1px;
-}
+.bkash-info-box { background: rgba(255, 0, 127, 0.15); border: 2px dashed var(--accent-1); padding: 12px; border-radius: 4px; margin-top: 5px; display: flex; flex-direction: column; gap: 8px; }
+.bkash-number { font-family: var(--font-retro); font-size: 11px; color: var(--accent-3); text-shadow: 0 0 8px var(--accent-3); letter-spacing: 1px; }
 
 /* --- SCREEN 6: CATALOG UI --- */
 #catalog { display: none; min-height: 100vh; opacity: 0; transform: translateY(100px); transition: all 0.8s cubic-bezier(0.2, 1, 0.3, 1); padding-bottom: 50px; z-index: 10; position: relative;}
@@ -323,7 +288,7 @@ body {
       <button class="retro-btn" id="enterBtn" onclick="checkCode()" style="margin:0; width:100px;">START</button>
     </div>
 
-    <!-- Leaderboard Initials Area (Shown after hack) -->
+    <!-- Leaderboard Initials Area -->
     <div class="input-row" id="lb-input-area" style="display:none;">
       <input id="lbInput" class="retro-input" type="text" placeholder="INITIALS..." maxlength="10" autocomplete="off" />
       <button class="retro-btn" onclick="saveInitialsAndEnter()" style="margin:0; width:100px;">SAVE</button>
@@ -339,7 +304,6 @@ body {
     <div class="gate-title" style="color: var(--accent-3);">SECURE CHECKOUT</div>
     
     <form id="orderForm" class="checkout-form">
-      
       <label>> FULL NAME *</label>
       <input type="text" name="Full Name" class="retro-input" required placeholder="JOHN DOE" />
       
@@ -500,12 +464,12 @@ function startBGM() {
   if (isBgmRunning) return;
   isBgmRunning = true;
   let t = 0;
-  let notes = [130.81, 155.56, 130.81, 196.00]; // 80s Bassline
+  let notes = [130.81, 155.56, 130.81, 196.00]; 
   
   function loop() {
     if(!isBgmRunning) return;
     playTone(notes[t % 4], 'sawtooth', 0.2, 0.02);
-    if(t % 2 === 0) playTone(800, 'square', 0.05, 0.01); // Hihat
+    if(t % 2 === 0) playTone(800, 'square', 0.05, 0.01); 
     t++;
     setTimeout(loop, 300);
   }
@@ -539,7 +503,6 @@ function soundHack() {
   for(let i=0; i<15; i++) { setTimeout(() => playTone(400 + (i*50), 'square', 0.05, 0.03), i*60); }
 }
 
-// Global touch/click to unlock audio just in case
 document.body.addEventListener('click', () => { if(!isPoweredOn) powerOn(); }, {once:true});
 document.body.addEventListener('touchstart', () => { if(!isPoweredOn) powerOn(); }, {once:true});
 
@@ -658,7 +621,7 @@ function endGame(msg, playerWon) {
   statusText.innerText = msg;
   if(playerWon) {
     soundWin();
-    setTimeout(() => { showGate(true); }, 1500); // Trigger auto-unlock gate
+    setTimeout(() => { showGate(true); }, 1500); 
   } else {
     soundError();
     document.getElementById('resetTttBtn').style.display = "inline-block";
@@ -677,11 +640,11 @@ function resetBoard() {
 // --- DIRECT SKIP TO CATALOG ---
 function skipToCatalog() {
   soundClick();
-  stopBGM(); // Stop music when bypassing immediately 
+  stopBGM();
   tttScreen.style.opacity = "0";
   tttScreen.style.transform = "scale(0.5)";
   tttScreen.style.pointerEvents = "none";
-  document.body.style.overflowY = 'auto'; // allow scrolling now
+  document.body.style.overflowY = 'auto';
   
   setTimeout(() => {
     tttScreen.style.display = "none";
@@ -706,12 +669,16 @@ function updateLeaderboard(name) {
   
   let combined = [...localLb, ...globalLb];
   let uniqueLb = [...new Set(combined)].slice(0, 10);
+  
   let tickerHTML = "👑 ARCADE CHAMPIONS: ";
   tickerHTML += uniqueLb.map((n, i) => `#${i+1} ${n}`).join(" ⚡ ") + " 👑";
   
   document.getElementById('lbTickerContainer').innerHTML = `<span>${tickerHTML}</span><span>${tickerHTML}</span>`;
 }
-function renderLeaderboard() { updateLeaderboard(); }
+
+function renderLeaderboard() {
+  updateLeaderboard(); 
+}
 
 // --- Gatekeeper Logic ---
 var allowed = "mafruha|siam|abid|authai|rifah|fatima|azha|namira|maddie|nafisa|nayla|faysol|labby|mamun|sayemrohitkarmakar|nafisalubabaetu|mirzaabdulkhaled|namiraahmedshams|ishmamalam|farhanmasud|aunu|labbyahsan|jarinsubahshifa|nafisanoor|sabilaanjum|miswaralam|abdullahaljawad|tasin|arshan|ahnaf";
@@ -763,7 +730,7 @@ function checkCode() {
   if(foundIndex > -1) {
     errMsg.style.display = "none";
     soundHack();
-    appliedBroCode = val.toUpperCase(); // Save for checkout
+    appliedBroCode = val.toUpperCase(); 
     
     document.getElementById('gate-title').innerText = "ACCESS GRANTED";
     document.getElementById('gate-title').classList.add('hacked-text');
@@ -798,7 +765,7 @@ function unlockCatalog(playerName) {
   gate.style.opacity = "0";
   gate.style.transform = "scale(0.5)";
   gate.style.pointerEvents = "none";
-  document.body.style.overflowY = 'auto'; // allow scrolling now
+  document.body.style.overflowY = 'auto'; 
   
   setTimeout(() => {
     gate.style.display = "none";
@@ -821,10 +788,8 @@ function openCheckout(itemColor, isFlash, isWithSD) {
   setTimeout(() => {
     document.getElementById('catalog').style.display = "none";
     
-    // Auto-select Color in dropdown
     document.getElementById('form-color').value = itemColor;
 
-    // Auto-select Add-on in dropdown based on selection
     let addonDropdown = document.getElementById('form-addons');
     if(isFlash) {
       addonDropdown.value = isWithSD ? "Flash with SD card 2564" : "Flash without SD card 1999";
@@ -832,7 +797,6 @@ function openCheckout(itemColor, isFlash, isWithSD) {
       addonDropdown.value = isWithSD ? "With SD card 1994" : "Without SD card 1582";
     }
 
-    // Auto-fill Bro Code if they entered code at gate
     document.getElementById('form-brocode').value = appliedBroCode;
     
     checkoutScreen.style.display = "flex";
@@ -883,11 +847,10 @@ document.getElementById("orderForm").addEventListener("submit", function(e) {
   btn.style.opacity = "0.7";
 
   // ==========================================
-  // GOOGLE APPS SCRIPT WEB APP URL
+  // GOOGLE APPS SCRIPT WEB APP URL (YOUR EXACT URL)
   // ==========================================
   var googleScriptURL = "https://script.google.com/macros/s/AKfycby8Zalka_7StoIOlNm1_eHwJ-LgQnZw4keb8RZ5iP2yRv_mHbpfP3FiTMZWATcJp8al/exec";
 
-  // Convert FormData to URLSearchParams for Apps Script DoPost Compatibility
   var searchParams = new URLSearchParams();
   var formData = new FormData(this);
   for (var pair of formData.entries()) {
