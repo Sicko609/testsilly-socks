@@ -115,7 +115,7 @@ body {
 }
 @keyframes floatBounce { 0%, 100% { transform: translateY(0) scale(1); } 50% { transform: translateY(-10px) scale(1.02); } }
 
-/* --- SLEEK GLASS AUDIO TOGGLE SWITCH --- */
+/* SLEEK GLASS AUDIO TOGGLE SWITCH */
 .audio-wrapper {
   position: absolute; top: 30px; right: 30px; z-index: 10000;
   display: flex; align-items: center; gap: 12px;
@@ -134,7 +134,6 @@ body {
   font-family: var(--font-code); font-size: 11px; font-weight: 700; color: var(--text);
   text-transform: uppercase; letter-spacing: 1px; transition: color 0.3s;
 }
-/* The Switch */
 .switch { position: relative; display: inline-block; width: 42px; height: 24px; pointer-events: none;}
 .switch input { opacity: 0; width: 0; height: 0; }
 .slider {
@@ -150,7 +149,6 @@ body {
 input:checked + .slider { background-color: var(--accent-cyan); border-color: var(--accent-cyan); box-shadow: inset 0 0 10px rgba(0,0,0,0.2); }
 input:checked + .slider:before { transform: translateX(18px); background-color: #fff; box-shadow: 0 0 10px rgba(255,255,255,0.8); }
 
-
 /* --- CUTE GLASS BOX --- */
 .glass-box { 
   width: 92%; max-width: 460px; text-align: center; padding: 2.5rem; 
@@ -162,8 +160,8 @@ input:checked + .slider:before { transform: translateX(18px); background-color: 
 
 /* --- BOUNCY STANDARD BUTTONS --- */
 .retro-btn { 
-  padding: 16px 24px; color: #fff; border: none; border-radius: 18px; 
-  font-family: var(--font-main); font-size: 14px; font-weight: 800; cursor: pointer; 
+  padding: 16px 24px; color: #fff; border: none; border-radius: 20px; 
+  font-family: var(--font-main); font-size: 15px; font-weight: 900; cursor: pointer; 
   transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1); text-transform: uppercase; 
   margin: 8px 0; width: 100%; display: block; letter-spacing: 1px;
   background: linear-gradient(135deg, var(--accent-cyan), var(--accent-pink));
@@ -182,14 +180,14 @@ input:checked + .slider:before { transform: translateX(18px); background-color: 
 
 /* --- MASSIVE EUPHORIC 'SECURE ITEM' BUTTON --- */
 .buy-btn { 
-  width: 100%; padding: 22px 24px; border: none; border-radius: 24px; 
-  font-family: var(--font-main); font-size: 18px; font-weight: 900; cursor: pointer; 
+  width: 100%; padding: 24px 28px; border: none; border-radius: 26px; 
+  font-family: var(--font-main); font-size: 19px; font-weight: 900; cursor: pointer; 
   transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1); text-transform: uppercase; 
-  display: block; letter-spacing: 2px;
+  display: block; letter-spacing: 3px;
   background: linear-gradient(135deg, var(--accent-cyan), var(--accent-pink), var(--accent-yellow));
   background-size: 200% 200%; animation: gradientShift 3s ease infinite; color: #fff;
-  box-shadow: 0 12px 35px rgba(0, 240, 255, 0.4), inset 0 3px 0 rgba(255,255,255,0.5);
-  position: relative; overflow: hidden; margin-top: 10px;
+  box-shadow: 0 15px 40px rgba(0, 240, 255, 0.4), inset 0 4px 0 rgba(255,255,255,0.5);
+  position: relative; overflow: hidden; margin-top: 15px;
 }
 .buy-btn::after {
   content: ''; position: absolute; top: 0; left: -100%; width: 50%; height: 100%;
@@ -198,11 +196,11 @@ input:checked + .slider:before { transform: translateX(18px); background-color: 
 }
 .buy-btn:hover::after { left: 150%; transition: 0.7s; }
 .buy-btn:hover { 
-  transform: scale(1.04) translateY(-6px); 
-  box-shadow: 0 20px 45px rgba(255, 0, 127, 0.5), inset 0 3px 0 rgba(255,255,255,0.7); 
+  transform: scale(1.05) translateY(-8px); 
+  box-shadow: 0 25px 55px rgba(255, 0, 127, 0.5), inset 0 4px 0 rgba(255,255,255,0.8); 
   color: #fff;
 }
-.buy-btn:active { transform: scale(0.96) translateY(2px); box-shadow: 0 5px 15px rgba(0, 240, 255, 0.3); }
+.buy-btn:active { transform: scale(0.95) translateY(3px); box-shadow: 0 5px 15px rgba(0, 240, 255, 0.3); }
 
 /* --- TIC-TAC-TOE --- */
 .ttt-board { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; width: 100%; max-width: 280px; margin: 25px auto; aspect-ratio: 1/1; }
@@ -304,7 +302,7 @@ input:checked + .slider:before { transform: translateX(18px); background-color: 
 .theme-toggle-btn:hover { transform: scale(1.05) rotate(3deg); background: var(--text); color: var(--bg-color); }
 
 .ticker-wrap { width: 100%; overflow: hidden; background: rgba(0,0,0,0.4); color: var(--accent-yellow); padding: 14px 0; font-family: var(--font-code); font-size: 13px; font-weight: 700; border-bottom: 2px solid var(--glass-border); white-space: nowrap; backdrop-filter: blur(5px);}
-.ticker { display: inline-block; white-space: nowrap; animation: ticker 20s linear infinite; }
+.ticker { display: inline-block; white-space: nowrap; animation: ticker 25s linear infinite; }
 .ticker span { margin-right: 50px; }
 @keyframes ticker { 0% { transform: translate3d(0, 0, 0); } 100% { transform: translate3d(-50%, 0, 0); } }
 
@@ -312,7 +310,7 @@ input:checked + .slider:before { transform: translateX(18px); background-color: 
 .section-label { font-family: var(--font-main); font-size: 32px; font-weight: 900; color: var(--text); margin-bottom: 3.5rem; letter-spacing: -1px; display: inline-block; position: relative;}
 .section-label::after { content: ''; position: absolute; bottom: -10px; left: 0; width: 50px; height: 6px; background: var(--accent-cyan); border-radius: 3px; box-shadow: 0 0 15px var(--accent-cyan);}
 
-/* --- APPLE GLASS PRODUCT CARDS --- */
+/* --- PRODUCT CARDS --- */
 .cam-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 40px; }
 .cam-card { 
   background: var(--glass-bg); border: 2px solid var(--glass-border); border-radius: 32px; 
@@ -351,7 +349,7 @@ input:checked + .slider:before { transform: translateX(18px); background-color: 
 .page-tab:hover { background: var(--glass-highlight); color: var(--text); transform: translateY(-3px) scale(1.05);}
 .page-tab.active { background: var(--text); color: var(--bg-color); border-color: var(--text); box-shadow: 0 15px 30px rgba(0,0,0,0.3);}
 
-.footer { text-align: center; padding: 5rem 1.5rem; font-family: var(--font-main); font-weight: 600; font-size: 14px; color: var(--text-muted); border-top: 2px solid var(--input-border); margin-top: 6rem; opacity: 0.8;}
+.footer { text-align: center; padding: 5rem 1.5rem; font-family: var(--font-main); font-weight: 600; font-size: 14px; color: var(--text-muted); border-top: 1px solid var(--input-border); margin-top: 6rem; opacity: 0.8;}
 
 /* --- IG FLOATING BUTTON --- */
 .ig-float-btn { position: fixed; bottom: 30px; right: 30px; width: 70px; height: 70px; background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%); display: flex; align-items: center; justify-content: center; border: none; cursor: pointer; z-index: 9999; box-shadow: 0 10px 30px rgba(220, 39, 67, 0.4); transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1); border-radius: 50%;}
@@ -368,10 +366,11 @@ input:checked + .slider:before { transform: translateX(18px); background-color: 
   .hero-logo { font-size: clamp(50px, 15vw, 80px); }
   .audio-wrapper { top: 20px; right: 20px; padding: 8px 12px; }
   .audio-label { font-size: 10px; }
+  .buy-btn { font-size: 16px; padding: 20px; }
 }
 
 /* ===========================================
-   CUTE MASCOT BOT (INTERACTIVE & REWARDING)
+   CUTE MASCOT BOT (FULL BODY PIXEL SVG & EYE TRACKING)
 =========================================== */
 #mascot-container {
   position: fixed;
@@ -401,7 +400,7 @@ input:checked + .slider:before { transform: translateX(18px); background-color: 
   box-shadow: var(--glass-shadow);
   backdrop-filter: var(--glass-blur);
   -webkit-backdrop-filter: var(--glass-blur);
-  margin-bottom: 10px;
+  margin-bottom: 5px;
   opacity: 0.9;
   position: relative;
 }
@@ -411,8 +410,7 @@ input:checked + .slider:before { transform: translateX(18px); background-color: 
 }
 
 #mascot-body {
-  font-size: 60px;
-  filter: drop-shadow(0 10px 15px rgba(0,0,0,0.3));
+  filter: drop-shadow(0 10px 15px rgba(0,0,0,0.5));
   transition: all 0.3s;
 }
 
@@ -421,7 +419,7 @@ input:checked + .slider:before { transform: translateX(18px); background-color: 
 }
 @keyframes euphoricDance {
   0% { transform: translateY(0) scale(1.1) rotate(-10deg); }
-  100% { transform: translateY(-30px) scale(1.2) rotate(10deg); filter: drop-shadow(0 20px 20px rgba(255, 0, 127, 0.5));}
+  100% { transform: translateY(-30px) scale(1.2) rotate(10deg); filter: drop-shadow(0 20px 20px rgba(255, 0, 127, 0.6));}
 }
 
 .confetti {
@@ -458,7 +456,7 @@ input:checked + .slider:before { transform: translateX(18px); background-color: 
 <!-- SCREEN 2: TIC-TAC-TOE BATTLE -->
 <div id="tictactoe-screen" class="screen-layer">
   <div class="glass-box">
-    <div class="gate-title">BEAT THE BOT 🤖</div>
+    <div class="gate-title">BEAT THE AI</div>
     <p class="gate-sub" id="ttt-status">PLAYER 1 IS 'X'. YOUR TURN!</p>
     
     <div class="ttt-board" id="ttt-board-container">
@@ -579,7 +577,7 @@ input:checked + .slider:before { transform: translateX(18px); background-color: 
         <span>I accept the Terms & Conditions, including the 3-day warranty limits and COD liability.</span>
       </label>
 
-      <button type="submit" id="submitOrderBtn" class="buy-btn" style="margin-top: 15px;">PLACE ORDER ✨</button>
+      <button type="submit" id="submitOrderBtn" class="buy-btn">PLACE ORDER ✨</button>
       <button type="button" class="retro-btn secondary" onclick="cancelCheckout()">BACK TO SHOP 🔙</button>
     </form>
   </div>
@@ -638,10 +636,82 @@ input:checked + .slider:before { transform: translateX(18px); background-color: 
   </div>
 </div>
 
-<!-- THE CUTE MASCOT -->
+<!-- THE FULL BODY PIXEL CAT MASCOT -->
 <div id="mascot-container" class="mascot-idle">
   <div id="mascot-speech">Waiting for order... 🥺</div>
-  <div id="mascot-body">😿</div>
+  <div id="mascot-body">
+    <svg id="pixel-cat-svg" viewBox="0 0 32 32" width="100px" height="100px" shape-rendering="crispEdges">
+      <!-- Shadow -->
+      <rect x="6" y="30" width="24" height="2" fill="rgba(0,0,0,0.4)"/>
+      
+      <!-- Tail Idle -->
+      <g id="cat-tail-idle">
+        <rect x="22" y="26" width="8" height="2" fill="#fff"/>
+        <rect x="28" y="22" width="2" height="4" fill="#fff"/>
+      </g>
+      <!-- Tail Happy -->
+      <g id="cat-tail-happy" style="display:none;">
+        <rect x="22" y="14" width="2" height="12" fill="#fff"/>
+        <rect x="22" y="12" width="2" height="2" fill="var(--accent-pink)"/>
+      </g>
+
+      <!-- Back legs / Body -->
+      <rect x="10" y="20" width="12" height="10" fill="#fff"/>
+      <!-- Belly -->
+      <rect x="12" y="22" width="8" height="8" fill="rgba(0,0,0,0.1)"/>
+
+      <!-- Front Paws -->
+      <rect x="10" y="28" width="4" height="2" fill="#fff"/>
+      <rect x="18" y="28" width="4" height="2" fill="#fff"/>
+
+      <!-- Head Base -->
+      <rect x="6" y="8" width="20" height="12" fill="#fff"/>
+      
+      <!-- Ears -->
+      <rect x="6" y="2" width="4" height="6" fill="#fff"/>
+      <rect x="22" y="2" width="4" height="6" fill="#fff"/>
+      <!-- Inner Ears -->
+      <rect x="7" y="4" width="2" height="4" fill="var(--accent-pink)"/>
+      <rect x="23" y="4" width="2" height="4" fill="var(--accent-pink)"/>
+
+      <!-- Eyeballs (White bounds for pupil tracking) -->
+      <rect x="9" y="11" width="6" height="6" fill="#000"/>
+      <rect x="17" y="11" width="6" height="6" fill="#000"/>
+
+      <!-- Moving Pupils (Start at center) -->
+      <rect id="pupil-l" x="11" y="13" width="2" height="2" fill="var(--accent-cyan)"/>
+      <rect id="pupil-r" x="19" y="13" width="2" height="2" fill="var(--accent-cyan)"/>
+
+      <!-- Tears (Idle) -->
+      <g id="cat-tears">
+        <rect x="11" y="18" width="2" height="2" fill="var(--accent-cyan)"/>
+        <rect x="19" y="18" width="2" height="2" fill="var(--accent-cyan)"/>
+      </g>
+
+      <!-- Blush (Happy) -->
+      <g id="cat-blush" style="display:none;">
+        <rect x="6" y="15" width="3" height="2" fill="var(--accent-pink)"/>
+        <rect x="23" y="15" width="3" height="2" fill="var(--accent-pink)"/>
+      </g>
+
+      <!-- Nose/Mouth -->
+      <rect x="15" y="14" width="2" height="1" fill="var(--accent-pink)"/>
+      
+      <!-- Sad Mouth -->
+      <g id="cat-mouth-idle">
+        <rect x="15" y="16" width="2" height="1" fill="#000"/>
+        <rect x="14" y="17" width="1" height="1" fill="#000"/>
+        <rect x="17" y="17" width="1" height="1" fill="#000"/>
+      </g>
+      
+      <!-- Happy Mouth -->
+      <g id="cat-mouth-happy" style="display:none;">
+        <rect x="14" y="16" width="4" height="1" fill="#000"/>
+        <rect x="15" y="17" width="2" height="2" fill="#000"/>
+        <rect x="15" y="17" width="2" height="1" fill="var(--accent-pink)"/>
+      </g>
+    </svg>
+  </div>
 </div>
 
 <button class="ig-float-btn" onclick="window.open('https://www.instagram.com/your.sillysocks/', '_blank')">
@@ -672,7 +742,7 @@ resizeCanvas();
 function updateInteraction(x, y) {
   mouse.x = x;
   mouse.y = y;
-  updateMascotLook(x, y);
+  updateMascotLook(x, y); // Mascot tracking
 }
 window.addEventListener('mousemove', (e) => updateInteraction(e.clientX, e.clientY));
 window.addEventListener('touchstart', (e) => updateInteraction(e.touches[0].clientX, e.touches[0].clientY), {passive: true});
@@ -697,8 +767,8 @@ function drawCanvas() {
   time += 0.002;
 
   let isLight = document.body.getAttribute('data-theme') === 'light';
-  let lineCol1 = isLight ? 'rgba(219, 39, 119, 0.15)' : 'rgba(0, 240, 255, 0.15)'; 
-  let lineCol2 = isLight ? 'rgba(2, 132, 199, 0.15)' : 'rgba(255, 0, 127, 0.15)'; 
+  let lineCol1 = isLight ? 'rgba(219, 39, 119, 0.2)' : 'rgba(0, 240, 255, 0.2)'; 
+  let lineCol2 = isLight ? 'rgba(2, 132, 199, 0.2)' : 'rgba(255, 0, 127, 0.2)'; 
 
   let spacing = isMobile ? 80 : 100;
   let cols = Math.floor(width / spacing) + 2;
@@ -706,12 +776,13 @@ function drawCanvas() {
 
   ctx.lineWidth = 1.5;
 
+  // Render fluid bending lines
   for (let r = 0; r < rows; r++) {
     ctx.beginPath();
     ctx.strokeStyle = (r % 2 === 0) ? lineCol1 : lineCol2;
     for (let c = 0; c < cols; c++) {
       let x = c * spacing;
-      let y = r * spacing + Math.sin(c * 0.4 + time) * 20;
+      let y = r * spacing + Math.sin(c * 0.4 + time) * 25;
 
       let dx = x - mouse.x;
       let dy = y - mouse.y;
@@ -720,8 +791,8 @@ function drawCanvas() {
       if (dist < mouse.radius) {
         let force = Math.pow((1 - dist / mouse.radius), 2);
         let angle = Math.atan2(dy, dx);
-        x += Math.cos(angle) * force * 60;
-        y += Math.sin(angle) * force * 60;
+        x += Math.cos(angle) * force * 70;
+        y += Math.sin(angle) * force * 70;
       }
 
       if (c === 0) ctx.moveTo(x, y);
@@ -734,7 +805,7 @@ function drawCanvas() {
     ctx.beginPath();
     ctx.strokeStyle = (c % 2 === 0) ? lineCol2 : lineCol1;
     for (let r = 0; r < rows; r++) {
-      let x = c * spacing + Math.cos(r * 0.4 + time) * 20;
+      let x = c * spacing + Math.cos(r * 0.4 + time) * 25;
       let y = r * spacing;
 
       let dx = x - mouse.x;
@@ -744,8 +815,8 @@ function drawCanvas() {
       if (dist < mouse.radius) {
         let force = Math.pow((1 - dist / mouse.radius), 2);
         let angle = Math.atan2(dy, dx);
-        x += Math.cos(angle) * force * 60;
-        y += Math.sin(angle) * force * 60;
+        x += Math.cos(angle) * force * 70;
+        y += Math.sin(angle) * force * 70;
       }
 
       if (r === 0) ctx.moveTo(x, y);
@@ -754,10 +825,11 @@ function drawCanvas() {
     ctx.stroke();
   }
 
+  // Draw floating glowing orbs
   particles.forEach(p => {
     p.y -= p.speedY;
-    p.x += Math.sin(time * 5 + p.y * 0.01) * 0.5;
-    if(p.y < -10) { p.y = height + 10; p.x = Math.random() * width; }
+    p.x += Math.sin(time * 5 + p.y * 0.01) * 0.8;
+    if(p.y < -20) { p.y = height + 20; p.x = Math.random() * width; }
     
     ctx.fillStyle = isLight ? `rgba(2, 132, 199, ${p.alpha})` : `rgba(0, 240, 255, ${p.alpha})`; 
     ctx.beginPath();
@@ -770,28 +842,55 @@ function drawCanvas() {
 drawCanvas();
 
 // ==========================================
-// CUTE MASCOT LOGIC 
+// CUTE PIXEL MASCOT LOGIC (Real Eye Tracking)
 // ==========================================
 const mascotContainer = document.getElementById('mascot-container');
 const mascotBody = document.getElementById('mascot-body');
 const mascotSpeech = document.getElementById('mascot-speech');
+const pupilL = document.getElementById('pupil-l');
+const pupilR = document.getElementById('pupil-r');
+
 let mascotDanceInterval;
 let isMascotHappy = false;
 
 function updateMascotLook(cursorX, cursorY) {
   if (isMascotHappy) return; 
+  
   const rect = mascotContainer.getBoundingClientRect();
   const mascotX = rect.left + rect.width / 2;
   const mascotY = rect.top + rect.height / 2;
   
-  const tiltX = ((cursorX - mascotX) / window.innerWidth) * 40; 
-  const tiltY = ((cursorY - mascotY) / window.innerHeight) * 40;
+  const dx = cursorX - mascotX;
+  const dy = cursorY - mascotY;
   
+  // Normalizing to move pupils within a tight -2 to +2 SVG coordinate box
+  const maxDist = Math.max(window.innerWidth, window.innerHeight) / 2;
+  let normX = (dx / maxDist) * 3; 
+  let normY = (dy / maxDist) * 3;
+  
+  normX = Math.max(-2, Math.min(2, normX));
+  normY = Math.max(-2, Math.min(2, normY));
+  
+  // Base pupil pos is 11 and 19
+  pupilL.setAttribute('x', 11 + normX);
+  pupilL.setAttribute('y', 13 + normY);
+  pupilR.setAttribute('x', 19 + normX);
+  pupilR.setAttribute('y', 13 + normY);
+  
+  // Body 3D tilt tracking
+  const tiltX = (dx / window.innerWidth) * 40; 
+  const tiltY = (dy / window.innerHeight) * 40;
   mascotBody.style.transform = `perspective(300px) rotateX(${-tiltY}deg) rotateY(${tiltX}deg)`;
 }
 
 function resetMascotLook() {
-  if (!isMascotHappy) mascotBody.style.transform = 'perspective(300px) rotateX(0deg) rotateY(0deg)';
+  if (!isMascotHappy) {
+    mascotBody.style.transform = 'perspective(300px) rotateX(0deg) rotateY(0deg)';
+    pupilL.setAttribute('x', 11);
+    pupilL.setAttribute('y', 13);
+    pupilR.setAttribute('x', 19);
+    pupilR.setAttribute('y', 13);
+  }
 }
 
 function makeMascotEuphoric() {
@@ -799,12 +898,26 @@ function makeMascotEuphoric() {
   mascotContainer.classList.remove('mascot-idle');
   mascotContainer.classList.add('mascot-euphoric');
   
-  mascotBody.innerText = "😻";
-  mascotBody.style.transform = 'none'; 
+  mascotBody.style.transform = 'none'; // reset tracking tilt
+  
+  // Swap SVG parts for happy face
+  document.getElementById('cat-tail-idle').style.display = 'none';
+  document.getElementById('cat-tail-happy').style.display = 'block';
+  document.getElementById('cat-tears').style.display = 'none';
+  document.getElementById('cat-blush').style.display = 'block';
+  document.getElementById('cat-mouth-idle').style.display = 'none';
+  document.getElementById('cat-mouth-happy').style.display = 'block';
+  
+  // Center pupils for jumping
+  pupilL.setAttribute('x', 11);
+  pupilL.setAttribute('y', 13);
+  pupilR.setAttribute('x', 19);
+  pupilR.setAttribute('y', 13);
   
   mascotSpeech.innerText = "OMG YAY!! THANK YOU!! 💖✨";
   mascotSpeech.style.color = "var(--accent-yellow)";
   
+  // Confetti explosion
   for(let i=0; i<80; i++) {
     let conf = document.createElement('div');
     conf.className = 'confetti';
@@ -816,6 +929,7 @@ function makeMascotEuphoric() {
     setTimeout(() => conf.remove(), 4000); 
   }
   
+  // Happy giggles audio
   if(audioEnabled) {
     playTone(880, 'square', 0.1);
     setTimeout(() => playTone(1046, 'square', 0.1), 150);
@@ -823,6 +937,7 @@ function makeMascotEuphoric() {
     setTimeout(() => playTone(1567, 'square', 0.2), 450);
   }
   
+  // Dance around the screen bounds
   mascotDanceInterval = setInterval(() => {
     const maxX = window.innerWidth - 120;
     const maxY = window.innerHeight - 150;
@@ -841,22 +956,29 @@ function resetMascot() {
   mascotContainer.classList.remove('mascot-euphoric');
   mascotContainer.classList.add('mascot-idle');
   
-  mascotBody.innerText = "😿";
+  document.getElementById('cat-tail-idle').style.display = 'block';
+  document.getElementById('cat-tail-happy').style.display = 'none';
+  document.getElementById('cat-tears').style.display = 'block';
+  document.getElementById('cat-blush').style.display = 'none';
+  document.getElementById('cat-mouth-idle').style.display = 'block';
+  document.getElementById('cat-mouth-happy').style.display = 'none';
   
   mascotSpeech.innerText = "Waiting for order... 🥺";
   mascotSpeech.style.color = "var(--text)";
 }
 
 // ==========================================
-// AMBIENT AUDIO ENGINE (Soft Background BGM)
+// AMBIENT AUDIO ENGINE (Soft Lounge Jazz Background)
 // ==========================================
 let audioCtx = null;
 let audioEnabled = false;
 let isBgmRunning = false;
 let ambientOscillators = [];
+let jazzInterval;
+let jazzBeat = 0;
 
 function toggleAudio(e) {
-  if(e) e.stopPropagation(); // Prevents click passing through to Hero Screen
+  if(e) e.stopPropagation(); 
   
   audioEnabled = !audioEnabled;
   const checkbox = document.getElementById('audioCheckbox');
@@ -886,77 +1008,93 @@ function startBGM() {
   isBgmRunning = true;
   if(!audioCtx) return;
 
-  // Soft Ambient Chord (A2 minor/add9 aesthetic)
-  const baseFreq = 110; 
-  const chords = [baseFreq, baseFreq * 1.25, baseFreq * 1.5, baseFreq * 2]; 
+  const tempo = 110; 
+  const beatLen = 60 / tempo; 
 
-  chords.forEach((freq, i) => {
-      const osc = audioCtx.createOscillator();
-      const gain = audioCtx.createGain();
-      const filter = audioCtx.createBiquadFilter();
+  function playBeat() {
+    if(!isBgmRunning) return;
+    
+    // Ride Cymbal (Brush hit)
+    playNoise(0.15, 0.04); 
+    if (jazzBeat % 2 === 1) { 
+        setTimeout(() => playNoise(0.1, 0.02), beatLen * 1000 * 0.66); // Swing
+    }
 
-      osc.type = 'sine';
-      osc.frequency.value = freq + (Math.random() * 0.5); // Slight analog detune
+    // Walking Bass
+    const bassNotes = [
+      73.42, 87.31, 110.00, 130.81, // D walk
+      98.00, 123.47, 146.83, 87.31, // G walk
+      65.41, 82.41, 98.00, 110.00,  // C walk
+      110.00, 98.00, 82.41, 73.42   // A walk down
+    ];
+    playTone(bassNotes[jazzBeat % 16], 'triangle', 0.6, 0.2);
 
-      filter.type = 'lowpass';
-      filter.frequency.value = 350; // Keep it very soft
+    // Chords (Electric Piano Sine Wave)
+    const chordProg = [
+      [146.83, 174.61, 220.00, 261.63], // Dm7
+      [98.00,  123.47, 174.61, 220.00], // G7
+      [130.81, 164.81, 196.00, 246.94], // Cmaj7
+      [110.00, 130.81, 164.81, 196.00]  // Am7
+    ];
+    
+    if (jazzBeat % 2 === 0) { 
+       let chord = chordProg[Math.floor((jazzBeat/4) % 4)];
+       chord.forEach((freq, index) => {
+          setTimeout(() => playTone(freq, 'sine', 1.5, 0.06), index * 40); // Arpeggiate
+       });
+    }
 
-      gain.gain.setValueAtTime(0, audioCtx.currentTime);
-      gain.gain.linearRampToValueAtTime(0.04, audioCtx.currentTime + 2 + i); // Very gentle fade in
-
-      osc.connect(filter);
-      filter.connect(gain);
-      gain.connect(audioCtx.destination);
-
-      osc.start();
-      ambientOscillators.push({osc, gain});
-  });
+    jazzBeat++;
+    jazzInterval = setTimeout(playBeat, beatLen * 1000);
+  }
   
-  // Soft background noise (like distant wind/ocean)
-  const bufferSize = audioCtx.sampleRate * 2; 
-  const noiseBuffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
-  const output = noiseBuffer.getChannelData(0);
-  for (let i = 0; i < bufferSize; i++) { output[i] = Math.random() * 2 - 1; }
-
-  const noiseSrc = audioCtx.createBufferSource();
-  noiseSrc.buffer = noiseBuffer;
-  noiseSrc.loop = true;
-
-  const noiseFilter = audioCtx.createBiquadFilter();
-  noiseFilter.type = 'lowpass';
-  noiseFilter.frequency.value = 150; 
-
-  const noiseGain = audioCtx.createGain();
-  noiseGain.gain.setValueAtTime(0, audioCtx.currentTime);
-  noiseGain.gain.linearRampToValueAtTime(0.015, audioCtx.currentTime + 3);
-
-  noiseSrc.connect(noiseFilter);
-  noiseFilter.connect(noiseGain);
-  noiseGain.connect(audioCtx.destination);
-
-  noiseSrc.start();
-  ambientOscillators.push({osc: noiseSrc, gain: noiseGain});
+  playBeat();
 }
 
 function stopBGM() {
   isBgmRunning = false;
-  ambientOscillators.forEach(node => {
-      node.gain.gain.linearRampToValueAtTime(0, audioCtx.currentTime + 1);
-      setTimeout(() => { try { node.osc.stop(); } catch(e){} }, 1100);
-  });
-  ambientOscillators = [];
+  clearTimeout(jazzInterval);
 }
 
 function playTone(freq, type, duration, vol = 0.05) {
   if (!audioEnabled || !audioCtx || audioCtx.state !== 'running') return;
   const osc = audioCtx.createOscillator();
   const gain = audioCtx.createGain();
+  
   osc.type = type;
   osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
-  gain.gain.setValueAtTime(vol, audioCtx.currentTime);
+  
+  gain.gain.setValueAtTime(0, audioCtx.currentTime);
+  const attackTime = Math.min(0.05, duration * 0.1); 
+  gain.gain.linearRampToValueAtTime(vol, audioCtx.currentTime + attackTime);
   gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + duration);
+  
   osc.connect(gain); gain.connect(audioCtx.destination);
   osc.start(); osc.stop(audioCtx.currentTime + duration);
+}
+
+function playNoise(duration, vol) {
+  if (!audioEnabled || !audioCtx || audioCtx.state !== 'running') return;
+  const bufferSize = audioCtx.sampleRate * duration; 
+  const buffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
+  const data = buffer.getChannelData(0);
+  for (let i = 0; i < bufferSize; i++) data[i] = Math.random() * 2 - 1;
+
+  const noise = audioCtx.createBufferSource();
+  noise.buffer = buffer;
+  
+  const filter = audioCtx.createBiquadFilter();
+  filter.type = 'highpass';
+  filter.frequency.value = 7000; 
+  
+  const gain = audioCtx.createGain();
+  gain.gain.setValueAtTime(vol, audioCtx.currentTime);
+  gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + duration);
+
+  noise.connect(filter);
+  filter.connect(gain);
+  gain.connect(audioCtx.destination);
+  noise.start();
 }
 
 function soundClick() { playTone(800, 'sine', 0.1, 0.05); }
@@ -1085,6 +1223,7 @@ function resetBoard() {
 
 function skipToCatalog() {
   soundClick();
+  stopBGM();
   tttScreen.style.opacity = "0";
   tttScreen.style.transform = "scale(0.9)";
   tttScreen.style.pointerEvents = "none";
@@ -1144,7 +1283,9 @@ function showGate(autoUnlock) {
         
         setTimeout(() => {
           document.getElementById('gate-title').innerText = "ACCESS GRANTED";
+          document.getElementById('gate-title').classList.add('hacked-text');
           document.getElementById('gate-icon').innerText = "🔓";
+          document.getElementById('gate-icon').classList.add('hacked-icon');
           document.getElementById('gate-sub').innerText = "ENTER ALIAS";
           document.getElementById('lb-input-area').style.display = 'flex';
         }, 1200);
@@ -1322,17 +1463,19 @@ document.getElementById("orderForm").addEventListener("submit", function(e) {
              makeMascotEuphoric(); 
            }, 50);
        }, 600);
-       btn.innerText = "PLACE ORDER ✨";
-       btn.style.pointerEvents = "auto";
-       btn.style.opacity = "1";
-       document.getElementById("orderForm").reset();
-       toggleBkash(false);
+       
+       // Reset
+       setTimeout(() => {
+         btn.innerText = "PLACE ORDER ✨";
+         btn.style.pointerEvents = "auto";
+         btn.style.opacity = "1";
+         document.getElementById("orderForm").reset();
+         toggleBkash(false);
+       }, 2000);
     }, 1200);
   })
   .catch(error => {
      soundError();
-     // We trigger the success screen anyway on fetch error to maintain the seamless experience 
-     // since no-cors sometimes masks a true success as an error type.
      checkoutScreen.classList.remove('visible');
        setTimeout(() => {
            checkoutScreen.style.display = "none";
@@ -1344,9 +1487,12 @@ document.getElementById("orderForm").addEventListener("submit", function(e) {
            }, 50);
        }, 600);
        
-     btn.innerText = "PLACE ORDER ✨";
-     btn.style.pointerEvents = "auto";
-     btn.style.opacity = "1";
+     setTimeout(() => {
+       btn.innerText = "PLACE ORDER ✨";
+       btn.style.pointerEvents = "auto";
+       btn.style.opacity = "1";
+       document.getElementById("orderForm").reset();
+     }, 2000);
   });
 });
 
@@ -1418,7 +1564,7 @@ function showPage(page) {
   const oldBody = document.getElementById(page === 1 ? 'page2Body' : 'page1Body');
   const newBody = document.getElementById(page === 1 ? 'page1Body' : 'page2Body');
   oldBody.style.display = 'none'; newBody.style.display = 'block'; newBody.style.opacity = '0'; newBody.style.transform = 'translateY(20px)';
-  setTimeout(() => { newBody.style.transition = 'all 0.4s ease'; newBody.style.opacity = '1'; newBody.style.transform = 'translateY(0)'; }, 10);
+  setTimeout(() => { newBody.style.opacity = '1'; newBody.style.transform = 'translateY(0)'; }, 10);
 }
 
 function updatePrice(radio, index) {
