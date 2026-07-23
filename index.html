@@ -153,7 +153,7 @@ body {
 .bkash-number { font-family: var(--font-retro); font-size: 11px; color: var(--accent-3); text-shadow: 0 0 8px var(--accent-3); letter-spacing: 1px; }
 
 /* Success Screen Elements */
-.stat-row { font-family: var(--font-retro); font-size: 10px; margin-bottom: 15px; color: var(--accent-2); line-height: 1.5; }
+.stat-row { font-family: var(--font-retro); font-size: 10px; margin-bottom: 15px; color: var(--accent-2); line-height: 1.5; text-align: left; }
 .stat-val { color: #0f0; text-shadow: 0 0 8px #0f0; }
 .score-tally { font-family: var(--font-retro); font-size: 24px; color: var(--accent-3); margin: 30px 0; text-shadow: 0 0 15px var(--accent-3); letter-spacing: 2px; }
 .blink-text { animation: blink 1s steps(2, start) infinite; }
@@ -908,7 +908,7 @@ document.getElementById("orderForm").addEventListener("submit", function(e) {
   btn.style.opacity = "0.7";
 
   // ==========================================
-  // GOOGLE APPS SCRIPT WEB APP URL (YOUR EXACT URL)
+  // GOOGLE APPS SCRIPT WEB APP URL
   // ==========================================
   var googleScriptURL = "https://script.google.com/macros/s/AKfycbzac4D0BcN0gVqqJtzsVlfc_BjQDeFOwdjI60J2wm_0dWGQeMKc8ZOqGvaEZhaLL10g/exec";
 
