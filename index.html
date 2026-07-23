@@ -90,24 +90,45 @@ body {
 
 #hero-screen { display: flex; opacity: 1; transform: scale(1); cursor: pointer; position: relative; }
 
-/* --- SLEEK AUDIO TOGGLE CORNER BUTTON (Now inside Hero Screen) --- */
-.audio-toggle-btn {
-  position: absolute; top: 20px; right: 20px; z-index: 10000;
-  background: rgba(0,0,0,0.4); border: 1px solid rgba(255,255,255,0.1);
-  color: var(--text-muted); font-family: var(--font-retro); font-size: 10px;
-  padding: 10px 16px; cursor: pointer; border-radius: 20px;
-  backdrop-filter: blur(10px); transition: all 0.3s ease;
-}
-.audio-toggle-btn:hover { background: rgba(255,255,255,0.1); color: var(--text); }
-.audio-toggle-btn.active { color: var(--accent-3); border-color: var(--accent-3); box-shadow: 0 0 15px rgba(251, 191, 36, 0.2); }
-
 /* --- HERO (LOADING) SCREEN --- */
 .hero-logo { 
   font-family: var(--font-retro); font-size: clamp(36px, 8vw, 80px); font-weight: 700; text-align: center; color: transparent; 
   -webkit-text-stroke: 1px var(--text);
-  margin-bottom: 20px; z-index: 10; padding: 0 15px; position: relative;
+  margin-bottom: 10px; z-index: 10; padding: 0 15px; position: relative;
   text-shadow: 0 0 20px rgba(255,255,255,0.2);
 }
+
+/* --- BIG ACCESSIBLE AUDIO BUTTON (Front Page Only) --- */
+.audio-toggle-btn {
+  position: relative; 
+  z-index: 10000;
+  background: rgba(0,0,0,0.5); 
+  border: 2px solid var(--accent-2);
+  color: var(--text); 
+  font-family: var(--font-retro); 
+  font-size: clamp(12px, 3vw, 16px);
+  font-weight: 700;
+  padding: 16px 36px; 
+  margin: 30px 0;
+  cursor: pointer; 
+  border-radius: 50px;
+  backdrop-filter: blur(10px); 
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  box-shadow: 0 0 20px rgba(6, 182, 212, 0.2);
+}
+.audio-toggle-btn:hover { 
+  background: rgba(6, 182, 212, 0.2); 
+  transform: scale(1.05);
+  box-shadow: 0 0 30px rgba(6, 182, 212, 0.4); 
+}
+.audio-toggle-btn.active { 
+  color: var(--accent-3); 
+  border-color: var(--accent-3); 
+  box-shadow: 0 0 30px rgba(251, 191, 36, 0.3); 
+}
+
 .hero-prompt { 
   font-family: var(--font-retro); font-size: clamp(11px, 3vw, 14px); color: var(--accent-2); 
   animation: pulseOpacity 2s infinite ease-in-out; z-index: 10; text-align: center; 
@@ -170,7 +191,7 @@ body {
 .checkbox-row input:checked { background: var(--accent-2); border-color: var(--accent-2); background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='20 6 9 17 4 12'%3E%3C/polyline%3E%3C/svg%3E"); background-size: 70%; background-position: center; background-repeat: no-repeat;}
 
 .radio-group { display: flex; gap: 20px; flex-wrap: wrap; background: rgba(0,0,0,0.1); padding: 15px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.05); }
-.radio-group label { display: flex; align-items: center; gap: 8px; color: var(--text); font-family: var(--font-main); font-size: 13px; font-weight: 800; cursor: pointer; margin-top: 0;}
+.radio-group label { display: flex; align-items: center; gap: 8px; color: var(--text); font-family: var(--font-main); font-size: 13px; cursor: pointer; margin-top: 0;}
 
 .bkash-info-box { background: rgba(217, 70, 239, 0.1); border: 1px solid rgba(217, 70, 239, 0.3); padding: 15px; border-radius: 10px; margin-top: 5px; display: flex; flex-direction: column; gap: 10px; }
 .bkash-number { font-family: var(--font-retro); font-size: 13px; color: var(--accent-1); }
@@ -247,8 +268,9 @@ body {
   .cat-header { flex-direction: column; padding: 1.2rem; }
   .welcome-pill { justify-content: space-between; width: 100%; margin-top: 15px; padding: 12px 15px;}
   .retro-box { padding: 2rem 1.2rem; width: 95%; border-radius: 20px;}
-  .audio-toggle-btn { top: 15px; right: 15px; padding: 8px 12px; font-size: 8px; }
   .cam-grid { gap: 25px; }
+  .hero-logo { font-size: clamp(40px, 12vw, 60px); }
+  .ttt-cell { font-size: 40px; }
 }
 </style>
 </head>
@@ -268,10 +290,13 @@ body {
 <!-- SCREEN 1: HERO SECTION (LOADING/ENTRY) -->
 <div id="hero-screen" class="screen-layer visible">
   
-  <!-- AUDIO TOGGLE BUTTON (Inside Hero Only) -->
-  <button id="audioToggleBtn" class="audio-toggle-btn" onclick="toggleAudio(event)">AUDIO: OFF</button>
-  
   <h1 class="hero-logo">SILLY SOCKS</h1>
+  
+  <!-- BIG ACCESSIBLE AUDIO TOGGLE BUTTON -->
+  <button id="audioToggleBtn" class="audio-toggle-btn" onclick="toggleAudio(event)">
+    🔈 AUDIO: OFF
+  </button>
+  
   <p class="hero-prompt">TAP ANYWHERE TO ENTER</p>
 </div>
 
@@ -569,7 +594,6 @@ drawCanvas();
 let audioCtx = null;
 let audioEnabled = false;
 let isBgmRunning = false;
-let appliedBroCode = "";
 
 function toggleAudio(e) {
   if(e) e.stopPropagation();
@@ -582,12 +606,12 @@ function toggleAudio(e) {
       audioCtx = new AudioContext();
     }
     if (audioCtx.state === 'suspended') audioCtx.resume();
-    btn.innerText = "AUDIO: ON";
+    btn.innerText = "🔊 AUDIO: ON";
     btn.classList.add('active');
     startBGM();
     soundClick();
   } else {
-    btn.innerText = "AUDIO: OFF";
+    btn.innerText = "🔈 AUDIO: OFF";
     btn.classList.remove('active');
     stopBGM();
   }
@@ -658,7 +682,8 @@ const successScreen = document.getElementById('success-screen');
 
 function leaveHero(e) {
   if (hasEnteredHero) return;
-  // Ignore clicks on the audio toggle button itself so it doesn't bypass the screen
+  
+  // Do NOT transition if they clicked the audio toggle button
   if(e && e.target && (e.target.id === 'audioToggleBtn' || e.target.closest('#audioToggleBtn'))) return; 
 
   hasEnteredHero = true;
@@ -782,6 +807,7 @@ function updateLeaderboard(name) {
 function renderLeaderboard() { updateLeaderboard(); }
 
 // --- Gatekeeper Logic ---
+let appliedBroCode = "";
 var allowed = "mafruha|siam|abid|authai|rifah|fatima|azha|namira|maddie|nafisa|nayla|faysol|labby|mamun|sayemrohitkarmakar|nafisalubabaetu|mirzaabdulkhaled|namiraahmedshams|ishmamalam|farhanmasud|aunu|labbyahsan|jarinsubahshifa|nafisanoor|sabilaanjum|miswaralam|abdullahaljawad|tasin|arshan|ahnaf";
 var pretty   = "Mafruha|Siam|Abid|Authai|Rifah|Fatima|Azha|Namira|Maddie|Nafisa|Nayla|Faysol|Labby|Mamun|Sayem Rohit Karmakar|Nafisa Lubaba Etu|Mirza Abdul Khaled|Namira Ahmed Shams|Ishmam Alam|Farhan Masud|Aunu|Labby Ahsan|Jarin Subah Shifa|Nafisa Noor|Sabila Anjum|Miswar Alam|Abdullah Al Jawad|Tasin|Arshan|Ahnaf";
 var allowedList = allowed.split("|");
