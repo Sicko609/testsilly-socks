@@ -140,15 +140,15 @@ body {
 .ttt-cell.x { color: var(--accent-1); text-shadow: 0 0 15px var(--accent-1); }
 .ttt-cell.o { color: var(--accent-2); text-shadow: 0 0 15px var(--accent-2); }
 #ttt-status { font-family: var(--font-retro); font-size: 10px; color: var(--accent-3); margin-top: 10px; line-height: 1.6; animation: pulseLogo 1.5s infinite alternate;}
-.btn-group { display: flex; flex-wrap: wrap; justify-content: center; gap: 5px; margin-top: 15px; }
+.btn-group { display: flex; flex-direction: column; gap: 5px; margin-top: 15px; }
 
 /* --- SCREEN 4: GATE / HACKING --- */
 .lock-icon { font-size: 40px; margin-bottom: 15px; filter: drop-shadow(0 0 10px var(--accent-1)); transition: all 0.5s ease; }
 .gate-title { font-family: var(--font-retro); font-size: 16px; line-height: 1.5; margin-bottom: 15px; color: var(--accent-1); text-shadow: 2px 2px 0 #000; transition: color 0.5s ease; }
-.gate-sub { font-size: 11px; font-weight: 800; font-family: var(--font-retro); color: var(--text-muted); margin-bottom: 2rem; line-height: 1.8;}
+.gate-sub { font-size: 11px; font-weight: 800; font-family: var(--font-retro); color: var(--text-muted); margin-bottom: 1.5rem; line-height: 1.8;}
 
 .input-row { display: flex; flex-direction: row; gap: 10px; margin-bottom: 15px; justify-content: center; align-items: center;}
-.retro-input, .retro-select { flex: 1; min-width: 0; padding: 12px; background: #000; border: 3px solid var(--card-border); color: #0f0; font-family: var(--font-retro); font-size: 10px; outline: none; box-shadow: inset 0 0 10px rgba(0,255,0,0.2); text-transform: uppercase; }
+.retro-input, .retro-select { flex: 1; min-width: 0; padding: 12px; background: #000; border: 3px solid var(--card-border); color: #0f0; font-family: var(--font-retro); font-size: 10px; outline: none; box-shadow: inset 0 0 10px rgba(0,255,0,0.2); text-transform: uppercase; width: 100%;}
 .retro-input:focus, .retro-select:focus { border-color: var(--accent-2); box-shadow: inset 0 0 15px var(--accent-2); }
 #errMsg { font-family: var(--font-retro); font-size: 10px; color: var(--accent-1); min-height: 20px; display: none; margin-top: 10px; }
 
@@ -157,16 +157,35 @@ body {
 .hacked-icon { filter: drop-shadow(0 0 15px #0f0) !important; transform: scale(1.2); }
 
 /* --- SCREEN 5: CHECKOUT UI --- */
-#checkout-screen { overflow-y: auto; padding: 40px 0; justify-content: flex-start; }
-.checkout-form { display: flex; flex-direction: column; gap: 15px; text-align: left; margin-top: 20px;}
-.checkout-form label { font-size: 10px; font-family: var(--font-retro); color: var(--accent-2); margin-top: 10px;}
-.tc-box { height: 120px; overflow-y: auto; background: #000; border: 2px dashed var(--accent-1); padding: 10px; font-size: 10px; color: var(--text-muted); line-height: 1.6; margin-bottom: 10px; }
+#checkout-screen { overflow-y: auto; padding: 20px 0; justify-content: flex-start; -webkit-overflow-scrolling: touch; }
+.checkout-form { display: flex; flex-direction: column; gap: 12px; text-align: left; margin-top: 15px;}
+.checkout-form label { font-size: 9px; font-family: var(--font-retro); color: var(--accent-2); margin-top: 6px;}
+.tc-box { height: 110px; overflow-y: auto; background: #000; border: 2px dashed var(--accent-1); padding: 10px; font-size: 9px; color: var(--text-muted); line-height: 1.6; margin-bottom: 10px; -webkit-overflow-scrolling: touch;}
 .tc-box strong { color: var(--accent-1); font-weight: 900;}
 .checkbox-row { display: flex; align-items: flex-start; gap: 10px; font-size: 10px; font-weight: 800; line-height: 1.4; color: #fff;}
-.checkbox-row input { appearance: none; width: 16px; height: 16px; border: 2px solid var(--card-border); background: var(--bg); cursor: pointer; min-width: 16px; margin-top: 2px;}
+.checkbox-row input { appearance: none; width: 18px; height: 18px; border: 2px solid var(--card-border); background: var(--bg); cursor: pointer; min-width: 18px; margin-top: 2px;}
 .checkbox-row input:checked { background: var(--accent-3); border-color: var(--accent-3); box-shadow: inset 0 0 0 2px #000; }
-.radio-group { display: flex; gap: 15px; flex-wrap: wrap; }
-.radio-group label { display: flex; align-items: center; gap: 8px; color: #fff; font-family: var(--font-main); font-size: 12px; margin-top: 0;}
+.radio-group { display: flex; gap: 15px; flex-wrap: wrap; background: #000; padding: 10px; border: 2px solid var(--card-border); }
+.radio-group label { display: flex; align-items: center; gap: 8px; color: #fff; font-family: var(--font-main); font-size: 11px; margin-top: 0; font-weight: 800; cursor: pointer;}
+
+/* bKash Alert Box */
+.bkash-info-box {
+  background: rgba(255, 0, 127, 0.15);
+  border: 2px dashed var(--accent-1);
+  padding: 12px;
+  border-radius: 4px;
+  margin-top: 5px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.bkash-number {
+  font-family: var(--font-retro);
+  font-size: 11px;
+  color: var(--accent-3);
+  text-shadow: 0 0 8px var(--accent-3);
+  letter-spacing: 1px;
+}
 
 /* --- SCREEN 6: CATALOG UI --- */
 #catalog { display: none; min-height: 100vh; opacity: 0; transform: translateY(100px); transition: all 0.8s cubic-bezier(0.2, 1, 0.3, 1); padding-bottom: 50px; z-index: 10; position: relative;}
@@ -237,6 +256,7 @@ body {
   .cat-header { flex-direction: column; align-items: center; text-align: center; }
   .welcome-pill { justify-content: center; text-align: center; }
   .theme-toggle-btn { margin-left: 0; margin-top: 5px; }
+  .retro-box { padding: 1.5rem 1rem; width: 95%; }
 }
 </style>
 </head>
@@ -315,10 +335,9 @@ body {
 
 <!-- SCREEN 5: SECURE CHECKOUT -->
 <div id="checkout-screen" class="screen-layer">
-  <div class="retro-box" style="margin: 40px auto 20px auto; max-height: 90vh; overflow-y: auto;">
+  <div class="retro-box" style="margin: 20px auto; max-height: 90vh; overflow-y: auto;">
     <div class="gate-title" style="color: var(--accent-3);">SECURE CHECKOUT</div>
     
-    <!-- IMPORTANT: Submit logic is handled entirely by JavaScript Fetch API -->
     <form id="orderForm" class="checkout-form">
       
       <label>> FULL NAME *</label>
@@ -365,9 +384,11 @@ body {
         <label><input type="radio" name="Payment Method" value="Bkash" required onclick="toggleBkash(true)"> Bkash</label>
       </div>
 
-      <div id="bkash-field" style="display:none; flex-direction:column; gap:10px;">
-        <label>> BKASH TRANSACTION ID</label>
-        <input type="text" name="Transaction ID" class="retro-input" placeholder="TRX ID..." />
+      <!-- bKash Send Money Notification Banner & TRX Input -->
+      <div id="bkash-field" class="bkash-info-box" style="display:none;">
+        <div class="bkash-number">> SEND MONEY (PERSONAL): 01961515240</div>
+        <label style="margin-top: 4px;">> BKASH TRANSACTION ID *</label>
+        <input type="text" name="Transaction ID" id="trx-input" class="retro-input" placeholder="ENTER TRX ID..." />
       </div>
 
       <label>> LEGAL AGREEMENT</label>
@@ -404,9 +425,7 @@ body {
 
   <!-- Arcade Leaderboard Ticker -->
   <div class="ticker-wrap" id="leaderboardWrap">
-    <div class="ticker" id="lbTickerContainer">
-      <!-- Populated via JS -->
-    </div>
+    <div class="ticker" id="lbTickerContainer"></div>
   </div>
   
   <div class="disc-bar">
@@ -453,7 +472,6 @@ function powerOn(e) {
   if (e) { e.preventDefault(); e.stopPropagation(); }
   
   isPoweredOn = true;
-  
   const AudioContext = window.AudioContext || window.webkitAudioContext;
   audioCtx = new AudioContext();
   if(audioCtx.state === 'suspended') audioCtx.resume();
@@ -524,7 +542,6 @@ function soundHack() {
 // Global touch/click to unlock audio just in case
 document.body.addEventListener('click', () => { if(!isPoweredOn) powerOn(); }, {once:true});
 document.body.addEventListener('touchstart', () => { if(!isPoweredOn) powerOn(); }, {once:true});
-
 
 // --- Theme Toggle ---
 function toggleTheme() {
@@ -684,24 +701,17 @@ function updateLeaderboard(name) {
   let localLb = JSON.parse(localStorage.getItem('sillySocksLB') || '[]');
   let globalLb = ["SHIHAB", "SIAM", "ABID", "MADDIE", "MAMUN"];
   
-  // If player won, push their name
   if(name && name !== "GUEST") localLb.unshift(name.toUpperCase());
-  
   localStorage.setItem('sillySocksLB', JSON.stringify(localLb));
   
-  // Combine for ticker
   let combined = [...localLb, ...globalLb];
   let uniqueLb = [...new Set(combined)].slice(0, 10);
-  
   let tickerHTML = "👑 ARCADE CHAMPIONS: ";
   tickerHTML += uniqueLb.map((n, i) => `#${i+1} ${n}`).join(" ⚡ ") + " 👑";
   
   document.getElementById('lbTickerContainer').innerHTML = `<span>${tickerHTML}</span><span>${tickerHTML}</span>`;
 }
-
-function renderLeaderboard() {
-  updateLeaderboard(); // Run update with no new name just to render
-}
+function renderLeaderboard() { updateLeaderboard(); }
 
 // --- Gatekeeper Logic ---
 var allowed = "mafruha|siam|abid|authai|rifah|fatima|azha|namira|maddie|nafisa|nayla|faysol|labby|mamun|sayemrohitkarmakar|nafisalubabaetu|mirzaabdulkhaled|namiraahmedshams|ishmamalam|farhanmasud|aunu|labbyahsan|jarinsubahshifa|nafisanoor|sabilaanjum|miswaralam|abdullahaljawad|tasin|arshan|ahnaf";
@@ -822,7 +832,7 @@ function openCheckout(itemColor, isFlash, isWithSD) {
       addonDropdown.value = isWithSD ? "With SD card 1994" : "Without SD card 1582";
     }
 
-    // Auto-fill Bro Code if they hacked via gate
+    // Auto-fill Bro Code if they entered code at gate
     document.getElementById('form-brocode').value = appliedBroCode;
     
     checkoutScreen.style.display = "flex";
@@ -849,10 +859,20 @@ function cancelCheckout() {
 }
 
 function toggleBkash(show) {
-  document.getElementById('bkash-field').style.display = show ? "flex" : "none";
+  var bkashField = document.getElementById('bkash-field');
+  var trxInput = document.getElementById('trx-input');
+  
+  if (show) {
+    bkashField.style.display = "flex";
+    trxInput.setAttribute('required', 'true');
+  } else {
+    bkashField.style.display = "none";
+    trxInput.removeAttribute('required');
+    trxInput.value = '';
+  }
 }
 
-// Submitting the Order Form Invisibly via AJAX to Google Script
+// --- AJAX Form Submit to Google Apps Script ---
 document.getElementById("orderForm").addEventListener("submit", function(e) {
   e.preventDefault(); 
   soundClick();
@@ -862,36 +882,47 @@ document.getElementById("orderForm").addEventListener("submit", function(e) {
   btn.style.pointerEvents = "none";
   btn.style.opacity = "0.7";
 
-  var formData = new FormData(this);
-  
   // ==========================================
   // GOOGLE APPS SCRIPT WEB APP URL
   // ==========================================
-  var googleScriptURL = "https://script.google.com/macros/s/AKfycbzLvK0XJD6cROtesbrDPAUS-PBohgt2Mp2yA-YJELGlWf_5EnF4bSfAx9_NvRS6CWm9/exec";
+  var googleScriptURL = "https://script.google.com/macros/s/AKfycby8Zalka_7StoIOlNm1_eHwJ-LgQnZw4keb8RZ5iP2yRv_mHbpfP3FiTMZWATcJp8al/exec";
 
-  fetch(googleScriptURL, { method: 'POST', body: formData, mode: 'no-cors' })
-    .then(response => {
-      btn.innerText = "ORDER SECURED!";
-      btn.style.background = "#0f0";
-      soundWin();
-      
-      setTimeout(() => {
-         alert("YOUR ORDER HAS BEEN PLACED SUCCESSFULLY!");
-         cancelCheckout();
-         btn.innerText = "CONFIRM ORDER";
-         btn.style.pointerEvents = "auto";
-         btn.style.opacity = "1";
-         btn.style.background = "var(--accent-3)";
-         document.getElementById("orderForm").reset();
-         toggleBkash(false);
-      }, 2000);
-    })
-    .catch(error => {
-       soundError();
-       btn.innerText = "ERROR. TRY AGAIN.";
+  // Convert FormData to URLSearchParams for Apps Script DoPost Compatibility
+  var searchParams = new URLSearchParams();
+  var formData = new FormData(this);
+  for (var pair of formData.entries()) {
+    searchParams.append(pair[0], pair[1]);
+  }
+
+  fetch(googleScriptURL, {
+    method: 'POST',
+    mode: 'no-cors',
+    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+    body: searchParams.toString()
+  })
+  .then(response => {
+    btn.innerText = "ORDER SECURED!";
+    btn.style.background = "#0f0";
+    soundWin();
+    
+    setTimeout(() => {
+       alert("YOUR ORDER HAS BEEN PLACED SUCCESSFULLY!");
+       cancelCheckout();
+       btn.innerText = "CONFIRM ORDER";
        btn.style.pointerEvents = "auto";
        btn.style.opacity = "1";
-    });
+       btn.style.background = "var(--accent-3)";
+       document.getElementById("orderForm").reset();
+       toggleBkash(false);
+    }, 1500);
+  })
+  .catch(error => {
+     soundError();
+     alert("TRANSMISSION ERROR. PLEASE TRY AGAIN.");
+     btn.innerText = "CONFIRM ORDER";
+     btn.style.pointerEvents = "auto";
+     btn.style.opacity = "1";
+  });
 });
 
 // --- Render Grids ---
@@ -906,18 +937,17 @@ function getPriceHTML(isFlash, isWithSD) {
 }
 
 var camData = [
-  { n:"Yellow 1985", v:"Sunny 80s vibes", i:"c1.jpg", c:"Yellow" },
+  { n:"Yellow 1985", v:"Sunny 80s vibes", i:"c1.jpg", c:"Yellow" }, 
   { n:"Black Retro",  v:"Neon noir aesthetic", i:"c2.jpg", c:"Black" },
-  { n:"Blue Mini",     v:"Cool coastal feel",   i:"c3.jpg", c:"Blue" },
-  { n:"Street Red",     v:"Bold streetwear", i:"c4.jpg", c:"Red" },
-  { n:"Minimal White",  v:"Clean & modern",      i:"c5.jpg", c:"White" },
+  { n:"Blue Mini", v:"Cool coastal feel", i:"c3.jpg", c:"Blue" }, 
+  { n:"Street Red", v:"Bold streetwear", i:"c4.jpg", c:"Red" },
+  { n:"Minimal White", v:"Clean & modern", i:"c5.jpg", c:"White" }, 
   { n:"Green Personality", v:"90s personality", i:"c6.jpg", c:"Green" }
 ];
-
 var camData2 = [
-  { n:"1988 Orange Flash", v:"Retro vintage stripes", i:"f1.jpg", c:"Yellow" },
+  { n:"1988 Orange Flash", v:"Retro vintage stripes", i:"f1.jpg", c:"Yellow" }, 
   { n:"1988 Yellow Flash", v:"Sunny 80s vibes", i:"f2.jpg", c:"Yellow" },
-  { n:"Blue Wave Flash", v:"Cool retro stripes", i:"f3.jpg", c:"Blue" },
+  { n:"Blue Wave Flash", v:"Cool retro stripes", i:"f3.jpg", c:"Blue" }, 
   { n:"Street Red Flash", v:"Bold arcade energy", i:"f4.jpg", c:"Red" }
 ];
 
@@ -940,57 +970,37 @@ function renderGrid(dataArray, gridId, prefix) {
       '<div class="cam-info">' +
         '<div class="cam-name">' + c.n + '</div>' +
         '<div class="cam-vibe">' + c.v + '</div>' +
-        '<div class="cam-perks">' +
-          '<span class="perk">>> FREE KEYCHAIN GIFT</span>' +
-          '<span class="perk">>> ZERO SHIPPING FEE</span>' +
-          '<span class="perk" style="color:var(--accent-1);">>> DM ON IG FOR 10% OFF</span>' +
-        '</div>' +
+        '<div class="cam-perks"><span class="perk">>> FREE KEYCHAIN</span><span class="perk">>> ZERO SHIPPING</span></div>' +
         '<div class="variant-toggle">' +
           '<label class="toggle-opt"><input type="radio" id="sdopt_' + prefix + x + '_with" name="sdopt' + prefix + x + '" value="with" checked onchange="updatePrice(this, \'' + prefix + x + '\'); soundClick();"> [X] 8GB SD CARD</label>' +
           '<label class="toggle-opt"><input type="radio" id="sdopt_' + prefix + x + '_without" name="sdopt' + prefix + x + '" value="without" onchange="updatePrice(this, \'' + prefix + x + '\'); soundClick();"> [ ] NO SD CARD</label>' +
         '</div>' +
-        '<div class="price-row" id="priceRow' + prefix + x + '">' +
-          initialPriceHTML +
-        '</div>' +
+        '<div class="price-row" id="priceRow' + prefix + x + '">' + initialPriceHTML + '</div>' +
         '<button class="buy-btn" onclick="openCheckout(\'' + c.c + '\', ' + isFlash + ', document.getElementById(\'sdopt_' + prefix + x + '_with\').checked)">SECURE ITEM</button>' +
       '</div>';
     grid.appendChild(card);
   }
 }
 
-renderGrid(camData, "camGrid", "p1_");
-renderGrid(camData2, "camGrid2", "p2_");
+renderGrid(camData, "camGrid", "p1_"); renderGrid(camData2, "camGrid2", "p2_");
 
-// --- Tabs Logic ---
 function showPage(page) {
   soundClick();
   document.getElementById('tab1').className = 'page-tab' + (page === 1 ? ' active' : '');
   document.getElementById('tab2').className = 'page-tab' + (page === 2 ? ' active' : '');
-  
   const oldBody = document.getElementById(page === 1 ? 'page2Body' : 'page1Body');
   const newBody = document.getElementById(page === 1 ? 'page1Body' : 'page2Body');
-  
-  oldBody.style.display = 'none';
-  newBody.style.display = 'block';
-  newBody.style.opacity = '0';
-  newBody.style.transform = 'translateY(20px)';
-  
-  setTimeout(() => {
-    newBody.style.transition = 'all 0.4s ease';
-    newBody.style.opacity = '1';
-    newBody.style.transform = 'translateY(0)';
-  }, 10);
+  oldBody.style.display = 'none'; newBody.style.display = 'block'; newBody.style.opacity = '0'; newBody.style.transform = 'translateY(20px)';
+  setTimeout(() => { newBody.style.transition = 'all 0.4s ease'; newBody.style.opacity = '1'; newBody.style.transform = 'translateY(0)'; }, 10);
 }
 
 function updatePrice(radio, index) {
   var isFlash = index.startsWith('p2_');
   var isWithSD = radio.value === 'with';
-  var priceRow = document.getElementById('priceRow' + index);
-  priceRow.innerHTML = getPriceHTML(isFlash, isWithSD);
+  document.getElementById('priceRow' + index).innerHTML = getPriceHTML(isFlash, isWithSD);
 }
 
-// Init
-updateLeaderboard(""); // Initialize leaderboard on load
+updateLeaderboard(""); 
 showPage(1);
 </script>
 </body>
