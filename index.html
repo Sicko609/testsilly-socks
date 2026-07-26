@@ -93,6 +93,12 @@ body {
 @keyframes pulseLogo { 0% { transform: scale(1) skewX(0deg); text-shadow: 0 0 10px var(--accent-1), 4px 4px 0px var(--accent-2); } 100% { transform: scale(1.05) skewX(-5deg); text-shadow: 0 0 25px var(--accent-1), 6px 6px 0px var(--accent-2); } }
 .hero-prompt { font-family: var(--font-retro); font-size: clamp(10px, 3vw, 14px); color: var(--accent-3); animation: blink 1s steps(2, start) infinite; z-index: 10; text-align: center; padding: 0 10px; line-height: 1.5; }
 @keyframes blink { to { visibility: hidden; } }
+.hero-cta-group { z-index: 20; display: flex; flex-direction: column; align-items: center; gap: 14px; margin-top: 30px; }
+.hero-enter-btn { font-family: var(--font-retro); font-size: clamp(11px, 3vw, 14px); background: var(--accent-3); color: #000; border: 3px solid #fff; padding: 16px 28px; box-shadow: 4px 4px 0 var(--accent-1); cursor: pointer; text-transform: uppercase; transition: all 0.2s; }
+.hero-enter-btn:hover { transform: translate(-2px,-2px); box-shadow: 6px 6px 0 var(--accent-1); }
+.hero-enter-btn:active { transform: translate(2px,2px); box-shadow: 0 0 0 transparent; }
+.hero-game-link { font-family: var(--font-retro); font-size: 9px; color: var(--accent-2); background: transparent; border: none; text-decoration: underline; cursor: pointer; letter-spacing: 0.5px; padding: 6px; }
+.hero-sound-toggle { position: fixed; top: 16px; right: 16px; z-index: 30; font-family: var(--font-retro); font-size: 8px; background: #000; color: var(--accent-2); border: 2px solid var(--accent-2); padding: 8px 10px; cursor: pointer; }
 
 #sock-rain { position: absolute; top: 0; left: 0; width: 100%; height: 100%; overflow: hidden; pointer-events: none; z-index: 1;}
 .falling-sock { position: absolute; top: -10%; font-size: 35px; animation: dropSock linear infinite; filter: drop-shadow(0 0 10px var(--accent-1)); }
@@ -111,7 +117,7 @@ body {
 .ttt-cell:hover { background: rgba(255,255,255,0.1); }
 .ttt-cell.x { color: var(--accent-1); text-shadow: 0 0 15px var(--accent-1); }
 .ttt-cell.o { color: var(--accent-2); text-shadow: 0 0 15px var(--accent-2); }
-#ttt-status { font-family: var(--font-retro); font-size: 10px; color: var(--accent-3); margin-top: 10px; line-height: 1.6; animation: pulseLogo 1.5s infinite alternate;}
+#ttt-status { font-family: var(--font-retro); font-size: 10px; color: var(--accent-3); margin-top: 10px; line-height: 1.6; animation: pulseLogo 1.5s infinite alternate; transition: color 0.3s;}
 .btn-group { display: flex; flex-direction: column; gap: 5px; margin-top: 15px; }
 
 /* --- SCREEN 3: GATE / HACKING --- */
@@ -131,7 +137,6 @@ body {
 .checkout-form { display: flex; flex-direction: column; gap: 12px; text-align: left; margin-top: 5px;}
 .checkout-form label { font-size: 9px; font-family: var(--font-retro); color: var(--accent-2); margin-top: 6px;}
 
-/* Lucrative Checkout Banner */
 .checkout-hype-banner { background: rgba(0, 255, 0, 0.15); border: 2px dashed #0f0; color: #0f0; padding: 12px; text-align: center; font-size: 11px; font-family: var(--font-retro); line-height: 1.5; margin-bottom: 15px; box-shadow: 0 0 10px rgba(0,255,0,0.2); text-shadow: 0 0 5px #0f0;}
 
 .tc-box { height: 90px; overflow-y: auto; background: #000; border: 2px dashed var(--accent-1); padding: 10px; font-size: 9px; color: var(--text-muted); line-height: 1.6; margin-bottom: 10px; -webkit-overflow-scrolling: touch;}
@@ -142,15 +147,12 @@ body {
 .radio-group { display: flex; gap: 15px; flex-wrap: wrap; background: #000; padding: 10px; border: 2px solid var(--card-border); }
 .radio-group label { display: flex; align-items: center; gap: 8px; color: #fff; font-family: var(--font-main); font-size: 11px; margin-top: 0; font-weight: 800; cursor: pointer;}
 
-/* bKash Alert Box */
 .bkash-info-box { background: rgba(255, 0, 127, 0.15); border: 2px dashed var(--accent-1); padding: 12px; border-radius: 4px; margin-top: 5px; display: flex; flex-direction: column; gap: 8px; }
 .bkash-number { font-family: var(--font-retro); font-size: 11px; color: var(--accent-3); text-shadow: 0 0 8px var(--accent-3); letter-spacing: 1px; }
 
-/* Trust Badges under Checkout */
 .trust-badges { display: flex; justify-content: center; gap: 10px; font-size: 8px; font-family: var(--font-retro); color: var(--text-muted); margin-top: 10px; text-align: center; flex-wrap: wrap;}
 .trust-badges span { background: #000; padding: 6px; border: 1px solid #333; }
 
-/* Success Screen Elements */
 .stat-row { font-family: var(--font-retro); font-size: 10px; margin-bottom: 15px; color: var(--accent-2); line-height: 1.5; text-align: left; }
 .stat-val { color: #0f0; text-shadow: 0 0 8px #0f0; }
 .score-tally { font-family: var(--font-retro); font-size: 24px; color: var(--accent-3); margin: 30px 0; text-shadow: 0 0 15px var(--accent-3); letter-spacing: 2px; }
@@ -173,12 +175,12 @@ body {
 .ticker span { margin-right: 30px; }
 @keyframes ticker { 0% { transform: translate3d(0, 0, 0); } 100% { transform: translate3d(-50%, 0, 0); } }
 
-.disc-bar { background: var(--accent-1); padding: 10px 1rem; text-align: center; font-size: 10px; font-family: var(--font-retro); color: #fff; line-height: 1.6; border-bottom: 4px solid #000; }
+.disc-bar { background: var(--accent-1); padding: 10px 1rem; text-align: center; font-size: 10px; font-family: var(--font-retro); color: #fff; line-height: 1.6; border-bottom: 4px solid #000; transition: all 0.5s;}
 
 .cat-body { max-width: 1200px; margin: 0 auto; padding: 3rem 1.5rem 0; }
 .section-label { font-family: var(--font-retro); font-size: 14px; color: var(--text); margin-bottom: 2rem; text-shadow: 2px 2px 0 var(--accent-1); line-height: 1.4; }
 
-/* --- HIGH-CONVERTING PRODUCT CARDS --- */
+/* --- HIGH-CONVERTING PRODUCT CARDS (MIRROR TAB) --- */
 .cam-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 30px; }
 .cam-card { background: var(--card-bg); border: 4px solid var(--card-border); position: relative; transition: all 0.2s ease; box-shadow: 6px 6px 0 var(--accent-1); display: flex; flex-direction: column;}
 @media (hover: hover) { .cam-card:hover { transform: translate(-4px, -4px); box-shadow: 10px 10px 0 var(--accent-2); } .cam-card:hover .cam-img { transform: scale(1.08); filter: contrast(110%); } }
@@ -186,15 +188,13 @@ body {
 .img-wrapper { width: 100%; height: 220px; border-bottom: 4px solid var(--card-border); background: #ffffff; overflow: hidden; position: relative;}
 .cam-img { width: 100%; height: 100%; object-fit: contain; padding: 10px; transition: transform 0.5s; }
 
-/* Live Watcher Tag */
-.live-watch { position: absolute; top: 10px; left: 10px; background: rgba(0,0,0,0.8); color: #fff; font-family: var(--font-main); font-weight: 800; font-size: 9px; padding: 6px 10px; border: 1px solid var(--accent-2); display: flex; align-items: center; gap: 5px;}
+.live-watch { position: absolute; top: 10px; left: 10px; background: rgba(0,0,0,0.8); color: #fff; font-family: var(--font-main); font-weight: 800; font-size: 9px; padding: 6px 10px; border: 1px solid var(--accent-2); display: flex; align-items: center; gap: 5px; z-index: 5;}
 .dot { width: 6px; height: 6px; background: red; border-radius: 50%; animation: blink 1s infinite; }
 
 .cam-info { padding: 15px; flex-grow: 1; display: flex; flex-direction: column; }
 .cam-name { font-family: var(--font-retro); font-size: 13px; margin-bottom: 8px; color: var(--accent-2); text-shadow: 1px 1px 0 #000; line-height: 1.4;}
 .cam-vibe { font-size: 12px; font-weight: 900; color: var(--text-muted); margin-bottom: 12px; text-transform: uppercase;}
 
-/* Hype Meter */
 .hype-meter-container { background: #000; border: 1px solid #333; height: 8px; width: 100%; margin-bottom: 5px; position: relative; }
 .hype-meter-fill { background: var(--accent-1); height: 100%; width: 85%; }
 .hype-text { font-family: var(--font-main); font-size: 9px; font-weight: 800; color: var(--accent-1); text-align: right; margin-bottom: 15px; }
@@ -218,17 +218,52 @@ body {
 .buy-btn:hover { background: var(--accent-2); color: #000; transform: translate(-2px, -2px); box-shadow: 6px 6px 0 var(--card-border); }
 .buy-btn:active { transform: translate(4px, 4px); box-shadow: 0 0 0 transparent; }
 
-/* Tabs */
 .page-nav { display: flex; gap: 10px; padding: 0 1rem; margin-top: 2rem; justify-content: center; flex-wrap: wrap;}
 .page-tab { background: var(--bg); border: 3px solid var(--card-border); padding: 10px 15px; font-family: var(--font-retro); font-size: 9px; color: var(--text); cursor: pointer; box-shadow: 4px 4px 0 var(--card-border); transition: all 0.2s; line-height: 1.4;}
 .page-tab.active { background: var(--accent-1); color: #fff; transform: translate(2px, 2px); box-shadow: 2px 2px 0 var(--card-border); }
 
 .footer { text-align: center; padding: 3rem 1.5rem; font-family: var(--font-retro); font-size: 9px; color: var(--text-muted); border-top: 2px dashed var(--card-border); margin-top: 3rem; line-height: 2;}
 
-/* --- IG FLOATING BUTTON --- */
-.ig-float-btn { position: fixed; bottom: 20px; right: 20px; width: 50px; height: 50px; background: var(--accent-1); display: flex; align-items: center; justify-content: center; border: 3px solid var(--card-border); cursor: pointer; z-index: 9999; box-shadow: 4px 4px 0 var(--card-border); transition: all 0.2s; border-radius: 50%;}
-.ig-float-btn:active { transform: translate(4px, 4px); box-shadow: 0 0 0 transparent; }
-.ig-float-btn svg { width: 24px; height: 24px; fill: #fff; }
+/* --- FLAGSHIP PRODUCT LAYOUT --- */
+.explainer-box { background: var(--card-bg); border: 3px solid var(--card-border); padding: 20px; margin-bottom: 30px; box-shadow: 5px 5px 0 var(--accent-2); }
+.explainer-title { font-family: var(--font-retro); font-size: 12px; color: var(--accent-3); margin-bottom: 14px; }
+.explainer-list { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 10px; }
+.explainer-item { font-size: 12px; font-weight: 800; color: var(--text); background: #000; border: 2px dashed var(--accent-2); padding: 10px 12px; line-height: 1.5; }
+
+.urgency-timer { font-family: var(--font-retro); font-size: 10px; background: #000; color: var(--accent-3); border: 2px solid var(--accent-3); padding: 10px 14px; text-align: center; margin-bottom: 20px; line-height: 1.8; }
+.urgency-timer span { color: #0f0; text-shadow: 0 0 8px #0f0; }
+
+.flagship-wrap { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; background: var(--card-bg); border: 4px solid var(--card-border); box-shadow: 8px 8px 0 var(--accent-1); padding: 20px; }
+@media (max-width: 760px) { .flagship-wrap { grid-template-columns: 1fr; } }
+.flagship-img-wrap { background: #fff; border: 3px solid var(--card-border); height: 320px; display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden; }
+.flagship-img-wrap img { width: 100%; height: 100%; object-fit: contain; padding: 20px; }
+.flagship-badge { position: absolute; top: 10px; left: 10px; background: rgba(0,0,0,0.85); color: #0f0; font-size: 9px; font-family: var(--font-main); font-weight: 900; padding: 6px 10px; border: 1px solid #0f0; }
+
+.swatch-row { display: flex; flex-wrap: wrap; gap: 8px; margin: 12px 0 4px; }
+.swatch { width: 32px; height: 32px; border-radius: 50%; border: 3px solid var(--card-border); cursor: pointer; transition: transform 0.15s; }
+.swatch.active { border-color: var(--accent-3); transform: scale(1.15); box-shadow: 0 0 8px var(--accent-3); }
+.swatch-label { font-size: 11px; font-weight: 900; color: var(--accent-2); margin-top: 4px; text-transform: uppercase; }
+
+.qty-nudge { font-size: 10px; font-weight: 800; color: var(--text-muted); margin: 6px 0 12px; line-height: 1.5; }
+
+.sticky-buy-bar { position: fixed; bottom: 0; left: 0; width: 100%; background: var(--card-bg); border-top: 4px solid var(--card-border); padding: 10px 16px; display: none; align-items: center; justify-content: space-between; gap: 12px; z-index: 9998; box-shadow: 0 -4px 15px rgba(0,0,0,0.4); }
+.sticky-buy-bar.visible { display: flex; }
+.sticky-buy-price { font-family: var(--font-retro); font-size: 13px; color: var(--accent-3); }
+.sticky-buy-btn { font-family: var(--font-retro); font-size: 10px; background: var(--accent-1); color: #fff; border: 2px solid var(--card-border); padding: 10px 16px; cursor: pointer; white-space: nowrap; }
+
+/* --- SOCIAL PROOF TOAST & FLOATING BUTTONS --- */
+.floating-actions { position: fixed; bottom: 70px; right: 20px; display: flex; flex-direction: column; gap: 15px; z-index: 9997; }
+.float-btn { width: 50px; height: 50px; display: flex; align-items: center; justify-content: center; border: 3px solid var(--card-border); cursor: pointer; box-shadow: 4px 4px 0 var(--card-border); transition: all 0.2s; border-radius: 50%; }
+.float-btn:active { transform: translate(4px, 4px); box-shadow: 0 0 0 transparent; }
+.float-btn svg { width: 26px; height: 26px; fill: #fff; }
+.ig-btn { background: var(--accent-1); }
+.wa-btn { background: #25D366; border-color: #000; box-shadow: 4px 4px 0 #000; }
+
+#social-proof-toast { position: fixed; bottom: 75px; left: 20px; background: var(--card-bg); border: 3px solid var(--accent-2); padding: 12px 15px; display: flex; align-items: center; gap: 12px; z-index: 9998; box-shadow: 6px 6px 0 rgba(0,0,0,0.5); transform: translateX(-150%); transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275); max-width: 320px;}
+#social-proof-toast.show { transform: translateX(0); }
+.toast-img { width: 45px; height: 45px; object-fit: cover; border: 2px solid #fff; background: #fff;}
+.toast-text { font-family: var(--font-main); font-size: 10px; line-height: 1.4; color: #fff; font-weight: 700;}
+.toast-time { font-size: 8px; color: var(--accent-3); font-family: var(--font-retro); margin-top: 4px;}
 
 @media(max-width: 480px) {
   .input-row { flex-direction: column; align-items: stretch; }
@@ -238,6 +273,8 @@ body {
   .theme-toggle-btn { margin-left: 0; margin-top: 5px; }
   .retro-box { padding: 1.5rem 1rem; width: 95%; }
   .cam-grid { grid-template-columns: 1fr; }
+  #social-proof-toast { bottom: 85px; left: 10px; right: 10px; max-width: calc(100% - 20px); }
+  .floating-actions { bottom: 85px; }
 }
 </style>
 </head>
@@ -253,17 +290,22 @@ body {
 <!-- 80s Perspective Grid -->
 <div class="synth-grid"></div>
 
-<!-- SCREEN 1: HERO SECTION (Silly Socks) -->
+<!-- SCREEN 1: HERO SECTION -->
+<button class="hero-sound-toggle" id="soundToggle" onclick="toggleSound(event)">🔇 SOUND: OFF</button>
 <div id="hero-screen" class="screen-layer">
   <div id="sock-rain"></div>
   <h1 class="hero-logo">SILLY SOCKS</h1>
-  <p class="hero-prompt">>> CLICK OR SCROLL TO ENTER <<</p>
+  <p class="hero-prompt">>> THE NOSTALGIA VAULT IS OPEN <<</p>
+  <div class="hero-cta-group">
+    <button class="hero-enter-btn" onclick="event.stopPropagation(); leaveHero('catalog');">🛒 ENTER THE SHOP</button>
+    <button class="hero-game-link" onclick="event.stopPropagation(); leaveHero('game');">🎮 or play a quick game for a 10% discount code</button>
+  </div>
 </div>
 
 <!-- SCREEN 2: TIC-TAC-TOE BATTLE SECTION -->
 <div id="tictactoe-screen" class="screen-layer">
   <div class="retro-box">
-    <div class="gate-title" style="margin-bottom: 20px;">BEAT THE BOT TO UNLOCK</div>
+    <div class="gate-title" style="margin-bottom: 20px;">BEAT THE BOT TO UNLOCK 10% OFF</div>
     <p class="gate-sub" id="ttt-status">PLAYER 1 IS 'X'. YOUR TURN!</p>
     
     <div class="ttt-board" id="ttt-board-container">
@@ -279,9 +321,9 @@ body {
     </div>
 
     <div class="btn-group">
-      <button class="retro-btn" id="resetTttBtn" style="display:none;" onclick="resetBoard()">REMATCH</button>
+      <button class="retro-btn" id="resetTttBtn" style="display:none;" onclick="resetBoard()">TRY AGAIN (IF YOU DARE)</button>
       <button class="retro-btn" id="skipTttBtn" onclick="showGate(false)">I HAVE A CODE</button>
-      <button class="retro-btn" onclick="skipToCatalog()">SKIP TO CATALOG</button>
+      <button class="retro-btn" id="skipToCatBtn" onclick="skipToCatalog()">SKIP TO CATALOG</button>
     </div>
   </div>
 </div>
@@ -341,7 +383,7 @@ body {
       </select>
 
       <label>> BRO CODE (OPTIONAL)</label>
-      <input type="text" name="BRO CODE" id="form-brocode" class="retro-input" placeholder="FOR 5% OFF & FREE DEL" />
+      <input type="text" name="BRO CODE" id="form-brocode" class="retro-input" placeholder="FOR EXTRA DISCOUNT" />
 
       <label>> QUANTITY *</label>
       <select name="Quantity" class="retro-select" required>
@@ -353,8 +395,9 @@ body {
       <label>> PREFERRED PAYMENT METHOD *</label>
       <div class="radio-group">
         <label><input type="radio" name="Payment Method" value="Cash on Delivery (COD)" required onclick="toggleBkash(false)" checked> Cash on Delivery</label>
-        <label><input type="radio" name="Payment Method" value="Bkash" required onclick="toggleBkash(true)"> Bkash</label>
+        <label><input type="radio" name="Payment Method" value="Bkash" required onclick="toggleBkash(true)"> Bkash (pay now)</label>
       </div>
+      <p style="font-size: 10px; color: var(--accent-3); font-weight:800; margin-top:-4px;">💚 PAY VIA BKASH & SKIP THE COD VERIFICATION CALL — ORDER SHIPS FASTER</p>
 
       <!-- bKash Send Money Notification Banner & TRX Input -->
       <div id="bkash-field" class="bkash-info-box" style="display:none;">
@@ -363,20 +406,29 @@ body {
         <input type="text" name="Transaction ID" id="trx-input" class="retro-input" placeholder="ENTER TRX ID..." />
       </div>
 
-      <label>> LEGAL AGREEMENT</label>
-      <div class="tc-box">
-        <strong>1. ORDER MODIFICATION:</strong> We reserve the right to cancel, modify, change the order value, or delay shipments at our sole discretion.<br><br>
-        <strong>2. CASH ON DELIVERY (COD):</strong> All orders are strictly COD. We reserve the right to take legal action if a customer fails or refuses to receive their order upon delivery attempt.<br><br>
-        <strong>3. DAMAGES & LIABILITY:</strong> The customer is fully responsible for any damage occurring after successful delivery.<br><br>
-        <strong>4. STRICT 3-DAY WARRANTY:</strong> We provide a 3-day replacement warranty covering ONLY manufacturing defects. Claims must be submitted within exactly 3 days of receiving the order. Claims after 3 days are strictly not applicable.<br><br>
-        <strong>5. WARRANTY EXCLUSIONS:</strong> Screen-related issues and ANY physical damage are strictly NOT covered under the warranty policy.
+      <label>> BUYER PROTECTION</label>
+      <div class="checkout-hype-banner" style="margin-bottom:10px; text-align:left; line-height:1.7;">
+        ✅ 3-DAY REPLACEMENT WARRANTY ON MANUFACTURING DEFECTS<br>
+        ✅ REAL HUMAN SUPPORT VIA INSTAGRAM DM<br>
+        ✅ ORDERS PACKED & DISPATCHED WITHIN 24-48H
       </div>
+
+      <details style="margin-bottom:10px;">
+        <summary style="font-family: var(--font-retro); font-size: 9px; color: var(--accent-2); cursor:pointer; padding: 8px 0;">> VIEW FULL TERMS & WARRANTY POLICY</summary>
+        <div class="tc-box" style="margin-top:8px;">
+          <strong>1. ORDER CHANGES:</strong> We may occasionally adjust quantity, size, or dispatch timing on an order and will contact you first if that happens.<br><br>
+          <strong>2. CASH ON DELIVERY:</strong> COD orders are held for you specifically — repeated refusal of COD deliveries may result in future orders from that number requiring advance payment.<br><br>
+          <strong>3. AFTER DELIVERY:</strong> Once an order is delivered in good condition, the customer is responsible for care of the product going forward.<br><br>
+          <strong>4. WARRANTY WINDOW:</strong> Manufacturing defects are replaced free within 3 days of delivery — just message us with a photo/video. Claims outside this window aren't covered.<br><br>
+          <strong>5. NOT COVERED:</strong> Screen issues and physical/accidental damage aren't covered under the warranty.
+        </div>
+      </details>
       
       <label class="checkbox-row">
         <input type="checkbox" required /> I have read and agree to the Privacy Policy.
       </label>
       <label class="checkbox-row">
-        <input type="checkbox" required /> I accept the Terms & Conditions outlined above, including the strict 3-day warranty limits and COD liability.
+        <input type="checkbox" required /> I accept the Terms & Conditions above.
       </label>
 
       <button type="submit" id="submitOrderBtn" class="retro-btn" style="background: var(--accent-3); color: #000; font-size: 12px; margin-top: 15px;">CONFIRM ORDER</button>
@@ -417,16 +469,16 @@ body {
     <div class="header-logo">SILLY SOCKS</div>
     <div class="welcome-pill">
       PLAYER 1: <span id="broName" style="margin: 0 5px;">???</span>
+      <button class="theme-toggle-btn" onclick="openGameFromCatalog()">🎮 GOT A CODE?</button>
       <button class="theme-toggle-btn" id="themeToggle" onclick="toggleTheme()">[ DAY MODE ]</button>
     </div>
   </header>
 
-  <!-- Arcade Leaderboard Ticker -->
   <div class="ticker-wrap" id="leaderboardWrap">
     <div class="ticker" id="lbTickerContainer"></div>
   </div>
   
-  <div class="disc-bar">
+  <div class="disc-bar" id="topDiscBar">
     ⚡ HUGE SAVINGS DROPPED ⚡ FREE DELIVERY UNLOCKED ⚡ VIP ACCESS GRANTED
   </div>
   
@@ -435,30 +487,66 @@ body {
     <div class="page-tab" id="tab2" onclick="showPage(2)">LVL 2: DECOR</div>
   </div>
   
-  <!-- LVL 1 (CAMERAS) -->
+  <!-- LVL 1 (CAMERAS - FLAGSHIP LAYOUT) -->
   <div class="cat-body" id="page1Body">
     <div class="section-label">> THE NOSTALGIA VAULT</div>
-    <div id="camGrid" class="cam-grid"></div>
+
+    <div class="explainer-box">
+      <div class="explainer-title">> WHAT YOU'RE GETTING</div>
+      <div class="explainer-list">
+        <div class="explainer-item">📸 REAL CLIP-ON CAMERA — TAKES PHOTOS & SHORT VIDEOS</div>
+        <div class="explainer-item">🔌 USB RECHARGEABLE — NO BATTERIES NEEDED</div>
+        <div class="explainer-item">🔑 KEYCHAIN SIZE — CLIPS TO BAGS, BELTS, KEYS</div>
+        <div class="explainer-item">💾 SD CARD ADD-ON TO SAVE MORE PHOTOS/VIDEOS</div>
+      </div>
+    </div>
+
+    <div class="urgency-timer" id="dispatchTimer">🕒 ORDER IN THE NEXT <span id="timerText">--:--:--</span> FOR SAME-DAY DISPATCH</div>
+
+    <div class="flagship-wrap" id="flagshipCard">
+      <div class="flagship-img-wrap">
+        <div class="flagship-badge" id="flagshipBadge">🔥 BESTSELLER</div>
+        <img id="flagshipImg" src="cam_white.jpg" alt="Thumb Camera" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'300\' height=\'200\'><rect width=\'100%25\' height=\'100%25\' fill=\'%23333\'/><text x=\'50%25\' y=\'50%25\' font-family=\'monospace\' font-size=\'14\' fill=\'%23fff\' dominant-baseline=\'middle\' text-anchor=\'middle\'>IMG MISSING</text></svg>'" />
+      </div>
+      <div class="cam-info" style="padding: 0;">
+        <div class="cam-name" id="flagshipName">Cloud 99 White</div>
+        <div class="cam-vibe" id="flagshipVibe">Clean & modern</div>
+
+        <div class="swatch-label">> PICK A COLOR</div>
+        <div class="swatch-row" id="swatchRow"></div>
+
+        <div class="cam-perks" style="margin-top: 15px;">
+          <span class="perk perk-highlight">>> FREE DELIVERY NATIONWIDE</span>
+          <span class="perk">>> MYSTERY GIFT CHANCE</span>
+        </div>
+
+        <div class="variant-toggle">
+          <label class="toggle-opt"><input type="radio" id="flagship_sd_without" name="flagship_sd" value="without" checked onchange="updateFlagshipPrice(false); soundClick();"> NO SD CARD</label>
+          <label class="toggle-opt"><input type="radio" id="flagship_sd_with" name="flagship_sd" value="with" onchange="updateFlagshipPrice(true); soundClick();"> 8GB SD CARD</label>
+        </div>
+
+        <p class="qty-nudge">🎁 A lot of people order 2 — one to keep, one to gift. You can set quantity at checkout.</p>
+
+        <div class="price-row" id="flagshipPriceRow"></div>
+        <button class="buy-btn" onclick="buyFlagship()">SECURE ITEM</button>
+      </div>
+    </div>
   </div>
 
   <!-- LVL 2 (ROOM DECOR) -->
   <div class="cat-body" id="page2Body" style="display:none;">
     <div class="section-label">> INDUSTRIAL AESTHETICS</div>
     <div id="mirrorGrid" class="cam-grid">
-      <!-- Traffic Mirror Hardcoded Card -->
       <div class="cam-card">
         <div class="img-wrapper">
-          <div class="live-watch"><div class="dot"></div> WATCHING: 18</div>
+          <div class="live-watch">🔥 SHOP FAVORITE</div>
           <img src="mirror_placeholder.jpg" class="cam-img" alt="Traffic Mirror" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'300\' height=\'200\'><rect width=\'100%\' height=\'100%\' fill=\'#333\'/><text x=\'50%\' y=\'50%\' font-family=\'monospace\' font-size=\'14\' fill=\'#fff\' dominant-baseline=\'middle\' text-anchor=\'middle\'>IMG MISSING</text></svg>'" />
         </div>
         <div class="cam-info">
           <div class="cam-name">CONVEX TRAFFIC MIRROR</div>
           <div class="cam-vibe">INDUSTRIAL ORANGE / DECOR</div>
           
-          <div class="hype-meter-container"><div class="hype-meter-fill" style="width: 78%; background: #0f0;"></div></div>
-          <div class="hype-text" style="color: #0f0;">78% CLAIMED</div>
-
-          <div class="cam-perks">
+          <div class="cam-perks" style="margin-top: 6px;">
             <span class="perk perk-highlight">>> FREE DELIVERY NATIONWIDE</span>
             <span class="perk">>> MYSTERY GIFT CHANCE</span>
           </div>
@@ -489,11 +577,28 @@ body {
   </div>
 </div>
 
+<div class="sticky-buy-bar" id="stickyBuyBar">
+  <span class="sticky-buy-price" id="stickyBuyPrice">৳1799</span>
+  <button class="sticky-buy-btn" onclick="buyFlagship()">SECURE ITEM</button>
+</div>
+
+<button class="wa-float-btn" onclick="window.open('https://wa.me/8801961515240?text=Hi!%20I%20have%20a%20question%20about%20Silly%20Socks', '_blank')" aria-label="Chat on WhatsApp">
+  <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M20.52 3.449C18.24 1.245 15.24 0 12.045 0 5.463 0 .104 5.36.101 11.943c0 2.105.548 4.16 1.588 5.976L0 24l6.223-1.632c1.749.955 3.722 1.457 5.727 1.457h.005c6.581 0 11.94-5.359 11.943-11.943.001-3.19-1.24-6.19-3.378-8.433zM12.05 21.785h-.004c-1.786 0-3.54-.48-5.075-1.39l-.365-.216-3.694.968.985-3.6-.238-.375a9.86 9.86 0 01-1.516-5.229c.002-5.462 4.448-9.907 9.911-9.907 2.646 0 5.13 1.03 6.998 2.9a9.834 9.834 0 012.897 6.995c-.003 5.462-4.448 9.854-9.899 9.854z"/></svg>
+</button>
 <button class="ig-float-btn" onclick="window.open('https://www.instagram.com/your.sillysocks/', '_blank')">
   <svg viewBox="0 0 24 24">
     <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 1.76-6.98 6.276-.058 1.281-.072 1.688-.072 4.947s.014 3.666.072 4.947c.2 4.515 2.622 6.076 6.98 6.276 1.28.058 1.687.072 4.947.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-1.76 6.979-6.276.059-1.281.073-1.689.073-4.947 0-3.258-.014-3.667-.072-4.947-.196-4.516-2.624-6.076-6.979-6.276-1.28-.058-1.688-.072-4.948-.072zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
   </svg>
 </button>
+
+<!-- Social Proof Toast Notification (CRO) -->
+<div id="social-proof-toast">
+  <img src="cam_white.jpg" id="toast-img-src" class="toast-img" alt="Purchased Item">
+  <div>
+    <div class="toast-text" id="toast-msg">Someone from Dhaka just bought Cloud 99 White!</div>
+    <div class="toast-time" id="toast-time">2 mins ago</div>
+  </div>
+</div>
 
 <script>
 // ==========================================
@@ -503,20 +608,34 @@ let audioCtx;
 let isPoweredOn = false;
 let isBgmRunning = false;
 let appliedBroCode = "";
+let soundEnabled = false;
+let gameDiscountActive = false; // Tracks if 10% game discount was unlocked
 
-// Initialize audio quietly on first interaction
 function initAudio() {
   if (isPoweredOn) return;
   isPoweredOn = true;
   const AudioContext = window.AudioContext || window.webkitAudioContext;
   audioCtx = new AudioContext();
   if(audioCtx.state === 'suspended') audioCtx.resume();
-  startBGM();
 }
 
-// Attach to standard document events to ensure AudioContext wakes up
 document.body.addEventListener('click', initAudio, {once:true});
 document.body.addEventListener('touchstart', initAudio, {once:true});
+
+function toggleSound(e) {
+  if (e) e.stopPropagation();
+  initAudio();
+  soundEnabled = !soundEnabled;
+  const btn = document.getElementById('soundToggle');
+  if (soundEnabled) {
+    btn.textContent = '🔊 SOUND: ON';
+    startBGM();
+    playTone(600, 'square', 0.1);
+  } else {
+    btn.textContent = '🔇 SOUND: OFF';
+    stopBGM();
+  }
+}
 
 function startBGM() {
   if (isBgmRunning) return;
@@ -548,16 +667,18 @@ function playTone(freq, type, duration, vol = 0.05) {
   osc.start(); osc.stop(audioCtx.currentTime + duration);
 }
 
-function soundClick() { playTone(600, 'square', 0.1); }
-function soundBot() { playTone(400, 'square', 0.1, 0.03); }
-function soundError() { playTone(150, 'sawtooth', 0.4, 0.1); }
+function soundClick() { if(soundEnabled) playTone(600, 'square', 0.1); }
+function soundBot() { if(soundEnabled) playTone(400, 'square', 0.1, 0.03); }
+function soundError() { if(soundEnabled) playTone(150, 'sawtooth', 0.4, 0.1); }
 function soundWin() {
+  if(!soundEnabled) return;
   setTimeout(() => playTone(440, 'sine', 0.2), 0);
   setTimeout(() => playTone(554, 'sine', 0.2), 150);
   setTimeout(() => playTone(659, 'sine', 0.4), 300);
   setTimeout(() => playTone(880, 'sine', 0.6), 450);
 }
 function soundHack() {
+  if(!soundEnabled) return;
   for(let i=0; i<15; i++) { setTimeout(() => playTone(400 + (i*50), 'square', 0.05, 0.03), i*60); }
 }
 
@@ -592,7 +713,7 @@ function createSockRain() {
 }
 createSockRain();
 
-// --- 2. Leave Hero (Enter Game) ---
+// --- Navigation Routing ---
 let hasEnteredHero = false;
 const heroScreen = document.getElementById('hero-screen');
 const tttScreen = document.getElementById('tictactoe-screen');
@@ -601,36 +722,51 @@ const catalog = document.getElementById('catalog');
 const checkoutScreen = document.getElementById('checkout-screen');
 const successScreen = document.getElementById('success-screen');
 
-function leaveHero() {
+function leaveHero(target) {
   if (hasEnteredHero) return;
   hasEnteredHero = true;
-  
-  initAudio(); // Ensures sound kicks in right as they transition
+  target = target || 'catalog';
+
+  initAudio();
   soundClick();
-  
+
   heroScreen.style.transform = 'translateY(-100vh) scale(1.5)';
   heroScreen.style.opacity = '0';
-  
-  tttScreen.style.display = 'flex';
-  setTimeout(() => {
-    heroScreen.style.display = 'none';
-    tttScreen.classList.add('visible');
-  }, 600);
+  document.getElementById('soundToggle').style.display = 'none';
+
+  if (target === 'game') {
+    tttScreen.style.display = 'flex';
+    setTimeout(() => {
+      heroScreen.style.display = 'none';
+      tttScreen.classList.add('visible');
+    }, 600);
+  } else {
+    setTimeout(() => {
+      heroScreen.style.display = 'none';
+      skipToCatalog();
+    }, 500);
+  }
 }
 
-heroScreen.addEventListener('click', leaveHero);
-window.addEventListener('wheel', (e) => { 
-  if (!hasEnteredHero && e.deltaY > 0) leaveHero(); 
-});
-window.addEventListener('touchstart', (e) => {
-  if (!hasEnteredHero) leaveHero();
-}, {passive: true});
-
-// --- Tic-Tac-Toe Game Logic ---
+// --- Tic-Tac-Toe Game Logic (HARD BOT) ---
 let board = ["", "", "", "", "", "", "", "", ""];
 let gameActive = true;
 const cells = document.querySelectorAll('.ttt-cell');
 const statusText = document.getElementById('ttt-status');
+
+const drawMsgs = [
+  "STALEMATE! NO DISCOUNT. JUST GIVE UP?", 
+  "DRAW. YOUR BRAIN IS TOO SLOW.", 
+  "TIE! SERIOUSLY? TRY HARDER OR GIVE UP.", 
+  "STALEMATE. NO 10% FOR TIES."
+];
+const lossMsgs = [
+  "BOT DESTROYED YOU. JUST GIVE UP?", 
+  "SKILL ISSUE DETECTED. WANNA CRY?", 
+  "PATHETIC. BOT WINS. TRY AGAIN?", 
+  "NOT EVEN CLOSE. GIVE UP ALREADY?", 
+  "EZ CLAP FOR BOT. 0% DISCOUNT."
+];
 
 function makeMove(index) {
   if(board[index] !== "" || !gameActive) return;
@@ -638,12 +774,49 @@ function makeMove(index) {
   board[index] = "X";
   updateBoard();
   
-  if(checkWin("X")) { endGame("YOU WIN! HACKING MAINFRAME...", true); return; }
-  if(board.indexOf("") === -1) { endGame("DRAW! TRY AGAIN.", false); return; }
+  if(checkWin("X")) { endGame("YOU WIN! 10% DISCOUNT UNLOCKED...", true); return; }
+  if(board.indexOf("") === -1) { endGame(drawMsgs[Math.floor(Math.random() * drawMsgs.length)], false); return; }
   
   gameActive = false;
   statusText.innerText = "BOT IS THINKING...";
+  statusText.style.color = "var(--accent-3)";
   setTimeout(botMove, 600);
+}
+
+function getBestMove() {
+  // 1. Try to win
+  let move = findWinningMove("O");
+  if (move !== -1) return move;
+  
+  // 2. Block X from winning
+  move = findWinningMove("X");
+  if (move !== -1) return move;
+  
+  // 3. Take center if available
+  if (board[4] === "") return 4;
+  
+  // 4. Take available corners
+  let corners = [0, 2, 6, 8].filter(i => board[i] === "");
+  if (corners.length > 0) return corners[Math.floor(Math.random() * corners.length)];
+  
+  // 5. Random available space
+  let emptyIndices = [];
+  for(let i=0; i<9; i++) { if(board[i] === "") emptyIndices.push(i); }
+  return emptyIndices[Math.floor(Math.random() * emptyIndices.length)];
+}
+
+function findWinningMove(player) {
+  const winPatterns = [[0,1,2], [3,4,5], [6,7,8], [0,3,6], [1,4,7], [2,5,8], [0,4,8], [2,4,6]];
+  for(let i=0; i<winPatterns.length; i++) {
+    let p = winPatterns[i];
+    let pCount = 0, emptyIdx = -1;
+    for(let j=0; j<3; j++) {
+      if(board[p[j]] === player) pCount++;
+      else if(board[p[j]] === "") emptyIdx = p[j];
+    }
+    if(pCount === 2 && emptyIdx !== -1) return emptyIdx;
+  }
+  return -1;
 }
 
 function botMove() {
@@ -652,14 +825,15 @@ function botMove() {
   if(emptyIndices.length === 0) return;
   
   soundBot();
-  let randomIndex = emptyIndices[Math.floor(Math.random() * emptyIndices.length)];
-  board[randomIndex] = "O";
+  let bestMove = getBestMove();
+  board[bestMove] = "O";
   updateBoard();
   
-  if(checkWin("O")) { endGame("BOT WINS! GAME OVER.", false); return; }
-  if(board.indexOf("") === -1) { endGame("DRAW! TRY AGAIN.", false); return; }
+  if(checkWin("O")) { endGame(lossMsgs[Math.floor(Math.random() * lossMsgs.length)], false); return; }
+  if(board.indexOf("") === -1) { endGame(drawMsgs[Math.floor(Math.random() * drawMsgs.length)], false); return; }
   
   statusText.innerText = "PLAYER 1 IS 'X'. YOUR TURN!";
+  statusText.style.color = "var(--accent-3)";
   gameActive = true;
 }
 
@@ -679,11 +853,17 @@ function endGame(msg, playerWon) {
   gameActive = false;
   statusText.innerText = msg;
   if(playerWon) {
+    statusText.style.color = "#0f0";
     soundWin();
+    gameDiscountActive = true; // UNLOCK 10% DISCOUNT
+    appliedBroCode = "ARCADE10";
     setTimeout(() => { showGate(true); }, 1500); 
   } else {
+    statusText.style.color = "#ff00ff";
     soundError();
     document.getElementById('resetTttBtn').style.display = "inline-block";
+    document.getElementById('resetTttBtn').innerText = "TRY AGAIN (IF YOU DARE)";
+    document.getElementById('skipToCatBtn').innerText = "I GIVE UP (SKIP TO SHOP)";
   }
 }
 
@@ -693,10 +873,24 @@ function resetBoard() {
   gameActive = true;
   updateBoard();
   statusText.innerText = "PLAYER 1 IS 'X'. YOUR TURN!";
+  statusText.style.color = "var(--accent-3)";
   document.getElementById('resetTttBtn').style.display = "none";
 }
 
-// --- DIRECT SKIP TO CATALOG ---
+function openGameFromCatalog() {
+  soundClick();
+  catalog.classList.remove('visible');
+  catalog.style.opacity = '0';
+  setTimeout(() => {
+    catalog.style.display = 'none';
+    document.body.style.overflowY = 'hidden';
+    tttScreen.style.display = 'flex';
+    tttScreen.style.opacity = '0';
+    tttScreen.style.transform = 'scale(0.8)';
+    setTimeout(() => { tttScreen.classList.add('visible'); tttScreen.style.pointerEvents = 'auto'; }, 30);
+  }, 400);
+}
+
 function skipToCatalog() {
   soundClick();
   stopBGM();
@@ -710,15 +904,16 @@ function skipToCatalog() {
     catalog.style.display = "block";
     document.getElementById("broName").textContent = "GUEST";
     renderLeaderboard();
+    refreshCatalogPrices();
     
     setTimeout(() => {
       catalog.classList.add("visible");
       window.scrollTo({top: 0, behavior: 'smooth'});
+      startSocialProofTimer();
     }, 50);
   }, 600);
 }
 
-// --- Leaderboard ---
 function updateLeaderboard(name) {
   let localLb = JSON.parse(localStorage.getItem('sillySocksLB') || '[]');
   let globalLb = ["SHIHAB", "SIAM", "ABID", "MADDIE", "MAMUN"];
@@ -734,16 +929,11 @@ function updateLeaderboard(name) {
   
   document.getElementById('lbTickerContainer').innerHTML = `<span>${tickerHTML}</span><span>${tickerHTML}</span>`;
 }
-
-function renderLeaderboard() {
-  updateLeaderboard(); 
-}
+function renderLeaderboard() { updateLeaderboard(); }
 
 // --- Gatekeeper Logic ---
-var allowed = "mafruha|siam|abid|authai|rifah|fatima|azha|namira|maddie|nafisa|nayla|faysol|labby|mamun|sayemrohitkarmakar|nafisalubabaetu|mirzaabdulkhaled|namiraahmedshams|ishmamalam|farhanmasud|aunu|labbyahsan|jarinsubahshifa|nafisanoor|sabilaanjum|miswaralam|abdullahaljawad|tasin|arshan|ahnaf";
-var pretty   = "Mafruha|Siam|Abid|Authai|Rifah|Fatima|Azha|Namira|Maddie|Nafisa|Nayla|Faysol|Labby|Mamun|Sayem Rohit Karmakar|Nafisa Lubaba Etu|Mirza Abdul Khaled|Namira Ahmed Shams|Ishmam Alam|Farhan Masud|Aunu|Labby Ahsan|Jarin Subah Shifa|Nafisa Noor|Sabila Anjum|Miswar Alam|Abdullah Al Jawad|Tasin|Arshan|Ahnaf";
-var allowedList = allowed.split("|");
-var prettyList  = pretty.split("|");
+var allowedList = "mafruha|siam|abid|authai|rifah|fatima|azha|namira|maddie|nafisa|nayla|faysol|labby|mamun|sayemrohitkarmakar|nafisalubabaetu|mirzaabdulkhaled|namiraahmedshams|ishmamalam|farhanmasud|aunu|labbyahsan|jarinsubahshifa|nafisanoor|sabilaanjum|miswaralam|abdullahaljawad|tasin|arshan|ahnaf".split("|");
+var prettyList  = "Mafruha|Siam|Abid|Authai|Rifah|Fatima|Azha|Namira|Maddie|Nafisa|Nayla|Faysol|Labby|Mamun|Sayem Rohit Karmakar|Nafisa Lubaba Etu|Mirza Abdul Khaled|Namira Ahmed Shams|Ishmam Alam|Farhan Masud|Aunu|Labby Ahsan|Jarin Subah Shifa|Nafisa Noor|Sabila Anjum|Miswar Alam|Abdullah Al Jawad|Tasin|Arshan|Ahnaf".split("|");
 
 function showGate(autoUnlock) {
   soundClick();
@@ -789,6 +979,7 @@ function checkCode() {
   if(foundIndex > -1) {
     errMsg.style.display = "none";
     soundHack();
+    gameDiscountActive = true; 
     appliedBroCode = val.toUpperCase(); 
     
     document.getElementById('gate-title').innerText = "ACCESS GRANTED";
@@ -816,9 +1007,6 @@ function saveInitialsAndEnter() {
   unlockCatalog(name.toUpperCase());
 }
 
-document.getElementById("refInput").addEventListener("keyup", function(e) { if(e.key === "Enter") checkCode(); });
-document.getElementById("lbInput").addEventListener("keyup", function(e) { if(e.key === "Enter") saveInitialsAndEnter(); });
-
 function unlockCatalog(playerName) {
   stopBGM(); 
   gate.style.opacity = "0";
@@ -831,30 +1019,50 @@ function unlockCatalog(playerName) {
     catalog.style.display = "block";
     document.getElementById("broName").textContent = playerName;
     renderLeaderboard();
+    refreshCatalogPrices();
     
     setTimeout(() => {
       catalog.classList.add("visible");
       window.scrollTo({top: 0, behavior: 'smooth'});
+      startSocialProofTimer();
     }, 50);
   }, 600);
+}
+
+function refreshCatalogPrices() {
+  if (gameDiscountActive) {
+    document.getElementById('topDiscBar').innerHTML = "⚡ 🎮 10% GAME WINNER DISCOUNT UNLOCKED! ⚡ FREE SHIPPING NATIONWIDE ⚡";
+    document.getElementById('topDiscBar').style.background = "#0f0";
+    document.getElementById('topDiscBar').style.color = "#000";
+    document.getElementById('topDiscBar').style.fontWeight = "900";
+  }
+  updateFlagshipPrice(currentSD);
+  var mirrorRadio = document.querySelector('input[name="mirror_size"]:checked');
+  if(mirrorRadio) updateMirrorPrice(mirrorRadio);
 }
 
 // Dynamic Checkout Savings Banner Updater
 function updateCheckoutSavingsBanner() {
   const addonSelect = document.getElementById('form-addons');
   const banner = document.getElementById('checkout-savings-banner');
-  let savings = 0;
+  let savings = 400;
 
-  if (addonSelect.value.includes("Without SD card")) {
+  if (addonSelect.value.includes("1619")) {
+    savings = 580;
+  } else if (addonSelect.value.includes("2249")) {
+    savings = 750;
+  } else if (addonSelect.value.includes("2789")) {
+    savings = 811;
+  } else if (addonSelect.value.includes("3239")) {
+    savings = 961;
+  } else if (addonSelect.value.includes("Without SD card 1799")) {
     savings = 400;
-  } else if (addonSelect.value.includes("With 8GB SD card")) {
+  } else if (addonSelect.value.includes("With 8GB SD card 2499")) {
     savings = 500;
   } else if (addonSelect.value.includes("30 cm")) {
     savings = 501;
   } else if (addonSelect.value.includes("45 cm")) {
     savings = 601;
-  } else {
-    savings = 400; // default fallback
   }
 
   banner.innerText = `⚡ YOU ARE SAVING ৳${savings} TODAY + FREE SHIPPING ⚡`;
@@ -883,15 +1091,23 @@ function openCheckout(itemColor, isWithSD) {
     colorDropdown.value = itemColor;
 
     let addonDropdown = document.getElementById('form-addons');
-    addonDropdown.innerHTML = `
-      <option value="Without SD card 1799">Without SD card 1799</option>
-      <option value="With 8GB SD card 2199">With 8GB SD card 2199</option>
-    `;
-    addonDropdown.value = isWithSD ? "With 8GB SD card 2199" : "Without SD card 1799";
+    if (gameDiscountActive) {
+      addonDropdown.innerHTML = `
+        <option value="Without SD card (10% OFF) 1619">Without SD card 1619 (10% OFF)</option>
+        <option value="With 8GB SD card (10% OFF) 2249">With 8GB SD card 2249 (10% OFF)</option>
+      `;
+      addonDropdown.value = isWithSD ? "With 8GB SD card (10% OFF) 2249" : "Without SD card (10% OFF) 1619";
+    } else {
+      addonDropdown.innerHTML = `
+        <option value="Without SD card 1799">Without SD card 1799</option>
+        <option value="With 8GB SD card 2499">With 8GB SD card 2499</option>
+      `;
+      addonDropdown.value = isWithSD ? "With 8GB SD card 2499" : "Without SD card 1799";
+    }
 
     document.getElementById('lbl-color').innerText = "> SELECT PRODUCT COLOR *";
     document.getElementById('lbl-addons').innerText = "> CHOOSE ADD-ONS *";
-    document.getElementById('form-brocode').value = appliedBroCode;
+    document.getElementById('form-brocode').value = appliedBroCode || (gameDiscountActive ? "ARCADE10" : "");
     
     updateCheckoutSavingsBanner();
 
@@ -917,15 +1133,24 @@ function openCheckoutMirror() {
 
     let is30 = document.getElementById('mirror_size_30').checked;
     let addonDropdown = document.getElementById('form-addons');
-    addonDropdown.innerHTML = `
-      <option value="30 cm (3099)">30 cm (3099)</option>
-      <option value="45 cm (3599)">45 cm (3599)</option>
-    `;
-    addonDropdown.value = is30 ? "30 cm (3099)" : "45 cm (3599)";
+    
+    if (gameDiscountActive) {
+      addonDropdown.innerHTML = `
+        <option value="30 cm (10% OFF) 2789">30 cm 2789 (10% OFF)</option>
+        <option value="45 cm (10% OFF) 3239">45 cm 3239 (10% OFF)</option>
+      `;
+      addonDropdown.value = is30 ? "30 cm (10% OFF) 2789" : "45 cm (10% OFF) 3239";
+    } else {
+      addonDropdown.innerHTML = `
+        <option value="30 cm (3099)">30 cm (3099)</option>
+        <option value="45 cm (3599)">45 cm (3599)</option>
+      `;
+      addonDropdown.value = is30 ? "30 cm (3099)" : "45 cm (3599)";
+    }
 
     document.getElementById('lbl-color').innerText = "> SELECT COLOR (ORANGE ONLY) *";
     document.getElementById('lbl-addons').innerText = "> CHOOSE MIRROR SIZE *";
-    document.getElementById('form-brocode').value = appliedBroCode;
+    document.getElementById('form-brocode').value = appliedBroCode || (gameDiscountActive ? "ARCADE10" : "");
     
     updateCheckoutSavingsBanner();
 
@@ -940,11 +1165,9 @@ function openCheckoutMirror() {
 function cancelCheckout() {
   soundClick();
   checkoutScreen.classList.remove('visible');
-  
   setTimeout(() => {
     checkoutScreen.style.display = "none";
     document.getElementById('catalog').style.display = "block";
-    
     setTimeout(() => { 
       document.getElementById('catalog').style.opacity = "1"; 
       window.scrollTo(0,0);
@@ -977,19 +1200,17 @@ function animateScore() {
     if(score >= target) {
       score = target;
       clearInterval(interval);
-      playTone(880, 'sine', 0.5); // Final Ding
+      if(soundEnabled) playTone(880, 'sine', 0.5);
     } else {
-      playTone(400 + (score % 200), 'square', 0.02, 0.01); 
+      if(soundEnabled) playTone(400 + (score % 200), 'square', 0.02, 0.01); 
     }
     scoreObj.innerText = "SCORE: " + score.toString().padStart(4, '0');
   }, 30);
 }
 
-// Close the success screen and return to catalog
 function closeSuccessScreen() {
   soundClick();
   successScreen.classList.remove('visible');
-  
   setTimeout(() => {
     successScreen.style.display = "none";
     document.getElementById('catalog').style.display = "block";
@@ -1033,7 +1254,6 @@ document.getElementById("orderForm").addEventListener("submit", function(e) {
        setTimeout(() => {
            checkoutScreen.style.display = "none";
            successScreen.style.display = "flex";
-           
            setTimeout(() => {
                successScreen.classList.add('visible');
                animateScore(); 
@@ -1057,71 +1277,116 @@ document.getElementById("orderForm").addEventListener("submit", function(e) {
   });
 });
 
-// --- High-Converting Render Logic ---
+// --- High-Converting Render Logic (flagship single-product layout) ---
 function getPriceHTML(isWithSD) {
-  if (isWithSD) return '<div class="price-stack"><span class="old-price">৳2699</span><span class="new-price">৳2199</span></div><span class="disc-tag">🔥 SAVE ৳500</span>';
-  else return '<div class="price-stack"><span class="old-price">৳2199</span><span class="new-price">৳1799</span></div><span class="disc-tag">🔥 SAVE ৳400</span>';
-}
+  let oldPrice = isWithSD ? 2999 : 2199;
+  let basePrice = isWithSD ? 2499 : 1799;
 
-var camData = [
-  { n:"Cloud 99 White", v:"Clean & modern", i:"cam_white.jpg", c:"White", hype:"92" },
-  { n:"Midnight Black",  v:"Neon noir aesthetic", i:"cam_black.jpg", c:"Black", hype:"88" },
-  { n:"Arcade Red", v:"Bold streetwear energy", i:"cam_red.jpg", c:"Red", hype:"75" },
-  { n:"Pac-Maze Yellow", v:"Sunny 80s nostalgia", i:"cam_yellow.jpg", c:"Yellow", hype:"81" },
-  { n:"Synthwave Blue", v:"Cool coastal feel", i:"cam_blue.jpg", c:"Blue", hype:"79" },
-  { n:"Clear Gameboy", v:"Raw Y2K tech", i:"cam_transparent.jpg", c:"Transparent", hype:"95" },
-  { n:"Glitch Green", v:"90s personality", i:"cam_green.jpg", c:"Green", hype:"90" },
-  { n:"Mint Condition", v:"Rare retro drop", i:"cam_lightgreen.jpg", c:"Light Green", hype:"85" },
-  { n:"Console Grey", v:"Classic 8-bit vibes", i:"cam_grey.jpg", c:"Grey", hype:"82" }
-];
-
-function renderGrid(dataArray, gridId, prefix) {
-  var grid = document.getElementById(gridId);
-
-  for (var x = 0; x < dataArray.length; x++) {
-    var c = dataArray[x];
-    var card = document.createElement("div");
-    card.className = "cam-card";
-
-    var initialPriceHTML = getPriceHTML(false); // Default to Without SD Card
-    var watchers = Math.floor(Math.random() * 15) + 5; // Random live watchers 5-20
-
-    card.innerHTML =
-      '<div class="img-wrapper">' +
-        '<div class="live-watch"><div class="dot"></div> WATCHING: ' + watchers + '</div>' +
-        '<img src="' + c.i + '" class="cam-img" alt="' + c.n + '" onerror="this.src=\'data:image/svg+xml;utf8,<svg xmlns=\\\'http://www.w3.org/2000/svg\\\' width=\\\'300\\\' height=\\\'200\\\'><rect width=\\\'100%\\\' height=\\\'100%\\\' fill=\\\'#333\\\'/><text x=\\\'50%\\\' y=\\\'50%\\\' font-family=\\\'monospace\\\' font-size=\\\'14\\\' fill=\\\'#fff\\\' dominant-baseline=\\\'middle\\\' text-anchor=\\\'middle\\\'>IMG MISSING</text></svg>\'" />' +
-      '</div>' +
-      '<div class="cam-info">' +
-        '<div class="cam-name">' + c.n + '</div>' +
-        '<div class="cam-vibe">' + c.v + '</div>' +
-        '<div class="hype-meter-container"><div class="hype-meter-fill" style="width: ' + c.hype + '%;"></div></div>' +
-        '<div class="hype-text">' + c.hype + '% CLAIMED</div>' +
-        '<div class="cam-perks"><span class="perk perk-highlight">>> FREE DELIVERY NATIONWIDE</span><span class="perk">>> MYSTERY GIFT CHANCE</span></div>' +
-        '<div class="variant-toggle">' +
-          '<label class="toggle-opt"><input type="radio" id="sdopt_' + prefix + x + '_without" name="sdopt' + prefix + x + '" value="without" checked onchange="updatePrice(this, \'' + prefix + x + '\'); soundClick();"> NO SD CARD</label>' +
-          '<label class="toggle-opt"><input type="radio" id="sdopt_' + prefix + x + '_with" name="sdopt' + prefix + x + '" value="with" onchange="updatePrice(this, \'' + prefix + x + '\'); soundClick();"> 8GB SD CARD</label>' +
-        '</div>' +
-        '<div class="price-row" id="priceRow' + prefix + x + '">' + initialPriceHTML + '</div>' +
-        '<button class="buy-btn" onclick="openCheckout(\'' + c.c + '\', document.getElementById(\'sdopt_' + prefix + x + '_with\').checked)">SECURE ITEM</button>' +
-      '</div>';
-    grid.appendChild(card);
+  if (gameDiscountActive) {
+    let discountedPrice = isWithSD ? 2249 : 1619;
+    let totalSaved = oldPrice - discountedPrice;
+    return '<div class="price-stack"><span class="old-price">৳' + oldPrice + '</span><span class="new-price" style="color:#0f0; text-shadow:0 0 10px #0f0;">৳' + discountedPrice + '</span></div><span class="disc-tag" style="background:#0f0; color:#000;">🎮 10% OFF APPLIED (SAVE ৳' + totalSaved + ')</span>';
+  } else {
+    let totalSaved = oldPrice - basePrice;
+    return '<div class="price-stack"><span class="old-price">৳' + oldPrice + '</span><span class="new-price">৳' + basePrice + '</span></div><span class="disc-tag">🔥 SAVE ৳' + totalSaved + '</span>';
   }
 }
 
-renderGrid(camData, "camGrid", "p1_");
+var camColors = [
+  { n:"Cloud 99 White", v:"Clean & modern", i:"cam_white.jpg", c:"White", swatch:"#ffffff", badge:"🔥 BESTSELLER" },
+  { n:"Midnight Black", v:"Neon noir aesthetic", i:"cam_black.jpg", c:"Black", swatch:"#111111", badge:"🔥 BESTSELLER" },
+  { n:"Clear Gameboy", v:"Raw Y2K tech", i:"cam_transparent.jpg", c:"Transparent", swatch:"#d9f7ff", badge:"🔥 BESTSELLER" },
+  { n:"Glitch Green", v:"90s personality", i:"cam_green.jpg", c:"Green", swatch:"#39ff6a", badge:"✨ FAN FAVORITE" },
+  { n:"Arcade Red", v:"Bold streetwear energy", i:"cam_red.jpg", c:"Red", swatch:"#ff2b2b", badge:"✨ FAN FAVORITE" },
+  { n:"Pac-Maze Yellow", v:"Sunny 80s nostalgia", i:"cam_yellow.jpg", c:"Yellow", swatch:"#ffe23d", badge:"✨ FAN FAVORITE" },
+  { n:"Synthwave Blue", v:"Cool coastal feel", i:"cam_blue.jpg", c:"Blue", swatch:"#3d8bff", badge:"✨ FAN FAVORITE" },
+  { n:"Mint Condition", v:"Rare retro drop", i:"cam_lightgreen.jpg", c:"Light Green", swatch:"#b6ffcf", badge:"✨ FAN FAVORITE" },
+  { n:"Console Grey", v:"Classic 8-bit vibes", i:"cam_grey.jpg", c:"Grey", swatch:"#9a9a9a", badge:"✨ FAN FAVORITE" }
+];
+var currentColorIdx = 0;
+var currentSD = false;
 
-function updatePrice(radio, index) {
-  var isWithSD = radio.value === 'with';
-  document.getElementById('priceRow' + index).innerHTML = getPriceHTML(isWithSD);
+function renderSwatches() {
+  var row = document.getElementById('swatchRow');
+  row.innerHTML = '';
+  camColors.forEach((col, i) => {
+    var sw = document.createElement('div');
+    sw.className = 'swatch' + (i === currentColorIdx ? ' active' : '');
+    sw.style.background = col.swatch;
+    sw.title = col.n;
+    sw.onclick = function() { selectColor(i); };
+    row.appendChild(sw);
+  });
 }
+
+function selectColor(i) {
+  soundClick();
+  currentColorIdx = i;
+  var col = camColors[i];
+  document.getElementById('flagshipImg').src = col.i;
+  document.getElementById('flagshipName').innerText = col.n;
+  document.getElementById('flagshipVibe').innerText = col.v;
+  document.getElementById('flagshipBadge').innerText = col.badge;
+  renderSwatches();
+}
+
+function updateFlagshipPrice(isWithSD) {
+  currentSD = isWithSD;
+  var html = getPriceHTML(isWithSD);
+  document.getElementById('flagshipPriceRow').innerHTML = html;
+  var priceMatch = html.match(/new-price[^>]*>(.*?)</);
+  document.getElementById('stickyBuyPrice').innerText = priceMatch ? priceMatch[1] : '';
+}
+
+function buyFlagship() {
+  openCheckout(camColors[currentColorIdx].c, currentSD);
+}
+
+renderSwatches();
+selectColor(0);
+updateFlagshipPrice(false);
+
+// --- Sticky mobile buy bar ---
+window.addEventListener('scroll', function() {
+  var bar = document.getElementById('stickyBuyBar');
+  var card = document.getElementById('flagshipCard');
+  if (!card || catalog.style.display === 'none') { bar.classList.remove('visible'); return; }
+  var rect = card.getBoundingClientRect();
+  if (rect.bottom < 0 && document.getElementById('page1Body').style.display !== 'none') {
+    bar.classList.add('visible');
+  } else {
+    bar.classList.remove('visible');
+  }
+});
+
+function updateDispatchTimer() {
+  var now = new Date();
+  var midnight = new Date(now);
+  midnight.setHours(24, 0, 0, 0); 
+  var diff = midnight - now;
+  var h = Math.floor(diff / 3600000);
+  var m = Math.floor((diff % 3600000) / 60000);
+  var s = Math.floor((diff % 60000) / 1000);
+  var pad = n => n.toString().padStart(2, '0');
+  document.getElementById('timerText').innerText = pad(h) + ':' + pad(m) + ':' + pad(s);
+}
+updateDispatchTimer();
+setInterval(updateDispatchTimer, 1000);
 
 // --- Mirror Toggle Logic ---
 function updateMirrorPrice(radio) {
   var priceRow = document.getElementById('mirrorPriceRow');
-  if(radio.value === '30cm') {
-    priceRow.innerHTML = '<div class="price-stack"><span class="old-price">৳3600</span><span class="new-price">৳3099</span></div><span class="disc-tag">🔥 SAVE ৳501</span>';
+  let is30 = radio.value === '30cm';
+  let oldPrice = is30 ? 3600 : 4200;
+  let basePrice = is30 ? 3099 : 3599;
+
+  if (gameDiscountActive) {
+    let discountedPrice = is30 ? 2789 : 3239;
+    let totalSaved = oldPrice - discountedPrice;
+    priceRow.innerHTML = '<div class="price-stack"><span class="old-price">৳' + oldPrice + '</span><span class="new-price" style="color:#0f0; text-shadow:0 0 10px #0f0;">৳' + discountedPrice + '</span></div><span class="disc-tag" style="background:#0f0; color:#000;">🎮 10% OFF APPLIED (SAVE ৳' + totalSaved + ')</span>';
   } else {
-    priceRow.innerHTML = '<div class="price-stack"><span class="old-price">৳4200</span><span class="new-price">৳3599</span></div><span class="disc-tag">🔥 SAVE ৳601</span>';
+    let totalSaved = oldPrice - basePrice;
+    priceRow.innerHTML = '<div class="price-stack"><span class="old-price">৳' + oldPrice + '</span><span class="new-price">৳' + basePrice + '</span></div><span class="disc-tag">🔥 SAVE ৳' + totalSaved + '</span>';
   }
 }
 
@@ -1144,6 +1409,29 @@ function showPage(page) {
     newBody.style.opacity = '1'; 
     newBody.style.transform = 'translateY(0)'; 
   }, 10);
+}
+
+// --- ANONYMOUS SOCIAL PROOF TOAST LOGIC ---
+const locations = ["Dhaka", "Chittagong", "Sylhet", "Rajshahi", "Khulna", "Uttara", "Mirpur", "Dhanmondi", "Bashundhara"];
+
+function startSocialProofTimer() {
+  setInterval(showToast, 12000); 
+}
+
+function showToast() {
+  if(document.getElementById('catalog').style.display === "none") return;
+  
+  const toast = document.getElementById('social-proof-toast');
+  const loc = locations[Math.floor(Math.random() * locations.length)];
+  const item = camColors[Math.floor(Math.random() * camColors.length)];
+  const time = Math.floor(Math.random() * 12) + 1; 
+
+  document.getElementById('toast-img-src').src = item.i;
+  document.getElementById('toast-msg').innerHTML = `Someone from ${loc} just secured the <strong>${item.n}</strong>!`;
+  document.getElementById('toast-time').innerText = `${time} min${time > 1 ? 's' : ''} ago`;
+
+  toast.classList.add('show');
+  setTimeout(() => { toast.classList.remove('show'); }, 4000);
 }
 
 updateLeaderboard(""); 
