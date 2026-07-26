@@ -412,23 +412,17 @@ body {
   </div>
   
   <div class="page-nav">
-    <div class="page-tab active" id="tab1" onclick="showPage(1)">LVL 1: THE CLASSICS</div>
-    <div class="page-tab" id="tab2" onclick="showPage(2)">LVL 2: FLASH GEAR</div>
-    <div class="page-tab" id="tab3" onclick="showPage(3)">LVL 3: ROOM DECOR</div>
+    <div class="page-tab active" id="tab1" onclick="showPage(1)">LVL 1: CAMS</div>
+    <div class="page-tab" id="tab2" onclick="showPage(2)">LVL 2: DECOR</div>
   </div>
   
   <div class="cat-body" id="page1Body">
-    <div class="section-label">> THE CLASSICS DROP</div>
+    <div class="section-label">> THE NOSTALGIA VAULT</div>
     <div id="camGrid" class="cam-grid"></div>
   </div>
-  
-  <div class="cat-body" id="page2Body" style="display:none;">
-    <div class="section-label">> NIGHT VISION UPGRADES</div>
-    <div id="camGrid2" class="cam-grid"></div>
-  </div>
 
-  <!-- NEW LVL 3 (ROOM DECOR) TAB BODY -->
-  <div class="cat-body" id="page3Body" style="display:none;">
+  <!-- LVL 2 (ROOM DECOR) TAB BODY -->
+  <div class="cat-body" id="page2Body" style="display:none;">
     <div class="section-label">> INDUSTRIAL AESTHETICS</div>
     <div id="mirrorGrid" class="cam-grid">
       <!-- Traffic Mirror Hardcoded Card to preserve precise styling -->
@@ -832,39 +826,36 @@ function unlockCatalog(playerName) {
 }
 
 // --- SECURE CHECKOUT LOGIC FOR CAMERA GEAR ---
-function openCheckout(itemColor, isFlash, isWithSD) {
+function openCheckout(itemColor, isWithSD) {
   soundClick();
   document.getElementById('catalog').style.opacity = "0";
   
   setTimeout(() => {
     document.getElementById('catalog').style.display = "none";
     
-    // Inject Camera Color Options
+    // Inject Camera Color Options dynamically based on the new array
     let colorDropdown = document.getElementById('form-color');
     colorDropdown.innerHTML = `
       <option value="White">White</option>
       <option value="Red">Red</option>
       <option value="Yellow">Yellow</option>
       <option value="Green">Green</option>
-      <option value="Blue">Blue</option>
       <option value="Black">Black</option>
+      <option value="Blue">Blue</option>
+      <option value="Grey">Grey</option>
+      <option value="Transparent">Transparent</option>
+      <option value="Light Green">Light Green</option>
     `;
     colorDropdown.value = itemColor;
 
-    // Inject Camera Add-on Options
+    // Inject Camera Add-on Options (Flash options removed)
     let addonDropdown = document.getElementById('form-addons');
     addonDropdown.innerHTML = `
       <option value="Without SD card 1582">Without SD card 1582</option>
       <option value="With SD card 1994">With SD card 1994</option>
       <option value="With SD card + card reader 2100">With SD card + card reader 2100</option>
-      <option value="Flash with SD card 2564">Flash with SD card 2564</option>
-      <option value="Flash without SD card 1999">Flash without SD card 1999</option>
     `;
-    if(isFlash) {
-      addonDropdown.value = isWithSD ? "Flash with SD card 2564" : "Flash without SD card 1999";
-    } else {
-      addonDropdown.value = isWithSD ? "With SD card 1994" : "Without SD card 1582";
-    }
+    addonDropdown.value = isWithSD ? "With SD card 1994" : "Without SD card 1582";
 
     document.getElementById('lbl-color').innerText = "> SELECT PRODUCT COLOR *";
     document.getElementById('lbl-addons').innerText = "> CHOOSE ADD-ONS *";
@@ -1041,45 +1032,37 @@ document.getElementById("orderForm").addEventListener("submit", function(e) {
 });
 
 // --- Render Grids ---
-function getPriceHTML(isFlash, isWithSD) {
-  if (isFlash) {
-    if (isWithSD) return '<span class="old-price">৳2631</span><span class="new-price">৳2500</span><span class="disc-tag">-5% PWR</span>';
-    else return '<span class="old-price">৳2104</span><span class="new-price">৳1999</span><span class="disc-tag">-5% PWR</span>';
-  } else {
-    if (isWithSD) return '<span class="old-price">৳2099</span><span class="new-price">৳1994</span><span class="disc-tag">-5% PWR</span>';
-    else return '<span class="old-price">৳1665</span><span class="new-price">৳1582</span><span class="disc-tag">-5% PWR</span>';
-  }
+function getPriceHTML(isWithSD) {
+  if (isWithSD) return '<span class="old-price">৳2099</span><span class="new-price">৳1994</span><span class="disc-tag">-5% PWR</span>';
+  else return '<span class="old-price">৳1665</span><span class="new-price">৳1582</span><span class="disc-tag">-5% PWR</span>';
 }
 
+// 9 Variations based on specific stock count provided
 var camData = [
-  { n:"Yellow 1985", v:"Sunny 80s vibes", i:"c1.jpg", c:"Yellow" }, 
-  { n:"Black Retro",  v:"Neon noir aesthetic", i:"c2.jpg", c:"Black" },
-  { n:"Blue Mini", v:"Cool coastal feel", i:"c3.jpg", c:"Blue" }, 
-  { n:"Street Red", v:"Bold streetwear", i:"c4.jpg", c:"Red" },
-  { n:"Minimal White", v:"Clean & modern", i:"c5.jpg", c:"White" }, 
-  { n:"Green Personality", v:"90s personality", i:"c6.jpg", c:"Green" }
-];
-var camData2 = [
-  { n:"1988 Orange Flash", v:"Retro vintage stripes", i:"f1.jpg", c:"Yellow" }, 
-  { n:"1988 Yellow Flash", v:"Sunny 80s vibes", i:"f2.jpg", c:"Yellow" },
-  { n:"Blue Wave Flash", v:"Cool retro stripes", i:"f3.jpg", c:"Blue" }, 
-  { n:"Street Red Flash", v:"Bold arcade energy", i:"f4.jpg", c:"Red" }
+  { n:"Cloud 99 White", v:"Clean & modern", i:"cam_white.jpg", c:"White", s:"20 LEFT" },
+  { n:"Midnight Black",  v:"Neon noir aesthetic", i:"cam_black.jpg", c:"Black", s:"20 LEFT" },
+  { n:"Arcade Red", v:"Bold streetwear energy", i:"cam_red.jpg", c:"Red", s:"10 LEFT" },
+  { n:"Pac-Maze Yellow", v:"Sunny 80s nostalgia", i:"cam_yellow.jpg", c:"Yellow", s:"15 LEFT" },
+  { n:"Synthwave Blue", v:"Cool coastal feel", i:"cam_blue.jpg", c:"Blue", s:"15 LEFT" },
+  { n:"Clear Gameboy", v:"Raw Y2K tech", i:"cam_transparent.jpg", c:"Transparent", s:"10 LEFT" },
+  { n:"Glitch Green", v:"90s personality", i:"cam_green.jpg", c:"Green", s:"5 LEFT" },
+  { n:"Mint Condition", v:"Rare retro drop", i:"cam_lightgreen.jpg", c:"Light Green", s:"5 LEFT" },
+  { n:"Console Grey", v:"Classic 8-bit vibes", i:"cam_grey.jpg", c:"Grey", s:"5 LEFT" }
 ];
 
 function renderGrid(dataArray, gridId, prefix) {
   var grid = document.getElementById(gridId);
-  var isFlash = prefix === 'p2_'; 
 
   for (var x = 0; x < dataArray.length; x++) {
     var c = dataArray[x];
     var card = document.createElement("div");
     card.className = "cam-card";
 
-    var initialPriceHTML = getPriceHTML(isFlash, true);
+    var initialPriceHTML = getPriceHTML(true);
 
     card.innerHTML =
       '<div class="img-wrapper">' +
-        '<div class="stock-tag">1 UP</div>' +
+        '<div class="stock-tag" style="background:#ffea00; color:#000;">' + c.s + '</div>' +
         '<img src="' + c.i + '" class="cam-img" alt="' + c.n + '" onerror="this.src=\'data:image/svg+xml;utf8,<svg xmlns=\\\'http://www.w3.org/2000/svg\\\' width=\\\'300\\\' height=\\\'200\\\'><rect width=\\\'100%\\\' height=\\\'100%\\\' fill=\\\'#333\\\'/><text x=\\\'50%\\\' y=\\\'50%\\\' font-family=\\\'monospace\\\' font-size=\\\'14\\\' fill=\\\'#fff\\\' dominant-baseline=\\\'middle\\\' text-anchor=\\\'middle\\\'>IMG MISSING</text></svg>\'" />' +
       '</div>' +
       '<div class="cam-info">' +
@@ -1091,18 +1074,17 @@ function renderGrid(dataArray, gridId, prefix) {
           '<label class="toggle-opt"><input type="radio" id="sdopt_' + prefix + x + '_without" name="sdopt' + prefix + x + '" value="without" onchange="updatePrice(this, \'' + prefix + x + '\'); soundClick();"> [ ] NO SD CARD</label>' +
         '</div>' +
         '<div class="price-row" id="priceRow' + prefix + x + '">' + initialPriceHTML + '</div>' +
-        '<button class="buy-btn" onclick="openCheckout(\'' + c.c + '\', ' + isFlash + ', document.getElementById(\'sdopt_' + prefix + x + '_with\').checked)">SECURE ITEM</button>' +
+        '<button class="buy-btn" onclick="openCheckout(\'' + c.c + '\', document.getElementById(\'sdopt_' + prefix + x + '_with\').checked)">SECURE ITEM</button>' +
       '</div>';
     grid.appendChild(card);
   }
 }
 
-renderGrid(camData, "camGrid", "p1_"); renderGrid(camData2, "camGrid2", "p2_");
+renderGrid(camData, "camGrid", "p1_");
 
 function updatePrice(radio, index) {
-  var isFlash = index.startsWith('p2_');
   var isWithSD = radio.value === 'with';
-  document.getElementById('priceRow' + index).innerHTML = getPriceHTML(isFlash, isWithSD);
+  document.getElementById('priceRow' + index).innerHTML = getPriceHTML(isWithSD);
 }
 
 // --- Mirror Toggle Logic ---
@@ -1120,9 +1102,8 @@ function showPage(page) {
   soundClick();
   document.getElementById('tab1').className = 'page-tab' + (page === 1 ? ' active' : '');
   document.getElementById('tab2').className = 'page-tab' + (page === 2 ? ' active' : '');
-  document.getElementById('tab3').className = 'page-tab' + (page === 3 ? ' active' : '');
   
-  const bodies = ['page1Body', 'page2Body', 'page3Body'];
+  const bodies = ['page1Body', 'page2Body'];
   bodies.forEach(id => document.getElementById(id).style.display = 'none');
   
   const newBody = document.getElementById('page' + page + 'Body');
