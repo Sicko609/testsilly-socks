@@ -78,27 +78,17 @@ body {
 .triangle { width: 0; height: 0; border-left: 50px solid transparent; border-right: 50px solid transparent; border-bottom: 80px solid var(--accent-1); border-top: none; background: transparent; top: 70%; right: 10%; animation: float 12s infinite alternate-reverse; }
 .squiggle { width: 120px; height: 15px; background: repeating-linear-gradient(45deg, var(--accent-2), var(--accent-2) 10px, transparent 10px, transparent 20px); top: 25%; right: 15%; animation: spin 15s linear infinite; }
 
-@keyframes float { 0% {transform: translateY(0) rotate(0deg);} 100% {transform: translateY(30px) rotate(15deg);} }
-@keyframes spin { 100% {transform: rotate(360deg);} }
-
 /* --- SCREENS CONFIGURATION --- */
 .screen-layer {
   position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
   display: flex; flex-direction: column; align-items: center; justify-content: center;
   background: var(--bg); z-index: 5000; transition: all 0.6s cubic-bezier(0.8, -0.2, 0.2, 1.5);
 }
-#hero-screen, #tictactoe-screen, #gate, #checkout-screen, #success-screen { display: none; opacity: 0; transform: scale(0.8); }
-#hero-screen.visible, #tictactoe-screen.visible, #gate.visible, #checkout-screen.visible, #success-screen.visible { opacity: 1; transform: scale(1); }
+#tictactoe-screen, #gate, #checkout-screen, #success-screen { display: none; opacity: 0; transform: scale(0.8); }
+#tictactoe-screen.visible, #gate.visible, #checkout-screen.visible, #success-screen.visible { opacity: 1; transform: scale(1); }
 
-/* --- SCREEN 1: POWER ON --- */
-#power-screen { z-index: 6000; cursor: pointer; }
-#init-prompt {
-  font-family: var(--font-retro); font-size: clamp(12px, 4vw, 18px); color: var(--accent-2);
-  animation: blink 1s infinite; text-align: center; padding: 20px; text-shadow: 0 0 10px var(--accent-2);
-}
-
-/* --- SCREEN 2: HERO --- */
-#hero-screen { cursor: pointer; }
+/* --- SCREEN 1: HERO --- */
+#hero-screen { cursor: pointer; display: flex; opacity: 1; transform: scale(1); }
 .hero-logo { font-family: var(--font-retro); font-size: clamp(24px, 6vw, 60px); text-align: center; color: #fff; text-shadow: 0 0 10px var(--accent-1), 4px 4px 0px var(--accent-2); margin-bottom: 20px; z-index: 10; animation: pulseLogo 2s infinite alternate; padding: 0 15px; }
 @keyframes pulseLogo { 0% { transform: scale(1) skewX(0deg); text-shadow: 0 0 10px var(--accent-1), 4px 4px 0px var(--accent-2); } 100% { transform: scale(1.05) skewX(-5deg); text-shadow: 0 0 25px var(--accent-1), 6px 6px 0px var(--accent-2); } }
 .hero-prompt { font-family: var(--font-retro); font-size: clamp(10px, 3vw, 14px); color: var(--accent-3); animation: blink 1s steps(2, start) infinite; z-index: 10; text-align: center; padding: 0 10px; line-height: 1.5; }
@@ -115,7 +105,7 @@ body {
 .retro-btn:hover { background: var(--accent-2); color: #000; box-shadow: 4px 4px 0 var(--accent-1); transform: translate(-2px, -2px); }
 .retro-btn:active { transform: translate(2px, 2px); box-shadow: 0 0 0 transparent; }
 
-/* --- SCREEN 3: TIC-TAC-TOE --- */
+/* --- SCREEN 2: TIC-TAC-TOE --- */
 .ttt-board { display: grid; grid-template-columns: repeat(3, 1fr); gap: 4px; width: 100%; max-width: 280px; margin: 20px auto; aspect-ratio: 1/1; background: var(--card-border); border: 4px solid var(--card-border); box-shadow: 0 0 20px rgba(0,0,0,0.5); }
 .ttt-cell { background: var(--bg); display: flex; align-items: center; justify-content: center; font-family: var(--font-retro); font-size: clamp(30px, 8vw, 40px); cursor: pointer; transition: background 0.2s; }
 .ttt-cell:hover { background: rgba(255,255,255,0.1); }
@@ -124,7 +114,7 @@ body {
 #ttt-status { font-family: var(--font-retro); font-size: 10px; color: var(--accent-3); margin-top: 10px; line-height: 1.6; animation: pulseLogo 1.5s infinite alternate;}
 .btn-group { display: flex; flex-direction: column; gap: 5px; margin-top: 15px; }
 
-/* --- SCREEN 4: GATE / HACKING --- */
+/* --- SCREEN 3: GATE / HACKING --- */
 .lock-icon { font-size: 40px; margin-bottom: 15px; filter: drop-shadow(0 0 10px var(--accent-1)); transition: all 0.5s ease; }
 .gate-title { font-family: var(--font-retro); font-size: 16px; line-height: 1.5; margin-bottom: 15px; color: var(--accent-1); text-shadow: 2px 2px 0 #000; transition: color 0.5s ease; }
 .gate-sub { font-size: 11px; font-weight: 800; font-family: var(--font-retro); color: var(--text-muted); margin-bottom: 1.5rem; line-height: 1.8;}
@@ -136,7 +126,7 @@ body {
 .hacked-text { color: #0f0 !important; text-shadow: 0 0 15px #0f0 !important; }
 .hacked-icon { filter: drop-shadow(0 0 15px #0f0) !important; transform: scale(1.2); }
 
-/* --- SCREEN 5 & 7: CHECKOUT & SUCCESS UI --- */
+/* --- SCREEN 4 & 6: CHECKOUT & SUCCESS UI --- */
 #checkout-screen { overflow-y: auto; padding: 20px 0; justify-content: flex-start; -webkit-overflow-scrolling: touch; }
 .checkout-form { display: flex; flex-direction: column; gap: 12px; text-align: left; margin-top: 15px;}
 .checkout-form label { font-size: 9px; font-family: var(--font-retro); color: var(--accent-2); margin-top: 6px;}
@@ -158,7 +148,7 @@ body {
 .score-tally { font-family: var(--font-retro); font-size: 24px; color: var(--accent-3); margin: 30px 0; text-shadow: 0 0 15px var(--accent-3); letter-spacing: 2px; }
 .blink-text { animation: blink 1s steps(2, start) infinite; }
 
-/* --- SCREEN 6: CATALOG UI --- */
+/* --- SCREEN 5: CATALOG UI --- */
 #catalog { display: none; min-height: 100vh; opacity: 0; transform: translateY(100px); transition: all 0.8s cubic-bezier(0.2, 1, 0.3, 1); padding-bottom: 50px; z-index: 10; position: relative;}
 #catalog.visible { opacity: 1; transform: translateY(0); }
 
@@ -187,7 +177,6 @@ body {
 
 .img-wrapper { width: 100%; height: 200px; border-bottom: 4px solid var(--card-border); background: #ffffff; overflow: hidden; position: relative;}
 .cam-img { width: 100%; height: 100%; object-fit: contain; padding: 10px; transition: transform 0.5s; }
-.stock-tag { position: absolute; top: 10px; right: 10px; background: var(--accent-3); color: #000; font-family: var(--font-retro); font-size: 8px; padding: 6px 10px; border: 2px solid #000; z-index: 10;}
 
 .cam-info { padding: 15px; }
 .cam-name { font-family: var(--font-retro); font-size: 12px; margin-bottom: 10px; color: var(--accent-2); text-shadow: 1px 1px 0 #000; line-height: 1.4;}
@@ -243,19 +232,14 @@ body {
 <!-- 80s Perspective Grid -->
 <div class="synth-grid"></div>
 
-<!-- SCREEN 1: POWER ON PROMPT -->
-<div id="power-screen" class="screen-layer" style="display:flex; opacity:1; transform:scale(1);">
-  <div id="init-prompt">>> TAP TO POWER ON <<</div>
-</div>
-
-<!-- SCREEN 2: HERO SECTION (Silly Socks) -->
+<!-- SCREEN 1: HERO SECTION (Silly Socks) -->
 <div id="hero-screen" class="screen-layer">
   <div id="sock-rain"></div>
   <h1 class="hero-logo">SILLY SOCKS</h1>
   <p class="hero-prompt">>> CLICK OR SCROLL TO ENTER <<</p>
 </div>
 
-<!-- SCREEN 3: TIC-TAC-TOE BATTLE SECTION -->
+<!-- SCREEN 2: TIC-TAC-TOE BATTLE SECTION -->
 <div id="tictactoe-screen" class="screen-layer">
   <div class="retro-box">
     <div class="gate-title" style="margin-bottom: 20px;">BEAT THE BOT TO UNLOCK</div>
@@ -281,7 +265,7 @@ body {
   </div>
 </div>
 
-<!-- SCREEN 4: REFERRAL GATE / HACKING -->
+<!-- SCREEN 3: REFERRAL GATE / HACKING -->
 <div id="gate" class="screen-layer">
   <div class="retro-box">
     <div class="lock-icon" id="gate-icon">🔒</div>
@@ -304,7 +288,7 @@ body {
   </div>
 </div>
 
-<!-- SCREEN 5: SECURE CHECKOUT -->
+<!-- SCREEN 4: SECURE CHECKOUT -->
 <div id="checkout-screen" class="screen-layer">
   <div class="retro-box" style="margin: 20px auto; max-height: 90vh; overflow-y: auto;">
     <div class="gate-title" style="color: var(--accent-3);">SECURE CHECKOUT</div>
@@ -374,7 +358,7 @@ body {
   </div>
 </div>
 
-<!-- SCREEN 7: ARCADE SUCCESS ENDING -->
+<!-- SCREEN 5: ARCADE SUCCESS ENDING -->
 <div id="success-screen" class="screen-layer">
   <div class="retro-box" style="margin: 20px auto; padding: 4rem 1.5rem;">
     <h2 class="gate-title blink-text" style="color: #0f0; font-size: 20px; text-shadow: 0 0 15px #0f0; margin-bottom: 25px;">STAGE CLEAR</h2>
@@ -428,7 +412,6 @@ body {
       <!-- Traffic Mirror Hardcoded Card to preserve precise styling -->
       <div class="cam-card">
         <div class="img-wrapper">
-          <div class="stock-tag">NEW</div>
           <img src="mirror_placeholder.jpg" class="cam-img" alt="Traffic Mirror" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'300\' height=\'200\'><rect width=\'100%\' height=\'100%\' fill=\'#333\'/><text x=\'50%\' y=\'50%\' font-family=\'monospace\' font-size=\'14\' fill=\'#fff\' dominant-baseline=\'middle\' text-anchor=\'middle\'>IMG MISSING</text></svg>'" />
         </div>
         <div class="cam-info">
@@ -475,34 +458,19 @@ let isPoweredOn = false;
 let isBgmRunning = false;
 let appliedBroCode = "";
 
-function powerOn(e) {
+// Initialize audio quietly on first interaction
+function initAudio() {
   if (isPoweredOn) return;
-  if (e) { e.preventDefault(); e.stopPropagation(); }
-  
   isPoweredOn = true;
   const AudioContext = window.AudioContext || window.webkitAudioContext;
   audioCtx = new AudioContext();
   if(audioCtx.state === 'suspended') audioCtx.resume();
-  
-  const buffer = audioCtx.createBuffer(1, 1, 22050);
-  const source = audioCtx.createBufferSource();
-  source.buffer = buffer;
-  source.connect(audioCtx.destination);
-  source.start(0);
-
-  const powerScreen = document.getElementById('power-screen');
-  const heroScreen = document.getElementById('hero-screen');
-
   startBGM();
-
-  powerScreen.style.opacity = '0';
-  setTimeout(() => {
-    powerScreen.style.display = 'none';
-    heroScreen.style.display = 'flex';
-    setTimeout(() => { heroScreen.classList.add('visible'); }, 50);
-  }, 500);
 }
-document.getElementById('power-screen').addEventListener('click', powerOn);
+
+// Attach to standard document events to ensure AudioContext wakes up
+document.body.addEventListener('click', initAudio, {once:true});
+document.body.addEventListener('touchstart', initAudio, {once:true});
 
 function startBGM() {
   if (isBgmRunning) return;
@@ -547,9 +515,6 @@ function soundHack() {
   for(let i=0; i<15; i++) { setTimeout(() => playTone(400 + (i*50), 'square', 0.05, 0.03), i*60); }
 }
 
-document.body.addEventListener('click', () => { if(!isPoweredOn) powerOn(); }, {once:true});
-document.body.addEventListener('touchstart', () => { if(!isPoweredOn) powerOn(); }, {once:true});
-
 // --- Theme Toggle ---
 function toggleTheme() {
   soundClick();
@@ -591,8 +556,10 @@ const checkoutScreen = document.getElementById('checkout-screen');
 const successScreen = document.getElementById('success-screen');
 
 function leaveHero() {
-  if (!isPoweredOn || hasEnteredHero) return;
+  if (hasEnteredHero) return;
   hasEnteredHero = true;
+  
+  initAudio(); // Ensures sound kicks in right as they transition
   soundClick();
   
   heroScreen.style.transform = 'translateY(-100vh) scale(1.5)';
@@ -604,12 +571,13 @@ function leaveHero() {
     tttScreen.classList.add('visible');
   }, 600);
 }
+
 heroScreen.addEventListener('click', leaveHero);
 window.addEventListener('wheel', (e) => { 
-  if (isPoweredOn && !hasEnteredHero && e.deltaY > 0) leaveHero(); 
+  if (!hasEnteredHero && e.deltaY > 0) leaveHero(); 
 });
 window.addEventListener('touchstart', (e) => {
-  if (isPoweredOn && !hasEnteredHero) leaveHero();
+  if (!hasEnteredHero) leaveHero();
 }, {passive: true});
 
 // --- Tic-Tac-Toe Game Logic ---
@@ -848,14 +816,14 @@ function openCheckout(itemColor, isWithSD) {
     `;
     colorDropdown.value = itemColor;
 
-    // Inject Camera Add-on Options (Flash options removed)
+    // Inject Camera Add-on Options (Flash options removed, prices updated)
     let addonDropdown = document.getElementById('form-addons');
     addonDropdown.innerHTML = `
-      <option value="Without SD card 1582">Without SD card 1582</option>
-      <option value="With SD card 1994">With SD card 1994</option>
-      <option value="With SD card + card reader 2100">With SD card + card reader 2100</option>
+      <option value="Without SD card 1799">Without SD card 1799</option>
+      <option value="With 8GB SD card 2199">With 8GB SD card 2199</option>
+      <option value="With 8GB SD card + card reader 2300">With 8GB SD card + card reader 2300</option>
     `;
-    addonDropdown.value = isWithSD ? "With SD card 1994" : "Without SD card 1582";
+    addonDropdown.value = isWithSD ? "With 8GB SD card 2199" : "Without SD card 1799";
 
     document.getElementById('lbl-color').innerText = "> SELECT PRODUCT COLOR *";
     document.getElementById('lbl-addons').innerText = "> CHOOSE ADD-ONS *";
@@ -1033,21 +1001,22 @@ document.getElementById("orderForm").addEventListener("submit", function(e) {
 
 // --- Render Grids ---
 function getPriceHTML(isWithSD) {
-  if (isWithSD) return '<span class="old-price">৳2099</span><span class="new-price">৳1994</span><span class="disc-tag">-5% PWR</span>';
-  else return '<span class="old-price">৳1665</span><span class="new-price">৳1582</span><span class="disc-tag">-5% PWR</span>';
+  // Adjusted old price to reflect roughly 5% discount for 2199 and 1799
+  if (isWithSD) return '<span class="old-price">৳2315</span><span class="new-price">৳2199</span><span class="disc-tag">-5% PWR</span>';
+  else return '<span class="old-price">৳1894</span><span class="new-price">৳1799</span><span class="disc-tag">-5% PWR</span>';
 }
 
-// 9 Variations based on specific stock count provided
+// 9 Variations (Stock tag removed from logic)
 var camData = [
-  { n:"Cloud 99 White", v:"Clean & modern", i:"cam_white.jpg", c:"White", s:"20 LEFT" },
-  { n:"Midnight Black",  v:"Neon noir aesthetic", i:"cam_black.jpg", c:"Black", s:"20 LEFT" },
-  { n:"Arcade Red", v:"Bold streetwear energy", i:"cam_red.jpg", c:"Red", s:"10 LEFT" },
-  { n:"Pac-Maze Yellow", v:"Sunny 80s nostalgia", i:"cam_yellow.jpg", c:"Yellow", s:"15 LEFT" },
-  { n:"Synthwave Blue", v:"Cool coastal feel", i:"cam_blue.jpg", c:"Blue", s:"15 LEFT" },
-  { n:"Clear Gameboy", v:"Raw Y2K tech", i:"cam_transparent.jpg", c:"Transparent", s:"10 LEFT" },
-  { n:"Glitch Green", v:"90s personality", i:"cam_green.jpg", c:"Green", s:"5 LEFT" },
-  { n:"Mint Condition", v:"Rare retro drop", i:"cam_lightgreen.jpg", c:"Light Green", s:"5 LEFT" },
-  { n:"Console Grey", v:"Classic 8-bit vibes", i:"cam_grey.jpg", c:"Grey", s:"5 LEFT" }
+  { n:"Cloud 99 White", v:"Clean & modern", i:"cam_white.jpg", c:"White" },
+  { n:"Midnight Black",  v:"Neon noir aesthetic", i:"cam_black.jpg", c:"Black" },
+  { n:"Arcade Red", v:"Bold streetwear energy", i:"cam_red.jpg", c:"Red" },
+  { n:"Pac-Maze Yellow", v:"Sunny 80s nostalgia", i:"cam_yellow.jpg", c:"Yellow" },
+  { n:"Synthwave Blue", v:"Cool coastal feel", i:"cam_blue.jpg", c:"Blue" },
+  { n:"Clear Gameboy", v:"Raw Y2K tech", i:"cam_transparent.jpg", c:"Transparent" },
+  { n:"Glitch Green", v:"90s personality", i:"cam_green.jpg", c:"Green" },
+  { n:"Mint Condition", v:"Rare retro drop", i:"cam_lightgreen.jpg", c:"Light Green" },
+  { n:"Console Grey", v:"Classic 8-bit vibes", i:"cam_grey.jpg", c:"Grey" }
 ];
 
 function renderGrid(dataArray, gridId, prefix) {
@@ -1062,13 +1031,12 @@ function renderGrid(dataArray, gridId, prefix) {
 
     card.innerHTML =
       '<div class="img-wrapper">' +
-        '<div class="stock-tag" style="background:#ffea00; color:#000;">' + c.s + '</div>' +
         '<img src="' + c.i + '" class="cam-img" alt="' + c.n + '" onerror="this.src=\'data:image/svg+xml;utf8,<svg xmlns=\\\'http://www.w3.org/2000/svg\\\' width=\\\'300\\\' height=\\\'200\\\'><rect width=\\\'100%\\\' height=\\\'100%\\\' fill=\\\'#333\\\'/><text x=\\\'50%\\\' y=\\\'50%\\\' font-family=\\\'monospace\\\' font-size=\\\'14\\\' fill=\\\'#fff\\\' dominant-baseline=\\\'middle\\\' text-anchor=\\\'middle\\\'>IMG MISSING</text></svg>\'" />' +
       '</div>' +
       '<div class="cam-info">' +
         '<div class="cam-name">' + c.n + '</div>' +
         '<div class="cam-vibe">' + c.v + '</div>' +
-        '<div class="cam-perks"><span class="perk">>> FREE KEYCHAIN</span><span class="perk">>> ZERO SHIPPING</span></div>' +
+        '<div class="cam-perks"><span class="perk">>> FREE DELIVERY</span><span class="perk">>> MYSTERY GIFT CHANCE</span></div>' +
         '<div class="variant-toggle">' +
           '<label class="toggle-opt"><input type="radio" id="sdopt_' + prefix + x + '_with" name="sdopt' + prefix + x + '" value="with" checked onchange="updatePrice(this, \'' + prefix + x + '\'); soundClick();"> [X] 8GB SD CARD</label>' +
           '<label class="toggle-opt"><input type="radio" id="sdopt_' + prefix + x + '_without" name="sdopt' + prefix + x + '" value="without" onchange="updatePrice(this, \'' + prefix + x + '\'); soundClick();"> [ ] NO SD CARD</label>' +
