@@ -1083,7 +1083,7 @@ function renderGrid(dataArray, gridId, prefix) {
     var card = document.createElement("div");
     card.className = "cam-card";
 
-    var initialPriceHTML = getPriceHTML(true);
+    var initialPriceHTML = getPriceHTML(false); // Default to Without SD Card
     var watchers = Math.floor(Math.random() * 15) + 5; // Random live watchers 5-20
 
     card.innerHTML =
@@ -1098,8 +1098,8 @@ function renderGrid(dataArray, gridId, prefix) {
         '<div class="hype-text">' + c.hype + '% CLAIMED</div>' +
         '<div class="cam-perks"><span class="perk perk-highlight">>> FREE DELIVERY NATIONWIDE</span><span class="perk">>> MYSTERY GIFT CHANCE</span></div>' +
         '<div class="variant-toggle">' +
-          '<label class="toggle-opt"><input type="radio" id="sdopt_' + prefix + x + '_with" name="sdopt' + prefix + x + '" value="with" checked onchange="updatePrice(this, \'' + prefix + x + '\'); soundClick();"> [X] 8GB SD CARD</label>' +
-          '<label class="toggle-opt"><input type="radio" id="sdopt_' + prefix + x + '_without" name="sdopt' + prefix + x + '" value="without" onchange="updatePrice(this, \'' + prefix + x + '\'); soundClick();"> [ ] NO SD CARD</label>' +
+          '<label class="toggle-opt"><input type="radio" id="sdopt_' + prefix + x + '_without" name="sdopt' + prefix + x + '" value="without" checked onchange="updatePrice(this, \'' + prefix + x + '\'); soundClick();"> NO SD CARD</label>' +
+          '<label class="toggle-opt"><input type="radio" id="sdopt_' + prefix + x + '_with" name="sdopt' + prefix + x + '" value="with" onchange="updatePrice(this, \'' + prefix + x + '\'); soundClick();"> 8GB SD CARD</label>' +
         '</div>' +
         '<div class="price-row" id="priceRow' + prefix + x + '">' + initialPriceHTML + '</div>' +
         '<button class="buy-btn" onclick="openCheckout(\'' + c.c + '\', document.getElementById(\'sdopt_' + prefix + x + '_with\').checked)">SECURE ITEM</button>' +
