@@ -271,6 +271,10 @@ body {
 .toast-text { font-family: var(--font-main); font-size: 10px; line-height: 1.4; color: #fff; font-weight: 700;}
 .toast-time { font-size: 8px; color: var(--accent-3); font-family: var(--font-retro); margin-top: 4px;}
 
+/* Tech Specs details styling */
+details > summary { list-style: none; }
+details > summary::-webkit-details-marker { display: none; }
+
 @media(max-width: 480px) {
   .input-row { flex-direction: column; align-items: stretch; }
   .retro-btn { width: 100% !important; padding: 15px; margin: 5px 0;}
@@ -344,6 +348,7 @@ body {
 <div id="checkout-screen" class="screen-layer">
   <div class="retro-box" style="margin: 20px auto; max-height: 90vh; overflow-y: auto;">
     
+    <!-- CRO: Dynamic Savings Banner -->
     <div id="checkout-savings-banner" class="checkout-hype-banner">
       ⚡ YOU ARE SAVING ৳XXX TODAY + FREE SHIPPING ⚡
     </div>
@@ -451,6 +456,7 @@ body {
     <div class="header-logo">SILLY SOCKS</div>
     <div class="welcome-pill">
       PLAYER 1: <span id="broName" style="margin: 0 5px;">GUEST</span>
+      <button class="theme-toggle-btn" onclick="openGameFromCatalog()">🎮 BEAT BOT FOR 10% OFF</button>
       <button class="theme-toggle-btn" id="themeToggle" onclick="toggleTheme()">[ DAY MODE ]</button>
     </div>
   </header>
@@ -480,6 +486,24 @@ body {
         <div class="explainer-item">🔑 KEYCHAIN SIZE — CLIPS TO BAGS, BELTS, KEYS</div>
         <div class="explainer-item">💾 SD CARD ADD-ON TO SAVE MORE PHOTOS/VIDEOS</div>
       </div>
+      
+      <!-- Tech Specs Expandable Dropdown -->
+      <details style="margin-top: 15px; text-align: left;">
+        <summary style="font-family: var(--font-retro); font-size: 10px; color: var(--accent-2); cursor:pointer; padding: 10px; border: 2px dashed var(--accent-2); text-align: center; background: #000; transition: all 0.2s;">> VIEW FULL TECH SPECS <</summary>
+        <div class="tc-box" style="margin-top:8px; height: auto; max-height: 300px; font-size: 10px;">
+          <strong style="color: #0f0;">[ OPTICS & DISPLAY ]</strong><br><br>
+          > <strong>Video Resolution:</strong> 1080P and 720P HD<br>
+          > <strong>Photo Resolution:</strong> 2 Megapixels (CMOS sensor)<br>
+          > <strong>Lens Field of View:</strong> 130° wide-angle with autofocus (AF)<br>
+          > <strong>Display Screen:</strong> 0.96-inch TFT LCD screen<br><br>
+          
+          <strong style="color: #0f0;">[ BUILD & POWER ]</strong><br><br>
+          > <strong>Dimensions & Weight:</strong> Approx. 63 × 27 × 22 mm; weight around 26g to 34g<br>
+          > <strong>Body Material:</strong> ABS / PC plastic<br>
+          > <strong>Battery Life:</strong> 50 minutes to 3 hours of runtime depending on usage<br>
+          > <strong>Charging/Data Port:</strong> High-speed Type-C USB port
+        </div>
+      </details>
     </div>
 
     <div class="urgency-timer" id="dispatchTimer">🕒 ORDER IN THE NEXT <span id="timerText">--:--:--</span> FOR SAME-DAY DISPATCH</div>
@@ -877,6 +901,20 @@ function resetBoard() {
   document.getElementById('resetTttBtn').style.display = "none";
 }
 
+function openGameFromCatalog() {
+  soundClick();
+  catalog.classList.remove('visible');
+  catalog.style.opacity = '0';
+  setTimeout(() => {
+    catalog.style.display = 'none';
+    document.body.style.overflowY = 'hidden';
+    tttScreen.style.display = 'flex';
+    tttScreen.style.opacity = '0';
+    tttScreen.style.transform = 'scale(0.8)';
+    setTimeout(() => { tttScreen.classList.add('visible'); tttScreen.style.pointerEvents = 'auto'; }, 30);
+  }, 400);
+}
+
 function skipToCatalog() {
   soundClick();
   stopBGM();
@@ -914,20 +952,20 @@ function refreshCatalogPrices() {
 function updateCheckoutSavingsBanner() {
   const addonSelect = document.getElementById('form-addons');
   const banner = document.getElementById('checkout-savings-banner');
-  let savings = 400;
+  let savings = 700;
 
   if (addonSelect.value.includes("1619")) {
-    savings = 580;
-  } else if (addonSelect.value.includes("2249")) {
-    savings = 750;
+    savings = 880;
+  } else if (addonSelect.value.includes("2159")) {
+    savings = 1040;
   } else if (addonSelect.value.includes("2789")) {
     savings = 811;
   } else if (addonSelect.value.includes("3239")) {
     savings = 961;
   } else if (addonSelect.value.includes("Without SD card 1799")) {
-    savings = 400;
-  } else if (addonSelect.value.includes("With 8GB SD card 2499")) {
-    savings = 500;
+    savings = 700;
+  } else if (addonSelect.value.includes("With 8GB SD card 2399")) {
+    savings = 800;
   } else if (addonSelect.value.includes("30 cm")) {
     savings = 501;
   } else if (addonSelect.value.includes("45 cm")) {
@@ -963,15 +1001,15 @@ function openCheckout(itemColor, isWithSD) {
     if (gameDiscountActive) {
       addonDropdown.innerHTML = `
         <option value="Without SD card (10% OFF) 1619">Without SD card 1619 (10% OFF)</option>
-        <option value="With 8GB SD card (10% OFF) 2249">With 8GB SD card 2249 (10% OFF)</option>
+        <option value="With 8GB SD card (10% OFF) 2159">With 8GB SD card 2159 (10% OFF)</option>
       `;
-      addonDropdown.value = isWithSD ? "With 8GB SD card (10% OFF) 2249" : "Without SD card (10% OFF) 1619";
+      addonDropdown.value = isWithSD ? "With 8GB SD card (10% OFF) 2159" : "Without SD card (10% OFF) 1619";
     } else {
       addonDropdown.innerHTML = `
         <option value="Without SD card 1799">Without SD card 1799</option>
-        <option value="With 8GB SD card 2499">With 8GB SD card 2499</option>
+        <option value="With 8GB SD card 2399">With 8GB SD card 2399</option>
       `;
-      addonDropdown.value = isWithSD ? "With 8GB SD card 2499" : "Without SD card 1799";
+      addonDropdown.value = isWithSD ? "With 8GB SD card 2399" : "Without SD card 1799";
     }
 
     document.getElementById('lbl-color').innerText = "> SELECT PRODUCT COLOR *";
@@ -1148,11 +1186,11 @@ document.getElementById("orderForm").addEventListener("submit", function(e) {
 
 // --- High-Converting Render Logic (flagship single-product layout) ---
 function getPriceHTML(isWithSD) {
-  let oldPrice = isWithSD ? 2999 : 2199;
-  let basePrice = isWithSD ? 2499 : 1799;
+  let oldPrice = isWithSD ? 3199 : 2499;
+  let basePrice = isWithSD ? 2399 : 1799;
 
   if (gameDiscountActive) {
-    let discountedPrice = isWithSD ? 2249 : 1619;
+    let discountedPrice = isWithSD ? 2159 : 1619;
     let totalSaved = oldPrice - discountedPrice;
     return '<div class="price-stack"><span class="old-price">৳' + oldPrice + '</span><span class="new-price" style="color:#0f0; text-shadow:0 0 10px #0f0;">৳' + discountedPrice + '</span></div><span class="disc-tag" style="background:#0f0; color:#000;">🎮 10% OFF APPLIED (SAVE ৳' + totalSaved + ')</span>';
   } else {
