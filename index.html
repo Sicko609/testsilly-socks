@@ -256,14 +256,14 @@ body {
 .sticky-buy-btn { font-family: var(--font-retro); font-size: 12px; background: var(--accent-1); color: #fff; border: 2px solid var(--card-border); padding: 14px 20px; cursor: pointer; white-space: nowrap; box-shadow: 4px 4px 0 #fff;}
 
 /* --- SOCIAL PROOF TOAST & FLOATING BUTTONS --- */
-.floating-actions { position: fixed; bottom: 95px; right: 15px; display: flex; flex-direction: column; gap: 15px; z-index: 9997; }
+.floating-actions { position: fixed; bottom: 20px; right: 20px; display: flex; flex-direction: column; gap: 15px; z-index: 9999; }
 .float-btn { width: 56px; height: 56px; display: flex; align-items: center; justify-content: center; border: 3px solid var(--card-border); cursor: pointer; box-shadow: 4px 4px 0 var(--card-border); transition: all 0.2s; border-radius: 50%; }
 .float-btn:active { transform: translate(4px, 4px); box-shadow: 0 0 0 transparent; }
-.float-btn svg { width: 30px; height: 30px; fill: #fff; }
+.float-btn svg { width: 28px; height: 28px; fill: #fff; }
 .ig-btn { background: var(--accent-1); }
 .wa-btn { background: #25D366; border-color: #000; box-shadow: 4px 4px 0 #000; }
 
-#social-proof-toast { position: fixed; bottom: 95px; left: 10px; right: 10px; max-width: calc(100% - 20px); background: var(--card-bg); border: 3px solid var(--accent-2); padding: 12px 15px; display: flex; align-items: center; gap: 12px; z-index: 9998; box-shadow: 6px 6px 0 rgba(0,0,0,0.5); transform: translateX(-150%); transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+#social-proof-toast { position: fixed; bottom: 20px; left: 20px; background: var(--card-bg); border: 3px solid var(--accent-2); padding: 12px 15px; display: flex; align-items: center; gap: 12px; z-index: 9998; box-shadow: 6px 6px 0 rgba(0,0,0,0.5); transform: translateX(-150%); transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275); max-width: 320px;}
 #social-proof-toast.show { transform: translateX(0); }
 .toast-img { width: 45px; height: 45px; object-fit: cover; border: 2px solid #fff; background: #fff;}
 .toast-text { font-family: var(--font-main); font-size: 11px; line-height: 1.4; color: #fff; font-weight: 800;}
@@ -272,6 +272,20 @@ body {
 /* Tech Specs details styling */
 details > summary { list-style: none; outline: none;}
 details > summary::-webkit-details-marker { display: none; }
+
+@media(max-width: 480px) {
+  .input-row { flex-direction: column; align-items: stretch; }
+  .retro-btn { width: 100% !important; padding: 15px; margin: 5px 0;}
+  .cat-header { flex-direction: column; align-items: center; text-align: center; }
+  .welcome-pill { justify-content: center; text-align: center; }
+  .theme-toggle-btn { margin-left: 0; margin-top: 5px; }
+  .retro-box { padding: 1.5rem 1rem; width: 95%; }
+  .cam-grid { grid-template-columns: 1fr; }
+  
+  /* Lift up popups and buttons on mobile so they don't hide behind sticky bar */
+  .floating-actions { bottom: 85px; right: 15px; }
+  #social-proof-toast { bottom: 85px; left: 10px; right: 10px; max-width: calc(100% - 20px); }
+}
 </style>
 </head>
 <body>
@@ -571,14 +585,18 @@ details > summary::-webkit-details-marker { display: none; }
   <button class="sticky-buy-btn" onclick="buyFlagship()">SECURE ITEM</button>
 </div>
 
-<button class="wa-float-btn float-btn" style="background: #25D366; bottom: 160px;" onclick="window.open('https://wa.me/8801961515240?text=Hi!%20I%20have%20a%20question%20about%20Silly%20Socks', '_blank')" aria-label="Chat on WhatsApp">
-  <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M20.52 3.449C18.24 1.245 15.24 0 12.045 0 5.463 0 .104 5.36.101 11.943c0 2.105.548 4.16 1.588 5.976L0 24l6.223-1.632c1.749.955 3.722 1.457 5.727 1.457h.005c6.581 0 11.94-5.359 11.943-11.943.001-3.19-1.24-6.19-3.378-8.433zM12.05 21.785h-.004c-1.786 0-3.54-.48-5.075-1.39l-.365-.216-3.694.968.985-3.6-.238-.375a9.86 9.86 0 01-1.516-5.229c.002-5.462 4.448-9.907 9.911-9.907 2.646 0 5.13 1.03 6.998 2.9a9.834 9.834 0 012.897 6.995c-.003 5.462-4.448 9.854-9.899 9.854z"/></svg>
-</button>
-<button class="ig-float-btn float-btn" style="bottom: 95px;" onclick="window.open('https://www.instagram.com/your.sillysocks/', '_blank')">
-  <svg viewBox="0 0 24 24">
-    <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 1.76-6.98 6.276-.058 1.281-.072 1.688-.072 4.947s.014 3.666.072 4.947c.2 4.515 2.622 6.076 6.98 6.276 1.28.058 1.687.072 4.947.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-1.76 6.979-6.276.059-1.281.073-1.689.073-4.947 0-3.258-.014-3.667-.072-4.947-.196-4.516-2.624-6.076-6.979-6.276-1.28-.058-1.688-.072-4.948-.072zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
-  </svg>
-</button>
+<!-- Floating Action Buttons -->
+<div class="floating-actions">
+  <div class="float-btn wa-btn" onclick="window.open('https://wa.me/8801961515240?text=Hi!%20I%20have%20a%20question%20about%20Silly%20Socks', '_blank')" aria-label="Chat on WhatsApp">
+    <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/>
+    </svg>
+  </div>
+  <div class="float-btn ig-btn" onclick="window.open('https://www.instagram.com/your.sillysocks/', '_blank')" aria-label="Instagram">
+    <svg viewBox="0 0 24 24">
+      <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 1.76-6.98 6.276-.058 1.281-.072 1.688-.072 4.947s.014 3.666.072 4.947c.2 4.515 2.622 6.076 6.98 6.276 1.28.058 1.687.072 4.947.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-1.76 6.979-6.276.059-1.281.073-1.689.073-4.947 0-3.258-.014-3.667-.072-4.947-.196-4.516-2.624-6.076-6.979-6.276-1.28-.058-1.688-.072-4.948-.072zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+    </svg>
+  </div>
+</div>
 
 <!-- Social Proof Toast Notification (CRO) -->
 <div id="social-proof-toast">
