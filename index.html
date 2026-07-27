@@ -84,20 +84,38 @@ body {
   display: flex; flex-direction: column; align-items: center; justify-content: center;
   background: var(--bg); z-index: 5000; transition: all 0.6s cubic-bezier(0.8, -0.2, 0.2, 1.5);
 }
-#tictactoe-screen, #gate, #checkout-screen, #success-screen { display: none; opacity: 0; transform: scale(0.8); }
-#tictactoe-screen.visible, #gate.visible, #checkout-screen.visible, #success-screen.visible { opacity: 1; transform: scale(1); }
+#tictactoe-screen, #checkout-screen, #success-screen { display: none; opacity: 0; transform: scale(0.8); }
+#tictactoe-screen.visible, #checkout-screen.visible, #success-screen.visible { opacity: 1; transform: scale(1); }
 
-/* --- SCREEN 1: HERO --- */
+/* --- SCREEN 1: HERO & ARCADE BUTTONS --- */
 #hero-screen { cursor: pointer; display: flex; opacity: 1; transform: scale(1); }
-.hero-logo { font-family: var(--font-retro); font-size: clamp(24px, 6vw, 60px); text-align: center; color: #fff; text-shadow: 0 0 10px var(--accent-1), 4px 4px 0px var(--accent-2); margin-bottom: 20px; z-index: 10; animation: pulseLogo 2s infinite alternate; padding: 0 15px; }
+.hero-logo { font-family: var(--font-retro); font-size: clamp(24px, 6vw, 60px); text-align: center; color: #fff; text-shadow: 0 0 10px var(--accent-1), 4px 4px 0px var(--accent-2); margin-bottom: 10px; z-index: 10; animation: pulseLogo 2s infinite alternate; padding: 0 15px; }
 @keyframes pulseLogo { 0% { transform: scale(1) skewX(0deg); text-shadow: 0 0 10px var(--accent-1), 4px 4px 0px var(--accent-2); } 100% { transform: scale(1.05) skewX(-5deg); text-shadow: 0 0 25px var(--accent-1), 6px 6px 0px var(--accent-2); } }
-.hero-prompt { font-family: var(--font-retro); font-size: clamp(10px, 3vw, 14px); color: var(--accent-3); animation: blink 1s steps(2, start) infinite; z-index: 10; text-align: center; padding: 0 10px; line-height: 1.5; }
+.hero-prompt { font-family: var(--font-retro); font-size: clamp(10px, 3vw, 12px); color: var(--accent-3); animation: blink 1s steps(2, start) infinite; z-index: 10; text-align: center; padding: 0 10px; line-height: 1.5; margin-bottom: 25px;}
 @keyframes blink { to { visibility: hidden; } }
-.hero-cta-group { z-index: 20; display: flex; flex-direction: column; align-items: center; gap: 14px; margin-top: 30px; }
-.hero-enter-btn { font-family: var(--font-retro); font-size: clamp(11px, 3vw, 14px); background: var(--accent-3); color: #000; border: 3px solid #fff; padding: 16px 28px; box-shadow: 4px 4px 0 var(--accent-1); cursor: pointer; text-transform: uppercase; transition: all 0.2s; }
-.hero-enter-btn:hover { transform: translate(-2px,-2px); box-shadow: 6px 6px 0 var(--accent-1); }
-.hero-enter-btn:active { transform: translate(2px,2px); box-shadow: 0 0 0 transparent; }
-.hero-game-link { font-family: var(--font-retro); font-size: 9px; color: var(--accent-2); background: transparent; border: none; text-decoration: underline; cursor: pointer; letter-spacing: 0.5px; padding: 6px; }
+
+/* Hero Action Blocks */
+.arcade-blocks { z-index: 20; display: flex; flex-direction: column; align-items: center; gap: 20px; width: 100%; padding: 0 20px; }
+.arcade-btn {
+  width: 100%; max-width: 320px;
+  background: rgba(0, 0, 0, 0.8);
+  border: 4px solid var(--accent-1);
+  padding: 20px 15px;
+  cursor: pointer;
+  display: flex; flex-direction: column; align-items: center; gap: 8px;
+  transition: all 0.2s ease-in-out;
+  box-shadow: 6px 6px 0 var(--accent-1);
+}
+.arcade-btn:hover { transform: translate(-4px, -4px); box-shadow: 10px 10px 0 var(--accent-2); border-color: var(--accent-2); }
+.arcade-btn:active { transform: translate(4px, 4px); box-shadow: 0 0 0 transparent; }
+
+.arcade-btn.shop { border-color: #0f0; box-shadow: 6px 6px 0 #0f0; }
+.arcade-btn.shop:hover { box-shadow: 10px 10px 0 #fff; border-color: #fff; }
+
+.arcade-btn .btn-title { font-family: var(--font-retro); font-size: 14px; color: var(--accent-3); text-shadow: 2px 2px 0 #000; }
+.arcade-btn.shop .btn-title { color: #0f0; }
+.arcade-btn .btn-sub { font-family: var(--font-main); font-size: 11px; font-weight: 900; color: #fff; letter-spacing: 1px;}
+
 .hero-sound-toggle { position: fixed; top: 16px; right: 16px; z-index: 30; font-family: var(--font-retro); font-size: 8px; background: #000; color: var(--accent-2); border: 2px solid var(--accent-2); padding: 8px 10px; cursor: pointer; }
 
 #sock-rain { position: absolute; top: 0; left: 0; width: 100%; height: 100%; overflow: hidden; pointer-events: none; z-index: 1;}
@@ -119,18 +137,6 @@ body {
 .ttt-cell.o { color: var(--accent-2); text-shadow: 0 0 15px var(--accent-2); }
 #ttt-status { font-family: var(--font-retro); font-size: 10px; color: var(--accent-3); margin-top: 10px; line-height: 1.6; animation: pulseLogo 1.5s infinite alternate; transition: color 0.3s;}
 .btn-group { display: flex; flex-direction: column; gap: 5px; margin-top: 15px; }
-
-/* --- SCREEN 3: GATE / HACKING --- */
-.lock-icon { font-size: 40px; margin-bottom: 15px; filter: drop-shadow(0 0 10px var(--accent-1)); transition: all 0.5s ease; }
-.gate-title { font-family: var(--font-retro); font-size: 16px; line-height: 1.5; margin-bottom: 15px; color: var(--accent-1); text-shadow: 2px 2px 0 #000; transition: color 0.5s ease; }
-.gate-sub { font-size: 11px; font-weight: 800; font-family: var(--font-retro); color: var(--text-muted); margin-bottom: 1.5rem; line-height: 1.8;}
-
-.input-row { display: flex; flex-direction: row; gap: 10px; margin-bottom: 15px; justify-content: center; align-items: center;}
-.retro-input, .retro-select { flex: 1; min-width: 0; padding: 12px; background: #000; border: 3px solid var(--card-border); color: #0f0; font-family: var(--font-retro); font-size: 10px; outline: none; box-shadow: inset 0 0 10px rgba(0,255,0,0.2); text-transform: uppercase; width: 100%;}
-.retro-input:focus, .retro-select:focus { border-color: var(--accent-2); box-shadow: inset 0 0 15px var(--accent-2); }
-#errMsg { font-family: var(--font-retro); font-size: 10px; color: var(--accent-1); min-height: 20px; display: none; margin-top: 10px; }
-.hacked-text { color: #0f0 !important; text-shadow: 0 0 15px #0f0 !important; }
-.hacked-icon { filter: drop-shadow(0 0 15px #0f0) !important; transform: scale(1.2); }
 
 /* --- SCREEN 4 & 6: CHECKOUT & SUCCESS UI --- */
 #checkout-screen { overflow-y: auto; padding: 20px 0; justify-content: flex-start; -webkit-overflow-scrolling: touch; }
@@ -290,22 +296,29 @@ body {
 <!-- 80s Perspective Grid -->
 <div class="synth-grid"></div>
 
-<!-- SCREEN 1: HERO SECTION -->
+<!-- SCREEN 1: HERO SECTION & ARCADE BLOCKS -->
 <button class="hero-sound-toggle" id="soundToggle" onclick="toggleSound(event)">🔇 SOUND: OFF</button>
 <div id="hero-screen" class="screen-layer">
   <div id="sock-rain"></div>
   <h1 class="hero-logo">SILLY SOCKS</h1>
   <p class="hero-prompt">>> THE NOSTALGIA VAULT IS OPEN <<</p>
-  <div class="hero-cta-group">
-    <button class="hero-enter-btn" onclick="event.stopPropagation(); leaveHero('catalog');">🛒 ENTER THE SHOP</button>
-    <button class="hero-game-link" onclick="event.stopPropagation(); leaveHero('game');">🎮 or play a quick game for a 10% discount code</button>
+  
+  <div class="arcade-blocks">
+    <button class="arcade-btn shop" onclick="event.stopPropagation(); leaveHero('catalog');">
+      <span class="btn-title">🛒 QUICK BUY</span>
+      <span class="btn-sub">ENTER THE SHOP DIRECTLY</span>
+    </button>
+    <button class="arcade-btn" onclick="event.stopPropagation(); leaveHero('game');">
+      <span class="btn-title">🎮 BOSS FIGHT</span>
+      <span class="btn-sub">BEAT BOT FOR 10% OFF CODE</span>
+    </button>
   </div>
 </div>
 
 <!-- SCREEN 2: TIC-TAC-TOE BATTLE SECTION -->
 <div id="tictactoe-screen" class="screen-layer">
   <div class="retro-box">
-    <div class="gate-title" style="margin-bottom: 20px;">BEAT THE BOT TO UNLOCK 10% OFF</div>
+    <div class="gate-title" style="margin-bottom: 20px;">BEAT THE IMPOSSIBLE BOT FOR 10% OFF</div>
     <p class="gate-sub" id="ttt-status">PLAYER 1 IS 'X'. YOUR TURN!</p>
     
     <div class="ttt-board" id="ttt-board-container">
@@ -322,32 +335,8 @@ body {
 
     <div class="btn-group">
       <button class="retro-btn" id="resetTttBtn" style="display:none;" onclick="resetBoard()">TRY AGAIN (IF YOU DARE)</button>
-      <button class="retro-btn" id="skipTttBtn" onclick="showGate(false)">I HAVE A CODE</button>
-      <button class="retro-btn" id="skipToCatBtn" onclick="skipToCatalog()">SKIP TO CATALOG</button>
+      <button class="retro-btn" id="skipToCatBtn" onclick="skipToCatalog()">SKIP TO SHOP (GIVE UP)</button>
     </div>
-  </div>
-</div>
-
-<!-- SCREEN 3: REFERRAL GATE / HACKING -->
-<div id="gate" class="screen-layer">
-  <div class="retro-box">
-    <div class="lock-icon" id="gate-icon">🔒</div>
-    <div class="gate-title" id="gate-title">SYSTEM LOCKED</div>
-    <p class="gate-sub" id="gate-sub" style="margin-bottom:1.5rem;">ENTER PLAYER 1 REFERRAL CODE</p>
-    
-    <!-- Code Input Area -->
-    <div class="input-row" id="gate-input-area">
-      <input id="refInput" class="retro-input" type="text" placeholder="CODE..." autocomplete="off" />
-      <button class="retro-btn" id="enterBtn" onclick="checkCode()" style="margin:0; width:100px;">START</button>
-    </div>
-
-    <!-- Leaderboard Initials Area -->
-    <div class="input-row" id="lb-input-area" style="display:none;">
-      <input id="lbInput" class="retro-input" type="text" placeholder="INITIALS..." maxlength="10" autocomplete="off" />
-      <button class="retro-btn" onclick="saveInitialsAndEnter()" style="margin:0; width:100px;">SAVE</button>
-    </div>
-    
-    <div id="errMsg">ERROR: PLAYER NOT FOUND</div>
   </div>
 </div>
 
@@ -355,7 +344,6 @@ body {
 <div id="checkout-screen" class="screen-layer">
   <div class="retro-box" style="margin: 20px auto; max-height: 90vh; overflow-y: auto;">
     
-    <!-- CRO: Dynamic Savings Banner -->
     <div id="checkout-savings-banner" class="checkout-hype-banner">
       ⚡ YOU ARE SAVING ৳XXX TODAY + FREE SHIPPING ⚡
     </div>
@@ -373,17 +361,13 @@ body {
       <textarea name="Delivery Address" class="retro-input" required placeholder="HOUSE, ROAD, DHAKA..." rows="3" style="resize:none; font-family: var(--font-main);"></textarea>
       
       <label id="lbl-color">> SELECT PRODUCT COLOR *</label>
-      <select name="Product Color" id="form-color" class="retro-select" required>
-        <!-- Options injected dynamically -->
-      </select>
+      <select name="Product Color" id="form-color" class="retro-select" required></select>
 
       <label id="lbl-addons">> CHOOSE ADD-ONS *</label>
-      <select name="Add-ons" id="form-addons" class="retro-select" required onchange="updateCheckoutSavingsBanner()">
-        <!-- Options injected dynamically -->
-      </select>
+      <select name="Add-ons" id="form-addons" class="retro-select" required onchange="updateCheckoutSavingsBanner()"></select>
 
-      <label>> BRO CODE (OPTIONAL)</label>
-      <input type="text" name="BRO CODE" id="form-brocode" class="retro-input" placeholder="FOR EXTRA DISCOUNT" />
+      <label>> DISCOUNT APPLIED (IF WON)</label>
+      <input type="text" name="BRO CODE" id="form-brocode" class="retro-input" placeholder="LOCKED" readonly />
 
       <label>> QUANTITY *</label>
       <select name="Quantity" class="retro-select" required>
@@ -399,7 +383,6 @@ body {
       </div>
       <p style="font-size: 10px; color: var(--accent-3); font-weight:800; margin-top:-4px;">💚 PAY VIA BKASH & SKIP THE COD VERIFICATION CALL — ORDER SHIPS FASTER</p>
 
-      <!-- bKash Send Money Notification Banner & TRX Input -->
       <div id="bkash-field" class="bkash-info-box" style="display:none;">
         <div class="bkash-number">> SEND MONEY (PERSONAL): 01961515240</div>
         <label style="margin-top: 4px;">> BKASH TRANSACTION ID *</label>
@@ -433,7 +416,6 @@ body {
 
       <button type="submit" id="submitOrderBtn" class="retro-btn" style="background: var(--accent-3); color: #000; font-size: 12px; margin-top: 15px;">CONFIRM ORDER</button>
       
-      <!-- Trust Signals for CRO -->
       <div class="trust-badges">
         <span>🔒 100% SECURE</span>
         <span>🚚 FAST COD</span>
@@ -468,14 +450,13 @@ body {
   <header class="cat-header">
     <div class="header-logo">SILLY SOCKS</div>
     <div class="welcome-pill">
-      PLAYER 1: <span id="broName" style="margin: 0 5px;">???</span>
-      <button class="theme-toggle-btn" onclick="openGameFromCatalog()">🎮 GOT A CODE?</button>
+      PLAYER 1: <span id="broName" style="margin: 0 5px;">GUEST</span>
       <button class="theme-toggle-btn" id="themeToggle" onclick="toggleTheme()">[ DAY MODE ]</button>
     </div>
   </header>
 
   <div class="ticker-wrap" id="leaderboardWrap">
-    <div class="ticker" id="lbTickerContainer"></div>
+    <div class="ticker" id="lbTickerContainer"><span>👑 ARCADE CHAMPIONS: #1 SIAM ⚡ #2 ABID ⚡ #3 TASHIN ⚡ #4 MAFRUHA 👑</span></div>
   </div>
   
   <div class="disc-bar" id="topDiscBar">
@@ -517,7 +498,7 @@ body {
 
         <div class="cam-perks" style="margin-top: 15px;">
           <span class="perk perk-highlight">>> FREE DELIVERY NATIONWIDE</span>
-          <span class="perk">>> MYSTERY GIFT CHANCE</span>
+          <span class="perk">>> PARCEL CHECK ALLOWED</span>
         </div>
 
         <div class="variant-toggle">
@@ -548,7 +529,7 @@ body {
           
           <div class="cam-perks" style="margin-top: 6px;">
             <span class="perk perk-highlight">>> FREE DELIVERY NATIONWIDE</span>
-            <span class="perk">>> MYSTERY GIFT CHANCE</span>
+            <span class="perk">>> PARCEL CHECK ALLOWED</span>
           </div>
           <div class="variant-toggle">
             <label class="toggle-opt">
@@ -602,14 +583,15 @@ body {
 
 <script>
 // ==========================================
-// 80s WEB AUDIO API SYNTHESIZER
+// 80s WEB AUDIO API SYNTHESIZER & PAC-MAN BGM
 // ==========================================
 let audioCtx;
 let isPoweredOn = false;
 let isBgmRunning = false;
 let appliedBroCode = "";
 let soundEnabled = false;
-let gameDiscountActive = false; // Tracks if 10% game discount was unlocked
+let gameDiscountActive = false; 
+let bgmTimeout = null;
 
 function initAudio() {
   if (isPoweredOn) return;
@@ -637,23 +619,40 @@ function toggleSound(e) {
   }
 }
 
+function playCoinSound() {
+  if(!soundEnabled) return;
+  playTone(987.77, 'square', 0.1, 0.05);
+  setTimeout(() => playTone(1318.51, 'square', 0.4, 0.05), 100);
+}
+
+// Authentic Pac-Man Theme Chiptune Sequence
+const pacmanNotes = [
+  { f: 493.88, d: 120 }, { f: 987.77, d: 120 }, { f: 739.99, d: 120 }, { f: 587.33, d: 120 },
+  { f: 739.99, d: 120 }, { f: 659.25, d: 240 }, { f: 554.37, d: 120 }, { f: 659.25, d: 240 },
+  { f: 987.77, d: 120 }, { f: 739.99, d: 120 }, { f: 587.33, d: 120 }, { f: 739.99, d: 120 },
+  { f: 493.88, d: 240 }, { f: 440.00, d: 120 }, { f: 880.00, d: 120 }, { f: 659.25, d: 120 }
+];
+
+let noteIndex = 0;
 function startBGM() {
   if (isBgmRunning) return;
   isBgmRunning = true;
-  let t = 0;
-  let notes = [130.81, 155.56, 130.81, 196.00]; 
+  noteIndex = 0;
   
-  function loop() {
-    if(!isBgmRunning) return;
-    playTone(notes[t % 4], 'sawtooth', 0.2, 0.02);
-    if(t % 2 === 0) playTone(800, 'square', 0.05, 0.01); 
-    t++;
-    setTimeout(loop, 300);
+  function playNextNote() {
+    if (!isBgmRunning || !soundEnabled) return;
+    let note = pacmanNotes[noteIndex % pacmanNotes.length];
+    playTone(note.f, 'square', note.d / 1000, 0.02);
+    noteIndex++;
+    bgmTimeout = setTimeout(playNextNote, note.d + 30);
   }
-  loop();
+  playNextNote();
 }
 
-function stopBGM() { isBgmRunning = false; }
+function stopBGM() { 
+  isBgmRunning = false; 
+  if (bgmTimeout) clearTimeout(bgmTimeout);
+}
 
 function playTone(freq, type, duration, vol = 0.05) {
   if (!audioCtx || audioCtx.state !== 'running') return;
@@ -668,7 +667,16 @@ function playTone(freq, type, duration, vol = 0.05) {
 }
 
 function soundClick() { if(soundEnabled) playTone(600, 'square', 0.1); }
-function soundBot() { if(soundEnabled) playTone(400, 'square', 0.1, 0.03); }
+function soundPlayerMove() {
+  if(!soundEnabled) return;
+  playTone(587.33, 'square', 0.1, 0.05);
+  setTimeout(() => playTone(739.99, 'square', 0.1, 0.05), 100);
+}
+function soundBotMove() {
+  if(!soundEnabled) return;
+  playTone(329.63, 'sawtooth', 0.15, 0.05);
+  setTimeout(() => playTone(246.94, 'sawtooth', 0.2, 0.05), 150);
+}
 function soundError() { if(soundEnabled) playTone(150, 'sawtooth', 0.4, 0.1); }
 function soundWin() {
   if(!soundEnabled) return;
@@ -676,10 +684,6 @@ function soundWin() {
   setTimeout(() => playTone(554, 'sine', 0.2), 150);
   setTimeout(() => playTone(659, 'sine', 0.4), 300);
   setTimeout(() => playTone(880, 'sine', 0.6), 450);
-}
-function soundHack() {
-  if(!soundEnabled) return;
-  for(let i=0; i<15; i++) { setTimeout(() => playTone(400 + (i*50), 'square', 0.05, 0.03), i*60); }
 }
 
 // --- Theme Toggle ---
@@ -717,7 +721,6 @@ createSockRain();
 let hasEnteredHero = false;
 const heroScreen = document.getElementById('hero-screen');
 const tttScreen = document.getElementById('tictactoe-screen');
-const gate = document.getElementById('gate');
 const catalog = document.getElementById('catalog');
 const checkoutScreen = document.getElementById('checkout-screen');
 const successScreen = document.getElementById('success-screen');
@@ -728,7 +731,13 @@ function leaveHero(target) {
   target = target || 'catalog';
 
   initAudio();
-  soundClick();
+  
+  if (!soundEnabled) {
+      soundEnabled = true;
+      document.getElementById('soundToggle').textContent = '🔊 SOUND: ON';
+      startBGM();
+  }
+  playCoinSound();
 
   heroScreen.style.transform = 'translateY(-100vh) scale(1.5)';
   heroScreen.style.opacity = '0';
@@ -748,7 +757,7 @@ function leaveHero(target) {
   }
 }
 
-// --- Tic-Tac-Toe Game Logic (HARD BOT) ---
+// --- Tic-Tac-Toe Game Logic (HARD BOT & RAGEBAIT) ---
 let board = ["", "", "", "", "", "", "", "", ""];
 let gameActive = true;
 const cells = document.querySelectorAll('.ttt-cell');
@@ -770,7 +779,7 @@ const lossMsgs = [
 
 function makeMove(index) {
   if(board[index] !== "" || !gameActive) return;
-  soundClick();
+  soundPlayerMove();
   board[index] = "X";
   updateBoard();
   
@@ -784,22 +793,13 @@ function makeMove(index) {
 }
 
 function getBestMove() {
-  // 1. Try to win
   let move = findWinningMove("O");
   if (move !== -1) return move;
-  
-  // 2. Block X from winning
   move = findWinningMove("X");
   if (move !== -1) return move;
-  
-  // 3. Take center if available
   if (board[4] === "") return 4;
-  
-  // 4. Take available corners
   let corners = [0, 2, 6, 8].filter(i => board[i] === "");
   if (corners.length > 0) return corners[Math.floor(Math.random() * corners.length)];
-  
-  // 5. Random available space
   let emptyIndices = [];
   for(let i=0; i<9; i++) { if(board[i] === "") emptyIndices.push(i); }
   return emptyIndices[Math.floor(Math.random() * emptyIndices.length)];
@@ -824,7 +824,7 @@ function botMove() {
   for(let i=0; i<9; i++) { if(board[i] === "") emptyIndices.push(i); }
   if(emptyIndices.length === 0) return;
   
-  soundBot();
+  soundBotMove();
   let bestMove = getBestMove();
   board[bestMove] = "O";
   updateBoard();
@@ -855,13 +855,13 @@ function endGame(msg, playerWon) {
   if(playerWon) {
     statusText.style.color = "#0f0";
     soundWin();
-    gameDiscountActive = true; // UNLOCK 10% DISCOUNT
+    gameDiscountActive = true; 
     appliedBroCode = "ARCADE10";
-    setTimeout(() => { showGate(true); }, 1500); 
+    setTimeout(() => { skipToCatalog(); }, 1500); 
   } else {
     statusText.style.color = "#ff00ff";
     soundError();
-    document.getElementById('resetTttBtn').style.display = "inline-block";
+    document.getElementById('resetTttBtn').style.display = "block";
     document.getElementById('resetTttBtn').innerText = "TRY AGAIN (IF YOU DARE)";
     document.getElementById('skipToCatBtn').innerText = "I GIVE UP (SKIP TO SHOP)";
   }
@@ -877,20 +877,6 @@ function resetBoard() {
   document.getElementById('resetTttBtn').style.display = "none";
 }
 
-function openGameFromCatalog() {
-  soundClick();
-  catalog.classList.remove('visible');
-  catalog.style.opacity = '0';
-  setTimeout(() => {
-    catalog.style.display = 'none';
-    document.body.style.overflowY = 'hidden';
-    tttScreen.style.display = 'flex';
-    tttScreen.style.opacity = '0';
-    tttScreen.style.transform = 'scale(0.8)';
-    setTimeout(() => { tttScreen.classList.add('visible'); tttScreen.style.pointerEvents = 'auto'; }, 30);
-  }, 400);
-}
-
 function skipToCatalog() {
   soundClick();
   stopBGM();
@@ -902,123 +888,6 @@ function skipToCatalog() {
   setTimeout(() => {
     tttScreen.style.display = "none";
     catalog.style.display = "block";
-    document.getElementById("broName").textContent = "GUEST";
-    renderLeaderboard();
-    refreshCatalogPrices();
-    
-    setTimeout(() => {
-      catalog.classList.add("visible");
-      window.scrollTo({top: 0, behavior: 'smooth'});
-      startSocialProofTimer();
-    }, 50);
-  }, 600);
-}
-
-function updateLeaderboard(name) {
-  let localLb = JSON.parse(localStorage.getItem('sillySocksLB') || '[]');
-  let globalLb = ["SHIHAB", "SIAM", "ABID", "MADDIE", "MAMUN"];
-  
-  if(name && name !== "GUEST") localLb.unshift(name.toUpperCase());
-  localStorage.setItem('sillySocksLB', JSON.stringify(localLb));
-  
-  let combined = [...localLb, ...globalLb];
-  let uniqueLb = [...new Set(combined)].slice(0, 10);
-  
-  let tickerHTML = "👑 ARCADE CHAMPIONS: ";
-  tickerHTML += uniqueLb.map((n, i) => `#${i+1} ${n}`).join(" ⚡ ") + " 👑";
-  
-  document.getElementById('lbTickerContainer').innerHTML = `<span>${tickerHTML}</span><span>${tickerHTML}</span>`;
-}
-function renderLeaderboard() { updateLeaderboard(); }
-
-// --- Gatekeeper Logic ---
-var allowedList = "mafruha|siam|abid|authai|rifah|fatima|azha|namira|maddie|nafisa|nayla|faysol|labby|mamun|sayemrohitkarmakar|nafisalubabaetu|mirzaabdulkhaled|namiraahmedshams|ishmamalam|farhanmasud|aunu|labbyahsan|jarinsubahshifa|nafisanoor|sabilaanjum|miswaralam|abdullahaljawad|tasin|arshan|ahnaf".split("|");
-var prettyList  = "Mafruha|Siam|Abid|Authai|Rifah|Fatima|Azha|Namira|Maddie|Nafisa|Nayla|Faysol|Labby|Mamun|Sayem Rohit Karmakar|Nafisa Lubaba Etu|Mirza Abdul Khaled|Namira Ahmed Shams|Ishmam Alam|Farhan Masud|Aunu|Labby Ahsan|Jarin Subah Shifa|Nafisa Noor|Sabila Anjum|Miswar Alam|Abdullah Al Jawad|Tasin|Arshan|Ahnaf".split("|");
-
-function showGate(autoUnlock) {
-  soundClick();
-  tttScreen.style.opacity = "0";
-  tttScreen.style.transform = "scale(0.5)";
-  
-  setTimeout(() => {
-    tttScreen.style.display = "none";
-    gate.style.display = "flex";
-    
-    setTimeout(() => {
-      gate.classList.add("visible");
-      
-      if(autoUnlock) {
-        soundHack();
-        document.getElementById('gate-input-area').style.display = 'none';
-        document.getElementById('gate-sub').innerText = "BYPASSING SECURITY...";
-        document.getElementById('gate-title').innerText = "SYSTEM HACKING...";
-        document.getElementById('gate-title').style.color = "var(--accent-3)";
-        
-        setTimeout(() => {
-          document.getElementById('gate-title').innerText = "ACCESS GRANTED";
-          document.getElementById('gate-title').classList.add('hacked-text');
-          document.getElementById('gate-icon').innerText = "🔓";
-          document.getElementById('gate-icon').classList.add('hacked-icon');
-          document.getElementById('gate-sub').innerText = "ENTER INITIALS FOR LEADERBOARD";
-          document.getElementById('lb-input-area').style.display = 'flex';
-        }, 1500);
-      } else {
-        document.getElementById('gate-input-area').style.display = 'flex';
-        document.getElementById('lb-input-area').style.display = 'none';
-      }
-    }, 50);
-  }, 600);
-}
-
-function checkCode() {
-  soundClick();
-  var val = document.getElementById("refInput").value.toLowerCase().trim();
-  var foundIndex = allowedList.indexOf(val);
-  var errMsg = document.getElementById("errMsg");
-
-  if(foundIndex > -1) {
-    errMsg.style.display = "none";
-    soundHack();
-    gameDiscountActive = true; 
-    appliedBroCode = val.toUpperCase(); 
-    
-    document.getElementById('gate-title').innerText = "ACCESS GRANTED";
-    document.getElementById('gate-title').classList.add('hacked-text');
-    document.getElementById('gate-icon').innerText = "🔓";
-    document.getElementById('gate-icon').classList.add('hacked-icon');
-    
-    setTimeout(() => { 
-      updateLeaderboard(prettyList[foundIndex]);
-      unlockCatalog(prettyList[foundIndex]); 
-    }, 1200);
-  } else {
-    soundError();
-    errMsg.style.display = "block";
-    errMsg.style.animation = "none";
-    void errMsg.offsetWidth; 
-    errMsg.style.animation = "shake 0.4s ease-in-out";
-  }
-}
-
-function saveInitialsAndEnter() {
-  soundClick();
-  let name = document.getElementById('lbInput').value || "CHAMPION";
-  updateLeaderboard(name);
-  unlockCatalog(name.toUpperCase());
-}
-
-function unlockCatalog(playerName) {
-  stopBGM(); 
-  gate.style.opacity = "0";
-  gate.style.transform = "scale(0.5)";
-  gate.style.pointerEvents = "none";
-  document.body.style.overflowY = 'auto'; 
-  
-  setTimeout(() => {
-    gate.style.display = "none";
-    catalog.style.display = "block";
-    document.getElementById("broName").textContent = playerName;
-    renderLeaderboard();
     refreshCatalogPrices();
     
     setTimeout(() => {
@@ -1107,7 +976,7 @@ function openCheckout(itemColor, isWithSD) {
 
     document.getElementById('lbl-color').innerText = "> SELECT PRODUCT COLOR *";
     document.getElementById('lbl-addons').innerText = "> CHOOSE ADD-ONS *";
-    document.getElementById('form-brocode').value = appliedBroCode || (gameDiscountActive ? "ARCADE10" : "");
+    document.getElementById('form-brocode').value = gameDiscountActive ? "ARCADE10" : "";
     
     updateCheckoutSavingsBanner();
 
@@ -1150,7 +1019,7 @@ function openCheckoutMirror() {
 
     document.getElementById('lbl-color').innerText = "> SELECT COLOR (ORANGE ONLY) *";
     document.getElementById('lbl-addons').innerText = "> CHOOSE MIRROR SIZE *";
-    document.getElementById('form-brocode').value = appliedBroCode || (gameDiscountActive ? "ARCADE10" : "");
+    document.getElementById('form-brocode').value = gameDiscountActive ? "ARCADE10" : "";
     
     updateCheckoutSavingsBanner();
 
@@ -1434,7 +1303,6 @@ function showToast() {
   setTimeout(() => { toast.classList.remove('show'); }, 4000);
 }
 
-updateLeaderboard(""); 
 showPage(1);
 </script>
 </body>
