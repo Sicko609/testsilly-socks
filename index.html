@@ -349,7 +349,7 @@ details > summary::-webkit-details-marker { display: none; }
   <div class="retro-box" style="padding: 1.5rem 1rem;">
     
     <div id="checkout-savings-banner" class="checkout-hype-banner">
-      ⚡ YOU ARE SAVING ৳XXX TODAY + FREE SHIPPING ⚡
+      ⚡ YOU ARE SAVING ৳XXX TODAY ⚡
     </div>
 
     <div class="gate-title" style="color: var(--accent-3);">SECURE CHECKOUT</div>
@@ -368,16 +368,18 @@ details > summary::-webkit-details-marker { display: none; }
       <select name="Product Color" id="form-color" class="retro-select" required></select>
 
       <label id="lbl-addons">> CHOOSE ADD-ONS *</label>
-      <select name="Add-ons" id="form-addons" class="retro-select" required onchange="updateCheckoutSavingsBanner()"></select>
+      <select name="Add-ons" id="form-addons" class="retro-select" required onchange="updateCheckoutTotal()"></select>
 
       <label>> DISCOUNT APPLIED (IF WON)</label>
       <input type="text" name="BRO CODE" id="form-brocode" class="retro-input" placeholder="LOCKED" readonly />
 
       <label>> QUANTITY *</label>
-      <select name="Quantity" class="retro-select" required>
+      <select name="Quantity" id="form-quantity" class="retro-select" required onchange="updateCheckoutTotal()">
         <option value="1">1</option>
         <option value="2">2</option>
         <option value="3">3</option>
+        <option value="4">4</option>
+        <option value="5">5</option>
       </select>
 
       <label>> PREFERRED PAYMENT METHOD *</label>
@@ -398,6 +400,16 @@ details > summary::-webkit-details-marker { display: none; }
         ✅ 3-DAY REPLACEMENT WARRANTY ON MANUFACTURING DEFECTS<br>
         ✅ REAL HUMAN SUPPORT VIA INSTAGRAM DM<br>
         ✅ ORDERS PACKED & DISPATCHED WITHIN 24-48H
+      </div>
+
+      <!-- DYNAMIC TOTAL BOX -->
+      <div id="checkout-total-box" style="background: #000; border: 2px solid var(--accent-3); padding: 12px; margin-top: 10px; margin-bottom: 15px; color: #fff; font-family: var(--font-retro); font-size: 11px; line-height: 1.6;">
+        <div style="display: flex; justify-content: space-between;"><span>> SUBTOTAL:</span> <span id="checkout-subtotal">৳0</span></div>
+        <div style="display: flex; justify-content: space-between;"><span>> DELIVERY:</span> <span id="checkout-delivery" style="color: var(--accent-1);">৳0</span></div>
+        <hr style="border: 1px dashed #333; margin: 8px 0;">
+        <div style="display: flex; justify-content: space-between; color: var(--accent-3); font-size: 14px; text-shadow: 0 0 5px var(--accent-3);"><span>> TOTAL:</span> <span id="checkout-final-total">৳0</span></div>
+        <!-- Hidden input to submit total to Google Sheets -->
+        <input type="hidden" name="Total Payable" id="form-total-payable" value="" />
       </div>
 
       <details style="margin-bottom:10px;">
@@ -464,7 +476,7 @@ details > summary::-webkit-details-marker { display: none; }
   </div>
   
   <div class="disc-bar" id="topDiscBar">
-    ⚡ HUGE SAVINGS DROPPED ⚡ FREE DELIVERY UNLOCKED ⚡ VIP ACCESS GRANTED
+    ⚡ HUGE SAVINGS DROPPED ⚡ CAMERAS SHIP FREE ⚡ VIP ACCESS GRANTED
   </div>
   
   <div class="page-nav">
@@ -503,7 +515,8 @@ details > summary::-webkit-details-marker { display: none; }
       </details>
     </div>
 
-    <div class="urgency-timer" id="dispatchTimer">🕒 ORDER IN THE NEXT <span id="timerText">--:--:--</span> FOR SAME-DAY DISPATCH</div>
+    <!-- TIMER MODIFIED HERE -->
+    <div class="urgency-timer" id="dispatchTimer">🕒 ORDER IN THE NEXT <span id="timerText">--:--:--</span> TO UNLOCK FREE DELIVERY (CAMERAS ONLY)</div>
 
     <div class="flagship-wrap" id="flagshipCard">
       <div class="flagship-img-wrap">
@@ -549,7 +562,8 @@ details > summary::-webkit-details-marker { display: none; }
           <div class="cam-vibe">INDUSTRIAL ORANGE / DECOR</div>
           
           <div class="cam-perks" style="margin-top: 10px;">
-            <span class="perk perk-highlight">>> FREE DELIVERY NATIONWIDE</span>
+            <!-- DECOR DELIVERY PERK UPDATED -->
+            <span class="perk perk-highlight">>> STANDARD DELIVERY APPLIES (৳200)</span>
             <span class="perk">>> PARCEL CHECK ALLOWED</span>
           </div>
           
@@ -617,6 +631,9 @@ let appliedBroCode = "";
 let soundEnabled = false;
 let gameDiscountActive = false; 
 let bgmTimeout = null;
+
+// NEW: Tracks if we are checking out a camera or decor to apply delivery fee correctly.
+let currentCheckoutProduct = 'camera'; 
 
 function initAudio() {
   if (isPoweredOn) return;
@@ -923,7 +940,7 @@ function skipToCatalog() {
 
 function refreshCatalogPrices() {
   if (gameDiscountActive) {
-    document.getElementById('topDiscBar').innerHTML = "⚡ 🎮 5% GAME WINNER DISCOUNT UNLOCKED! ⚡ FREE SHIPPING NATIONWIDE ⚡";
+    document.getElementById('topDiscBar').innerHTML = "⚡ 🎮 5% GAME WINNER DISCOUNT UNLOCKED! ⚡ CAMERAS SHIP FREE ⚡";
     document.getElementById('topDiscBar').style.background = "#0f0";
     document.getElementById('topDiscBar').style.color = "#000";
     document.getElementById('topDiscBar').style.fontWeight = "900";
@@ -936,8 +953,9 @@ function refreshCatalogPrices() {
 function updateCheckoutSavingsBanner() {
   const addonSelect = document.getElementById('form-addons');
   const banner = document.getElementById('checkout-savings-banner');
-  let savings = 700;
-
+  let savings = 700; // Base generic savings
+  
+  // Calculate based on the dropdown selections
   if (addonSelect.value.includes("1709")) {
     savings = 790;
   } else if (addonSelect.value.includes("2279")) {
@@ -956,12 +974,46 @@ function updateCheckoutSavingsBanner() {
     savings = 601;
   }
 
-  banner.innerText = `⚡ YOU ARE SAVING ৳${savings} TODAY + FREE SHIPPING ⚡`;
+  banner.innerText = `⚡ YOU ARE SAVING ৳${savings} TODAY ⚡`;
+}
+
+// --- DYNAMIC TOTAL CALCULATOR ---
+function updateCheckoutTotal() {
+  const addonDropdown = document.getElementById('form-addons');
+  const qtyDropdown = document.getElementById('form-quantity');
+  
+  if(!addonDropdown.options.length) return; 
+
+  const selectedOption = addonDropdown.options[addonDropdown.selectedIndex];
+  const basePrice = parseInt(selectedOption.getAttribute('data-price')) || 0;
+  const qty = parseInt(qtyDropdown.value) || 1;
+
+  const subtotal = basePrice * qty;
+  let deliveryFee = 0;
+
+  // Apply delivery fee dynamically
+  if (currentCheckoutProduct === 'decor') {
+      deliveryFee = 200;
+  } else {
+      deliveryFee = 0; 
+  }
+
+  const total = subtotal + deliveryFee;
+
+  document.getElementById('checkout-subtotal').innerText = '৳' + subtotal;
+  document.getElementById('checkout-delivery').innerText = deliveryFee > 0 ? '+৳' + deliveryFee : 'FREE';
+  document.getElementById('checkout-delivery').style.color = deliveryFee > 0 ? "var(--accent-1)" : "#0f0";
+  document.getElementById('checkout-final-total').innerText = '৳' + total;
+  document.getElementById('form-total-payable').value = total;
+
+  // Sync the savings banner whenever a price/addon is changed
+  updateCheckoutSavingsBanner();
 }
 
 // --- SECURE CHECKOUT LOGIC FOR CAMERA GEAR ---
 function openCheckout(itemColor, isWithSD) {
   soundClick();
+  currentCheckoutProduct = 'camera'; // Set flag for dynamic totals
   document.getElementById('catalog').style.opacity = "0";
   
   setTimeout(() => {
@@ -982,25 +1034,27 @@ function openCheckout(itemColor, isWithSD) {
     colorDropdown.value = itemColor;
 
     let addonDropdown = document.getElementById('form-addons');
+    // We add data-price attributes to properly calculate math
     if (gameDiscountActive) {
       addonDropdown.innerHTML = `
-        <option value="Without SD card (5% OFF) 1709">Without SD card 1709 (5% OFF)</option>
-        <option value="With 8GB SD card (5% OFF) 2279">With 8GB SD card 2279 (5% OFF)</option>
+        <option value="Without SD card (5% OFF) 1709" data-price="1709">Without SD card 1709 (5% OFF)</option>
+        <option value="With 8GB SD card (5% OFF) 2279" data-price="2279">With 8GB SD card 2279 (5% OFF)</option>
       `;
       addonDropdown.value = isWithSD ? "With 8GB SD card (5% OFF) 2279" : "Without SD card (5% OFF) 1709";
     } else {
       addonDropdown.innerHTML = `
-        <option value="Without SD card 1799">Without SD card 1799</option>
-        <option value="With 8GB SD card 2399">With 8GB SD card 2399</option>
+        <option value="Without SD card 1799" data-price="1799">Without SD card 1799</option>
+        <option value="With 8GB SD card 2399" data-price="2399">With 8GB SD card 2399</option>
       `;
       addonDropdown.value = isWithSD ? "With 8GB SD card 2399" : "Without SD card 1799";
     }
 
+    document.getElementById('form-quantity').value = "1"; // Reset quantity
     document.getElementById('lbl-color').innerText = "> SELECT PRODUCT COLOR *";
     document.getElementById('lbl-addons').innerText = "> CHOOSE ADD-ONS *";
     document.getElementById('form-brocode').value = gameDiscountActive ? "ARCADE5" : "";
     
-    updateCheckoutSavingsBanner();
+    updateCheckoutTotal(); // Fires total calculation logic
 
     checkoutScreen.style.display = "flex";
     setTimeout(() => { 
@@ -1013,6 +1067,7 @@ function openCheckout(itemColor, isWithSD) {
 // --- SECURE CHECKOUT LOGIC FOR MIRROR ---
 function openCheckoutMirror() {
   soundClick();
+  currentCheckoutProduct = 'decor'; // Set flag for dynamic totals
   document.getElementById('catalog').style.opacity = "0";
   
   setTimeout(() => {
@@ -1027,23 +1082,24 @@ function openCheckoutMirror() {
     
     if (gameDiscountActive) {
       addonDropdown.innerHTML = `
-        <option value="30 cm (5% OFF) 2944">30 cm 2944 (5% OFF)</option>
-        <option value="45 cm (5% OFF) 3419">45 cm 3419 (5% OFF)</option>
+        <option value="30 cm (5% OFF) 2944" data-price="2944">30 cm 2944 (5% OFF)</option>
+        <option value="45 cm (5% OFF) 3419" data-price="3419">45 cm 3419 (5% OFF)</option>
       `;
       addonDropdown.value = is30 ? "30 cm (5% OFF) 2944" : "45 cm (5% OFF) 3419";
     } else {
       addonDropdown.innerHTML = `
-        <option value="30 cm (3099)">30 cm (3099)</option>
-        <option value="45 cm (3599)">45 cm (3599)</option>
+        <option value="30 cm (3099)" data-price="3099">30 cm (3099)</option>
+        <option value="45 cm (3599)" data-price="3599">45 cm (3599)</option>
       `;
       addonDropdown.value = is30 ? "30 cm (3099)" : "45 cm (3599)";
     }
 
+    document.getElementById('form-quantity').value = "1"; // Reset quantity
     document.getElementById('lbl-color').innerText = "> SELECT COLOR (ORANGE ONLY) *";
     document.getElementById('lbl-addons').innerText = "> CHOOSE MIRROR SIZE *";
     document.getElementById('form-brocode').value = gameDiscountActive ? "ARCADE5" : "";
     
-    updateCheckoutSavingsBanner();
+    updateCheckoutTotal(); // Fires total calculation logic
 
     checkoutScreen.style.display = "flex";
     setTimeout(() => { 
