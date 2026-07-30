@@ -516,7 +516,6 @@ details > summary::-webkit-details-marker { display: none; }
       </details>
     </div>
 
-    <!-- TIMER MODIFIED HERE -->
     <div class="urgency-timer" id="dispatchTimer">🕒 ORDER IN THE NEXT <span id="timerText">--:--:--</span> TO UNLOCK FREE DELIVERY (CAMERAS ONLY)</div>
 
     <div class="flagship-wrap" id="flagshipCard">
@@ -563,7 +562,6 @@ details > summary::-webkit-details-marker { display: none; }
           <div class="cam-vibe">INDUSTRIAL ORANGE / DECOR</div>
           
           <div class="cam-perks" style="margin-top: 10px;">
-            <!-- DECOR DELIVERY PERK UPDATED -->
             <span class="perk perk-highlight">>> STANDARD DELIVERY APPLIES (৳200)</span>
             <span class="perk">>> PARCEL CHECK ALLOWED</span>
           </div>
@@ -834,31 +832,61 @@ function makeMove(index) {
   setTimeout(botMove, 600);
 }
 
-function getBestMove() {
-  let move = findWinningMove("O");
-  if (move !== -1) return move;
-  move = findWinningMove("X");
-  if (move !== -1) return move;
-  if (board[4] === "") return 4;
-  let corners = [0, 2, 6, 8].filter(i => board[i] === "");
-  if (corners.length > 0) return corners[Math.floor(Math.random() * corners.length)];
-  let emptyIndices = [];
-  for(let i=0; i<9; i++) { if(board[i] === "") emptyIndices.push(i); }
-  return emptyIndices[Math.floor(Math.random() * emptyIndices.length)];
+// --- MINIMAX AI IMPLEMENTATION (UNBEATABLE BOT) ---
+function minimax(newBoard, player, depth) {
+  let availSpots = [];
+  for (let i = 0; i < 9; i++) {
+    if (newBoard[i] === "") availSpots.push(i);
+  }
+
+  const winPatterns = [[0,1,2], [3,4,5], [6,7,8], [0,3,6], [1,4,7], [2,5,8], [0,4,8], [2,4,6]];
+  const isWin = (b, p) => winPatterns.some(pattern => pattern.every(index => b[index] === p));
+
+  if (isWin(newBoard, "X")) return { score: depth - 10 };
+  if (isWin(newBoard, "O")) return { score: 10 - depth };
+  if (availSpots.length === 0) return { score: 0 };
+
+  let moves = [];
+  for (let i = 0; i < availSpots.length; i++) {
+    let move = {};
+    move.index = availSpots[i];
+    newBoard[availSpots[i]] = player;
+
+    if (player === "O") {
+      let result = minimax(newBoard, "X", depth + 1);
+      move.score = result.score;
+    } else {
+      let result = minimax(newBoard, "O", depth + 1);
+      move.score = result.score;
+    }
+
+    newBoard[availSpots[i]] = "";
+    moves.push(move);
+  }
+
+  let bestMove;
+  if (player === "O") {
+    let bestScore = -10000;
+    for (let i = 0; i < moves.length; i++) {
+      if (moves[i].score > bestScore) {
+        bestScore = moves[i].score;
+        bestMove = i;
+      }
+    }
+  } else {
+    let bestScore = 10000;
+    for (let i = 0; i < moves.length; i++) {
+      if (moves[i].score < bestScore) {
+        bestScore = moves[i].score;
+        bestMove = i;
+      }
+    }
+  }
+  return moves[bestMove];
 }
 
-function findWinningMove(player) {
-  const winPatterns = [[0,1,2], [3,4,5], [6,7,8], [0,3,6], [1,4,7], [2,5,8], [0,4,8], [2,4,6]];
-  for(let i=0; i<winPatterns.length; i++) {
-    let p = winPatterns[i];
-    let pCount = 0, emptyIdx = -1;
-    for(let j=0; j<3; j++) {
-      if(board[p[j]] === player) pCount++;
-      else if(board[p[j]] === "") emptyIdx = p[j];
-    }
-    if(pCount === 2 && emptyIdx !== -1) return emptyIdx;
-  }
-  return -1;
+function getBestMove() {
+  return minimax(board, "O", 0).index;
 }
 
 function botMove() {
