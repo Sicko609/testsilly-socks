@@ -382,6 +382,16 @@ details > summary::-webkit-details-marker { display: none; }
         <option value="5">5</option>
       </select>
 
+      <!-- DYNAMIC TOTAL BOX MOVED HERE -->
+      <label style="margin-top: 15px;">> ORDER SUMMARY</label>
+      <div id="checkout-total-box" style="background: #000; border: 2px solid var(--accent-3); padding: 12px; margin-top: 5px; margin-bottom: 15px; color: #fff; font-family: var(--font-retro); font-size: 11px; line-height: 1.6;">
+        <div style="display: flex; justify-content: space-between;"><span>> SUBTOTAL:</span> <span id="checkout-subtotal">৳0</span></div>
+        <div style="display: flex; justify-content: space-between;"><span>> DELIVERY:</span> <span id="checkout-delivery" style="color: var(--accent-1);">৳0</span></div>
+        <hr style="border: 1px dashed #333; margin: 8px 0;">
+        <div style="display: flex; justify-content: space-between; color: var(--accent-3); font-size: 14px; text-shadow: 0 0 5px var(--accent-3);"><span>> TOTAL:</span> <span id="checkout-final-total">৳0</span></div>
+        <input type="hidden" name="Total Payable" id="form-total-payable" value="" />
+      </div>
+
       <label>> PREFERRED PAYMENT METHOD *</label>
       <div class="radio-group">
         <label><input type="radio" name="Payment Method" value="Cash on Delivery (COD)" required onclick="toggleBkash(false)" checked> Cash on Delivery</label>
@@ -395,21 +405,12 @@ details > summary::-webkit-details-marker { display: none; }
         <input type="text" name="Transaction ID" id="trx-input" class="retro-input" placeholder="ENTER TRX ID..." />
       </div>
 
-      <label>> BUYER PROTECTION</label>
+      <!-- BUYER PROTECTION MOVED HERE -->
+      <label style="margin-top: 15px;">> BUYER PROTECTION</label>
       <div class="checkout-hype-banner" style="margin-bottom:10px; text-align:left; line-height:1.7;">
         ✅ 3-DAY REPLACEMENT WARRANTY ON MANUFACTURING DEFECTS<br>
         ✅ REAL HUMAN SUPPORT VIA INSTAGRAM DM<br>
         ✅ ORDERS PACKED & DISPATCHED WITHIN 24-48H
-      </div>
-
-      <!-- DYNAMIC TOTAL BOX -->
-      <div id="checkout-total-box" style="background: #000; border: 2px solid var(--accent-3); padding: 12px; margin-top: 10px; margin-bottom: 15px; color: #fff; font-family: var(--font-retro); font-size: 11px; line-height: 1.6;">
-        <div style="display: flex; justify-content: space-between;"><span>> SUBTOTAL:</span> <span id="checkout-subtotal">৳0</span></div>
-        <div style="display: flex; justify-content: space-between;"><span>> DELIVERY:</span> <span id="checkout-delivery" style="color: var(--accent-1);">৳0</span></div>
-        <hr style="border: 1px dashed #333; margin: 8px 0;">
-        <div style="display: flex; justify-content: space-between; color: var(--accent-3); font-size: 14px; text-shadow: 0 0 5px var(--accent-3);"><span>> TOTAL:</span> <span id="checkout-final-total">৳0</span></div>
-        <!-- Hidden input to submit total to Google Sheets -->
-        <input type="hidden" name="Total Payable" id="form-total-payable" value="" />
       </div>
 
       <details style="margin-bottom:10px;">
