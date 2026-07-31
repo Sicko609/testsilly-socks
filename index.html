@@ -577,8 +577,8 @@ details > summary::-webkit-details-marker { display: none; }
           
           <div class="price-row" id="mirrorPriceRow">
             <div class="price-stack">
-              <span class="old-price">৳3600</span>
-              <span class="new-price">৳3099</span>
+              <span class="old-price">৳4100</span>
+              <span class="new-price">৳3599</span>
             </div>
             <span class="disc-tag">🔥 SAVE ৳501</span>
           </div>
@@ -621,7 +621,7 @@ details > summary::-webkit-details-marker { display: none; }
 
 <script>
 // ==========================================
-// 80s WEB AUDIO API SYNTHESIZER & PAC-MAN BGM
+// 80s WEB AUDIO API SYNTHESIZER & CONTINUOUS BGM
 // ==========================================
 let audioCtx;
 let isPoweredOn = false;
@@ -642,8 +642,18 @@ function initAudio() {
   if(audioCtx.state === 'suspended') audioCtx.resume();
 }
 
-document.body.addEventListener('click', initAudio, {once:true});
-document.body.addEventListener('touchstart', initAudio, {once:true});
+// Global click listener to auto-start BGM on the very first interaction
+document.body.addEventListener('click', function(e) {
+  if (!isPoweredOn) {
+    initAudio();
+  }
+  // Turn sound ON if it wasn't already user-triggered
+  if (!soundEnabled) {
+    soundEnabled = true;
+    document.getElementById('soundToggle').textContent = '🔊 SOUND: ON';
+    startBGM();
+  }
+}, {once:true});
 
 function toggleSound(e) {
   if (e) e.stopPropagation();
@@ -666,11 +676,14 @@ function playCoinSound() {
   setTimeout(() => playTone(1318.51, 'square', 0.4, 0.05), 100);
 }
 
-const pacmanNotes = [
-  { f: 493.88, d: 120 }, { f: 987.77, d: 120 }, { f: 739.99, d: 120 }, { f: 587.33, d: 120 },
-  { f: 739.99, d: 120 }, { f: 659.25, d: 240 }, { f: 554.37, d: 120 }, { f: 659.25, d: 240 },
-  { f: 987.77, d: 120 }, { f: 739.99, d: 120 }, { f: 587.33, d: 120 }, { f: 739.99, d: 120 },
-  { f: 493.88, d: 240 }, { f: 440.00, d: 120 }, { f: 880.00, d: 120 }, { f: 659.25, d: 120 }
+// Continuous Synthwave Arpeggio loop (less annoying than Pacman for continuous BGM)
+const arcadeBGM = [
+  // C minor arpeggio
+  { f: 261.63, d: 200 }, { f: 311.13, d: 200 }, { f: 392.00, d: 200 }, { f: 523.25, d: 200 },
+  { f: 392.00, d: 200 }, { f: 311.13, d: 200 }, { f: 261.63, d: 200 }, { f: 196.00, d: 200 },
+  // Ab major arpeggio
+  { f: 207.65, d: 200 }, { f: 261.63, d: 200 }, { f: 311.13, d: 200 }, { f: 415.30, d: 200 },
+  { f: 311.13, d: 200 }, { f: 261.63, d: 200 }, { f: 207.65, d: 200 }, { f: 155.56, d: 200 }
 ];
 
 let noteIndex = 0;
@@ -681,10 +694,11 @@ function startBGM() {
   
   function playNextNote() {
     if (!isBgmRunning || !soundEnabled) return;
-    let note = pacmanNotes[noteIndex % pacmanNotes.length];
-    playTone(note.f, 'square', note.d / 1000, 0.02);
+    let note = arcadeBGM[noteIndex % arcadeBGM.length];
+    // Very subtle low volume BGM
+    playTone(note.f, 'sawtooth', note.d / 1000, 0.015);
     noteIndex++;
-    bgmTimeout = setTimeout(playNextNote, note.d + 30);
+    bgmTimeout = setTimeout(playNextNote, note.d);
   }
   playNextNote();
 }
@@ -948,7 +962,7 @@ function resetBoard() {
 
 function skipToCatalog() {
   soundClick();
-  stopBGM();
+  // We DO NOT call stopBGM() here so the retro music plays continuously through the shop
   tttScreen.style.opacity = "0";
   tttScreen.style.transform = "scale(0.5)";
   tttScreen.style.pointerEvents = "none";
@@ -1000,7 +1014,7 @@ function updateCheckoutSavingsBanner() {
   } else if (addonSelect.value.includes("30 cm")) {
     savings = 501;
   } else if (addonSelect.value.includes("45 cm")) {
-    savings = 601;
+    savings = 501;
   }
 
   banner.innerText = `⚡ YOU ARE SAVING ৳${savings} TODAY ⚡`;
@@ -1111,16 +1125,16 @@ function openCheckoutMirror() {
     
     if (gameDiscountActive) {
       addonDropdown.innerHTML = `
-        <option value="30 cm (5% OFF) 2944" data-price="2944">30 cm 2944 (5% OFF)</option>
-        <option value="45 cm (5% OFF) 3419" data-price="3419">45 cm 3419 (5% OFF)</option>
+        <option value="30 cm (5% OFF) 3419" data-price="3419">30 cm 3419 (5% OFF)</option>
+        <option value="45 cm (5% OFF) 4084" data-price="4084">45 cm 4084 (5% OFF)</option>
       `;
-      addonDropdown.value = is30 ? "30 cm (5% OFF) 2944" : "45 cm (5% OFF) 3419";
+      addonDropdown.value = is30 ? "30 cm (5% OFF) 3419" : "45 cm (5% OFF) 4084";
     } else {
       addonDropdown.innerHTML = `
-        <option value="30 cm (3099)" data-price="3099">30 cm (3099)</option>
-        <option value="45 cm (3599)" data-price="3599">45 cm (3599)</option>
+        <option value="30 cm (3599)" data-price="3599">30 cm (3599)</option>
+        <option value="45 cm (4299)" data-price="4299">45 cm (4299)</option>
       `;
-      addonDropdown.value = is30 ? "30 cm (3099)" : "45 cm (3599)";
+      addonDropdown.value = is30 ? "30 cm (3599)" : "45 cm (4299)";
     }
 
     document.getElementById('form-quantity').value = "1"; // Reset quantity
@@ -1354,11 +1368,13 @@ setInterval(updateDispatchTimer, 1000);
 function updateMirrorPrice(radio) {
   var priceRow = document.getElementById('mirrorPriceRow');
   let is30 = radio.value === '30cm';
-  let oldPrice = is30 ? 3600 : 4200;
-  let basePrice = is30 ? 3099 : 3599;
+  // Adjusting old prices slightly to maintain similar visual savings
+  let oldPrice = is30 ? 4100 : 4800;
+  let basePrice = is30 ? 3599 : 4299;
 
   if (gameDiscountActive) {
-    let discountedPrice = is30 ? 2944 : 3419;
+    // 5% discount logic applied
+    let discountedPrice = is30 ? 3419 : 4084;
     let totalSaved = oldPrice - discountedPrice;
     priceRow.innerHTML = '<div class="price-stack"><span class="old-price">৳' + oldPrice + '</span><span class="new-price" style="color:#0f0; text-shadow:0 0 10px #0f0;">৳' + discountedPrice + '</span></div><span class="disc-tag" style="background:#0f0; color:#000;">🎮 5% OFF APPLIED (SAVE ৳' + totalSaved + ')</span>';
   } else {
