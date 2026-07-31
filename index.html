@@ -631,33 +631,56 @@ let soundEnabled = false;
 let gameDiscountActive = false; 
 let bgmTimeout = null;
 
-// NEW: Tracks if we are checking out a camera or decor to apply delivery fee correctly.
 let currentCheckoutProduct = 'camera'; 
 
 function initAudio() {
-  if (isPoweredOn) return;
+  if (!audioCtx) {
+    const AudioContext = window.AudioContext || window.webkitAudioContext;
+    audioCtx = new AudioContext();
+  }
+  if (audioCtx.state === 'suspended') {
+    audioCtx.resume();
+  }
   isPoweredOn = true;
-  const AudioContext = window.AudioContext || window.webkitAudioContext;
-  audioCtx = new AudioContext();
-  if(audioCtx.state === 'suspended') audioCtx.resume();
 }
 
-// Global click listener to auto-start BGM on the very first interaction
-document.body.addEventListener('click', function(e) {
-  if (!isPoweredOn) {
-    initAudio();
-  }
-  // Turn sound ON if it wasn't already user-triggered
+// Function to robustly unlock audio on iOS and mobile browsers
+function unlockAudioMobile() {
+  initAudio();
+  
+  // Play a silent tone to forcibly unlock iOS Safari Web Audio
+  const osc = audioCtx.createOscillator();
+  const gain = audioCtx.createGain();
+  gain.gain.value = 0;
+  osc.connect(gain);
+  gain.connect(audioCtx.destination);
+  osc.start(0);
+  osc.stop(audioCtx.currentTime + 0.001);
+  
+  // Auto-start sound if not enabled yet
   if (!soundEnabled) {
     soundEnabled = true;
-    document.getElementById('soundToggle').textContent = '🔊 SOUND: ON';
+    const btn = document.getElementById('soundToggle');
+    if (btn) btn.textContent = '🔊 SOUND: ON';
     startBGM();
   }
-}, {once:true});
+
+  // Once unlocked, remove the listeners so it doesn't fire continuously
+  ['click', 'touchstart', 'touchend'].forEach(evt => {
+    document.body.removeEventListener(evt, unlockAudioMobile, true);
+  });
+}
+
+// Attach to click, touchstart, and touchend to capture any first interaction on mobile
+// The 'true' uses the capture phase so it triggers before your other button clicks
+['click', 'touchstart', 'touchend'].forEach(evt => {
+  document.body.addEventListener(evt, unlockAudioMobile, true);
+});
 
 function toggleSound(e) {
   if (e) e.stopPropagation();
   initAudio();
+  
   soundEnabled = !soundEnabled;
   const btn = document.getElementById('soundToggle');
   if (soundEnabled) {
