@@ -591,7 +591,7 @@ details > summary::-webkit-details-marker { display: none; }
 </div>
 
 <div class="sticky-buy-bar" id="stickyBuyBar">
-  <span class="sticky-buy-price" id="stickyBuyPrice">৳1799</span>
+  <span class="sticky-buy-price" id="stickyBuyPrice">৳1699</span>
   <button class="sticky-buy-btn" onclick="buyFlagship()">SECURE ITEM</button>
 </div>
 
@@ -1016,19 +1016,19 @@ function refreshCatalogPrices() {
 function updateCheckoutSavingsBanner() {
   const addonSelect = document.getElementById('form-addons');
   const banner = document.getElementById('checkout-savings-banner');
-  let savings = 700; // Base generic savings
+  let savings = 800; // Base generic savings
   
   // Calculate based on the dropdown selections
-  if (addonSelect.value.includes("1709")) {
-    savings = 790;
-  } else if (addonSelect.value.includes("2279")) {
-    savings = 920;
+  if (addonSelect.value.includes("1614")) {
+    savings = 885;
+  } else if (addonSelect.value.includes("2089")) {
+    savings = 1110;
   } else if (addonSelect.value.includes("3419")) {
     savings = 681;
-  } else if (addonSelect.value.includes("Without SD card 1799")) {
-    savings = 700;
-  } else if (addonSelect.value.includes("With 8GB SD card 2399")) {
+  } else if (addonSelect.value.includes("Without SD card 1699")) {
     savings = 800;
+  } else if (addonSelect.value.includes("With 8GB SD card 2199")) {
+    savings = 1000;
   } else if (addonSelect.value.includes("30 cm")) {
     savings = 501;
   }
@@ -1096,16 +1096,16 @@ function openCheckout(itemColor, isWithSD) {
     // We add data-price attributes to properly calculate math
     if (gameDiscountActive) {
       addonDropdown.innerHTML = `
-        <option value="Without SD card (5% OFF) 1709" data-price="1709">Without SD card 1709 (5% OFF)</option>
-        <option value="With 8GB SD card (5% OFF) 2279" data-price="2279">With 8GB SD card 2279 (5% OFF)</option>
+        <option value="Without SD card (5% OFF) 1614" data-price="1614">Without SD card 1614 (5% OFF)</option>
+        <option value="With 8GB SD card (5% OFF) 2089" data-price="2089">With 8GB SD card 2089 (5% OFF)</option>
       `;
-      addonDropdown.value = isWithSD ? "With 8GB SD card (5% OFF) 2279" : "Without SD card (5% OFF) 1709";
+      addonDropdown.value = isWithSD ? "With 8GB SD card (5% OFF) 2089" : "Without SD card (5% OFF) 1614";
     } else {
       addonDropdown.innerHTML = `
-        <option value="Without SD card 1799" data-price="1799">Without SD card 1799</option>
-        <option value="With 8GB SD card 2399" data-price="2399">With 8GB SD card 2399</option>
+        <option value="Without SD card 1699" data-price="1699">Without SD card 1699</option>
+        <option value="With 8GB SD card 2199" data-price="2199">With 8GB SD card 2199</option>
       `;
-      addonDropdown.value = isWithSD ? "With 8GB SD card 2399" : "Without SD card 1799";
+      addonDropdown.value = isWithSD ? "With 8GB SD card 2199" : "Without SD card 1699";
     }
 
     document.getElementById('form-quantity').value = "1"; // Reset quantity
@@ -1284,10 +1284,10 @@ document.getElementById("orderForm").addEventListener("submit", function(e) {
 // --- High-Converting Render Logic (flagship single-product layout) ---
 function getPriceHTML(isWithSD) {
   let oldPrice = isWithSD ? 3199 : 2499;
-  let basePrice = isWithSD ? 2399 : 1799;
+  let basePrice = isWithSD ? 2199 : 1699;
 
   if (gameDiscountActive) {
-    let discountedPrice = isWithSD ? 2279 : 1709;
+    let discountedPrice = isWithSD ? 2089 : 1614;
     let totalSaved = oldPrice - discountedPrice;
     return '<div class="price-stack"><span class="old-price">৳' + oldPrice + '</span><span class="new-price" style="color:#0f0; text-shadow:0 0 10px #0f0;">৳' + discountedPrice + '</span></div><span class="disc-tag" style="background:#0f0; color:#000;">🎮 5% OFF APPLIED (SAVE ৳' + totalSaved + ')</span>';
   } else {
