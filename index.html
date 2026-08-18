@@ -566,12 +566,9 @@ details > summary::-webkit-details-marker { display: none; }
             <span class="perk">>> PARCEL CHECK ALLOWED</span>
           </div>
           
-          <div class="variant-toggle">
+          <div class="variant-toggle" style="grid-template-columns: 1fr;">
             <label class="toggle-opt">
               <input type="radio" id="mirror_size_30" name="mirror_size" value="30cm" checked onchange="updateMirrorPrice(this); soundClick();"> <span>30 CM SIZE</span>
-            </label>
-            <label class="toggle-opt">
-              <input type="radio" id="mirror_size_45" name="mirror_size" value="45cm" onchange="updateMirrorPrice(this); soundClick();"> <span>45 CM SIZE</span>
             </label>
           </div>
           
@@ -1026,17 +1023,13 @@ function updateCheckoutSavingsBanner() {
     savings = 790;
   } else if (addonSelect.value.includes("2279")) {
     savings = 920;
-  } else if (addonSelect.value.includes("2944")) {
-    savings = 656;
   } else if (addonSelect.value.includes("3419")) {
-    savings = 781;
+    savings = 681;
   } else if (addonSelect.value.includes("Without SD card 1799")) {
     savings = 700;
   } else if (addonSelect.value.includes("With 8GB SD card 2399")) {
     savings = 800;
   } else if (addonSelect.value.includes("30 cm")) {
-    savings = 501;
-  } else if (addonSelect.value.includes("45 cm")) {
     savings = 501;
   }
 
@@ -1143,21 +1136,18 @@ function openCheckoutMirror() {
     colorDropdown.innerHTML = '<option value="Orange">Orange</option>';
     colorDropdown.value = "Orange";
 
-    let is30 = document.getElementById('mirror_size_30').checked;
     let addonDropdown = document.getElementById('form-addons');
     
     if (gameDiscountActive) {
       addonDropdown.innerHTML = `
         <option value="30 cm (5% OFF) 3419" data-price="3419">30 cm 3419 (5% OFF)</option>
-        <option value="45 cm (5% OFF) 4084" data-price="4084">45 cm 4084 (5% OFF)</option>
       `;
-      addonDropdown.value = is30 ? "30 cm (5% OFF) 3419" : "45 cm (5% OFF) 4084";
+      addonDropdown.value = "30 cm (5% OFF) 3419";
     } else {
       addonDropdown.innerHTML = `
         <option value="30 cm (3599)" data-price="3599">30 cm (3599)</option>
-        <option value="45 cm (4299)" data-price="4299">45 cm (4299)</option>
       `;
-      addonDropdown.value = is30 ? "30 cm (3599)" : "45 cm (4299)";
+      addonDropdown.value = "30 cm (3599)";
     }
 
     document.getElementById('form-quantity').value = "1"; // Reset quantity
@@ -1390,14 +1380,12 @@ setInterval(updateDispatchTimer, 1000);
 // --- Mirror Toggle Logic ---
 function updateMirrorPrice(radio) {
   var priceRow = document.getElementById('mirrorPriceRow');
-  let is30 = radio.value === '30cm';
-  // Adjusting old prices slightly to maintain similar visual savings
-  let oldPrice = is30 ? 4100 : 4800;
-  let basePrice = is30 ? 3599 : 4299;
+  let oldPrice = 4100;
+  let basePrice = 3599;
 
   if (gameDiscountActive) {
     // 5% discount logic applied
-    let discountedPrice = is30 ? 3419 : 4084;
+    let discountedPrice = 3419;
     let totalSaved = oldPrice - discountedPrice;
     priceRow.innerHTML = '<div class="price-stack"><span class="old-price">৳' + oldPrice + '</span><span class="new-price" style="color:#0f0; text-shadow:0 0 10px #0f0;">৳' + discountedPrice + '</span></div><span class="disc-tag" style="background:#0f0; color:#000;">🎮 5% OFF APPLIED (SAVE ৳' + totalSaved + ')</span>';
   } else {
