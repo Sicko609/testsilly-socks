@@ -221,6 +221,16 @@ body {
 .buy-btn:hover { background: var(--accent-2); color: #000; transform: translate(-2px, -2px); box-shadow: 6px 6px 0 var(--card-border); }
 .buy-btn:active { transform: translate(4px, 4px); box-shadow: 0 0 0 transparent; }
 
+/* Disabled Button CSS */
+.buy-btn.disabled-btn, .sticky-buy-btn.disabled-btn {
+  background: #222 !important;
+  color: #666 !important;
+  border-color: #444 !important;
+  cursor: not-allowed !important;
+  box-shadow: none !important;
+  transform: none !important;
+}
+
 .page-nav { display: flex; gap: 10px; padding: 0 1rem; margin-top: 2rem; justify-content: center; flex-wrap: wrap;}
 .page-tab { background: var(--bg); border: 3px solid var(--card-border); padding: 12px 18px; font-family: var(--font-retro); font-size: 10px; color: var(--text); cursor: pointer; box-shadow: 4px 4px 0 var(--card-border); transition: all 0.2s; line-height: 1.4;}
 .page-tab.active { background: var(--accent-1); color: #fff; transform: translate(2px, 2px); box-shadow: 2px 2px 0 var(--card-border); }
@@ -242,6 +252,27 @@ body {
 .flagship-img-wrap { background: #fff; border: 3px solid var(--card-border); height: 300px; display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden; }
 .flagship-img-wrap img { width: 100%; height: 100%; object-fit: contain; padding: 20px; }
 .flagship-badge { position: absolute; top: 10px; left: 10px; background: rgba(0,0,0,0.85); color: #0f0; font-size: 10px; font-family: var(--font-main); font-weight: 900; padding: 8px 12px; border: 1px solid #0f0; }
+
+/* WATERMARK CSS */
+.watermark-overlay {
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0, 0, 0, 0.4);
+  display: flex; align-items: center; justify-content: center;
+  z-index: 15;
+  pointer-events: none;
+}
+.watermark-text {
+  font-family: var(--font-retro);
+  font-size: clamp(20px, 6vw, 30px);
+  color: #ff2b2b;
+  text-shadow: 2px 2px 0px #000, 0 0 15px #ff2b2b;
+  border: 4px solid #ff2b2b;
+  padding: 10px 15px;
+  transform: rotate(-15deg);
+  background: rgba(0, 0, 0, 0.8);
+  letter-spacing: 2px;
+}
 
 .swatch-row { display: flex; flex-wrap: wrap; gap: 10px; margin: 12px 0 10px; }
 .swatch { width: 40px; height: 40px; border-radius: 50%; border: 3px solid var(--card-border); cursor: pointer; transition: transform 0.15s; }
@@ -522,6 +553,10 @@ details > summary::-webkit-details-marker { display: none; }
       <div class="flagship-img-wrap">
         <div class="flagship-badge" id="flagshipBadge">🔥 BESTSELLER</div>
         <img id="flagshipImg" src="cam_white.jpg" alt="Thumb Camera" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'300\' height=\'200\'><rect width=\'100%25\' height=\'100%25\' fill=\'%23333\'/><text x=\'50%25\' y=\'50%25\' font-family=\'monospace\' font-size=\'14\' fill=\'%23fff\' dominant-baseline=\'middle\' text-anchor=\'middle\'>IMG MISSING</text></svg>'" />
+        <!-- CAMERA WATERMARK -->
+        <div class="watermark-overlay" id="camWatermark" style="display: none;">
+          <div class="watermark-text">SOLD OUT</div>
+        </div>
       </div>
       <div class="cam-info" style="padding: 0;">
         <div class="cam-name" id="flagshipName">Cloud 99 White</div>
@@ -543,7 +578,7 @@ details > summary::-webkit-details-marker { display: none; }
         <p class="qty-nudge">🎁 A lot of people order 2 — one to keep, one to gift. You can set quantity at checkout.</p>
 
         <div class="price-row" id="flagshipPriceRow"></div>
-        <button class="buy-btn" onclick="buyFlagship()">SECURE ITEM</button>
+        <button class="buy-btn" id="camBuyBtn" onclick="buyFlagship()">SECURE ITEM</button>
       </div>
     </div>
   </div>
@@ -556,6 +591,10 @@ details > summary::-webkit-details-marker { display: none; }
         <div class="img-wrapper">
           <div class="live-watch">🔥 SHOP FAVORITE</div>
           <img src="mirror_placeholder.jpg" class="cam-img" alt="Traffic Mirror" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'300\' height=\'200\'><rect width=\'100%\' height=\'100%\' fill=\'#333\'/><text x=\'50%\' y=\'50%\' font-family=\'monospace\' font-size=\'14\' fill=\'#fff\' dominant-baseline=\'middle\' text-anchor=\'middle\'>IMG MISSING</text></svg>'" />
+          <!-- MIRROR WATERMARK -->
+          <div class="watermark-overlay">
+            <div class="watermark-text">SOLD OUT</div>
+          </div>
         </div>
         <div class="cam-info">
           <div class="cam-name">CONVEX TRAFFIC MIRROR</div>
@@ -579,7 +618,8 @@ details > summary::-webkit-details-marker { display: none; }
             </div>
             <span class="disc-tag">🔥 SAVE ৳501</span>
           </div>
-          <button class="buy-btn" onclick="openCheckoutMirror()">SECURE ITEM</button>
+          <!-- MIRROR DISABLED BUTTON -->
+          <button class="buy-btn disabled-btn" disabled>SOLD OUT</button>
         </div>
       </div>
     </div>
@@ -592,7 +632,7 @@ details > summary::-webkit-details-marker { display: none; }
 
 <div class="sticky-buy-bar" id="stickyBuyBar">
   <span class="sticky-buy-price" id="stickyBuyPrice">৳1699</span>
-  <button class="sticky-buy-btn" onclick="buyFlagship()">SECURE ITEM</button>
+  <button class="sticky-buy-btn" id="stickyCamBuyBtn" onclick="buyFlagship()">SECURE ITEM</button>
 </div>
 
 <!-- Floating Action Buttons -->
@@ -1299,7 +1339,7 @@ function getPriceHTML(isWithSD) {
 var camColors = [
   { n:"Cloud 99 White", v:"Clean & modern", i:"cam_white.jpg", c:"White", swatch:"#ffffff", badge:"🔥 BESTSELLER" },
   { n:"Midnight Black", v:"Neon noir aesthetic", i:"cam_black.jpg", c:"Black", swatch:"#111111", badge:"🔥 BESTSELLER" },
-  { n:"Clear Gameboy", v:"Raw Y2K tech", i:"cam_transparent.jpg", c:"Transparent", swatch:"#d9f7ff", badge:"🔥 BESTSELLER" },
+  { n:"Clear Gameboy", v:"Raw Y2K tech", i:"cam_transparent.jpg", c:"Transparent", swatch:"#d9f7ff", badge:"❌ SOLD OUT", soldOut: true },
   { n:"Glitch Green", v:"90s personality", i:"cam_green.jpg", c:"Green", swatch:"#39ff6a", badge:"✨ FAN FAVORITE" },
   { n:"Arcade Red", v:"Bold streetwear energy", i:"cam_red.jpg", c:"Red", swatch:"#ff2b2b", badge:"✨ FAN FAVORITE" },
   { n:"Pac-Maze Yellow", v:"Sunny 80s nostalgia", i:"cam_yellow.jpg", c:"Yellow", swatch:"#ffe23d", badge:"✨ FAN FAVORITE" },
@@ -1331,6 +1371,33 @@ function selectColor(i) {
   document.getElementById('flagshipName').innerText = col.n;
   document.getElementById('flagshipVibe').innerText = col.v;
   document.getElementById('flagshipBadge').innerText = col.badge;
+  
+  var watermark = document.getElementById('camWatermark');
+  var mainBtn = document.getElementById('camBuyBtn');
+  var stickyBtn = document.getElementById('stickyCamBuyBtn');
+
+  if(col.soldOut) {
+    watermark.style.display = 'flex';
+    
+    mainBtn.innerText = 'SOLD OUT';
+    mainBtn.classList.add('disabled-btn');
+    mainBtn.disabled = true;
+
+    stickyBtn.innerText = 'SOLD OUT';
+    stickyBtn.classList.add('disabled-btn');
+    stickyBtn.disabled = true;
+  } else {
+    watermark.style.display = 'none';
+    
+    mainBtn.innerText = 'SECURE ITEM';
+    mainBtn.classList.remove('disabled-btn');
+    mainBtn.disabled = false;
+
+    stickyBtn.innerText = 'SECURE ITEM';
+    stickyBtn.classList.remove('disabled-btn');
+    stickyBtn.disabled = false;
+  }
+
   renderSwatches();
 }
 
