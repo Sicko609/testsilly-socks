@@ -875,7 +875,7 @@ function leaveHero(target) {
 
   if (target === 'game') {
     tttScreen.style.display = 'flex';
-    isWinnableGame = Math.random() < 0.10;
+    isWinnableGame = Math.random() < 0.20; // 20% chance to win game
     setTimeout(() => {
       heroScreen.style.display = 'none';
       tttScreen.classList.add('visible');
@@ -1007,7 +1007,7 @@ function botMove() {
 function updateBoard() {
   cells.forEach((cell, i) => {
     cell.innerText = board[i];
-    cell.className = "ttt-cell " + (board[i] === "X" ? "x" : (board[i] === "O" ? "o" : "o"));
+    cell.className = "ttt-cell " + (board[i] === "X" ? "x" : (board[i] === "O" ? "o" : ""));
   });
 }
 
@@ -1037,7 +1037,7 @@ function resetBoard() {
   soundClick();
   board = ["", "", "", "", "", "", "", "", ""];
   gameActive = true;
-  isWinnableGame = Math.random() < 0.10;
+  isWinnableGame = Math.random() < 0.20; // 20% chance on reset
   updateBoard();
   statusText.innerText = "PLAYER 1 IS 'X'. YOUR TURN!";
   statusText.style.color = "var(--accent-3)";
@@ -1565,7 +1565,6 @@ function getPriceHTML(isWithSD) {
   }
 }
 
-// NOTE: Hardcoded default states. The fetchInventory function will OVERRIDE these live if the Google Sheet changes.
 var camColors = [
   { n:"Cloud 99 White", v:"Clean & modern", i:"cam_white.jpg", c:"White", swatch:"#ffffff", badge:"🔥 BESTSELLER", soldOut: false },
   { n:"Midnight Black", v:"Neon noir aesthetic", i:"cam_black.jpg", c:"Black", swatch:"#111111", badge:"🔥 BESTSELLER", soldOut: false },
