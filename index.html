@@ -489,7 +489,10 @@ details > summary::-webkit-details-marker { display: none; }
 
     <div class="score-tally" id="final-score">SCORE: 0000</div>
 
-    <button class="retro-btn" onclick="closeSuccessScreen()" style="background: var(--accent-3); color: #000; font-size: 14px; margin-top: 20px;">CONTINUE TO CATALOG</button>
+    <!-- NEW RECEIPT DOWNLOAD BUTTON ADDED HERE -->
+    <button class="retro-btn" onclick="downloadReceipt()" style="background: var(--accent-1); color: #fff; font-size: 14px; margin-top: 10px; box-shadow: 4px 4px 0 #fff;">💾 DOWNLOAD RECEIPT</button>
+    
+    <button class="retro-btn" onclick="closeSuccessScreen()" style="background: var(--accent-3); color: #000; font-size: 14px; margin-top: 15px;">CONTINUE TO CATALOG</button>
   </div>
 </div>
 
@@ -669,6 +672,8 @@ let gameDiscountActive = false;
 let bgmTimeout = null;
 
 let currentCheckoutProduct = 'camera'; 
+// NEW: Global object to hold receipt info
+let currentOrderDetails = {};
 
 function initAudio() {
   if (!audioCtx) {
@@ -1265,10 +1270,63 @@ function closeSuccessScreen() {
   }, 400);
 }
 
+// --- RETRO ASCII RECEIPT GENERATOR ---
+function downloadReceipt() {
+  soundClick();
+  
+  const receiptASCII = `
+======================================
+           SILLY SOCKS              
+         ARCADE DROP LOG            
+======================================
+TXN DATE : ${currentOrderDetails.date}
+PLAYER   : ${currentOrderDetails.name}
+PHONE    : ${currentOrderDetails.phone}
+ADDRESS  : ${currentOrderDetails.address}
+--------------------------------------
+>> GEAR SECURED
+ITEM     : ${currentOrderDetails.color}
+CONFIG   : ${currentOrderDetails.addons}
+QTY      : ${currentOrderDetails.qty}
+--------------------------------------
+PAYMENT  : ${currentOrderDetails.payment}
+TOTAL    : BDT ${currentOrderDetails.total}
+STATUS   : DISPATCH PREP
+======================================
+      THANK YOU FOR PLAYING!        
+======================================
+  `;
+  
+  // Create an invisible anchor tag to trigger text file download
+  const blob = new Blob([receiptASCII], { type: "text/plain" });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = "SILLY_SOCKS_RECEIPT.txt";
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+}
+
 // --- AJAX Form Submit to Google Apps Script ---
 document.getElementById("orderForm").addEventListener("submit", function(e) {
   e.preventDefault(); 
   soundClick();
+  
+  // Capture order details to generate the receipt later
+  const formData = new FormData(this);
+  currentOrderDetails = {
+    name: formData.get("Full Name"),
+    phone: formData.get("Phone Number"),
+    address: formData.get("Delivery Address"),
+    color: formData.get("Product Color"),
+    addons: formData.get("Add-ons"),
+    qty: formData.get("Quantity"),
+    payment: formData.get("Payment Method"),
+    total: document.getElementById('form-total-payable').value,
+    date: new Date().toLocaleString()
+  };
   
   var btn = document.getElementById("submitOrderBtn");
   btn.innerText = "TRANSMITTING...";
@@ -1278,7 +1336,6 @@ document.getElementById("orderForm").addEventListener("submit", function(e) {
   var googleScriptURL = "https://script.google.com/macros/s/AKfycbyYvaRsNI8FSJ8p1WNd3_9YSx10uuNjxNTriiAM2-nkXflv8ZAfIeaee06R1sM-VApI/exec";
 
   var searchParams = new URLSearchParams();
-  var formData = new FormData(this);
   for (var pair of formData.entries()) {
     searchParams.append(pair[0], pair[1]);
   }
