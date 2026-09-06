@@ -1366,7 +1366,10 @@ function downloadReceipt() {
   // Formats item name dynamically (Camera vs Decor)
   let itemNameStr = currentOrderDetails.color.toUpperCase();
   if(itemNameStr !== "ORANGE") {
-    itemNameStr = "THUMB CAMERA - " + itemNameStr;
+    // Check if it already contains "THUMB CAMERA" to avoid duplication
+    if (!itemNameStr.includes("THUMB CAMERA")) {
+      itemNameStr = "THUMB CAMERA - " + itemNameStr;
+    }
   } else {
     itemNameStr = "TRAFFIC MIRROR";
   }
@@ -1384,7 +1387,7 @@ function downloadReceipt() {
   ctx.setLineDash([]);
 
   // Total - ALIGNED TO CENTER TO PREVENT OVERLAP
-  startY += 120;
+  startY += 150;
   ctx.textAlign = "center";
   ctx.fillStyle = "#ffffff";
   ctx.font = "35px 'Press Start 2P', 'Courier New', monospace";
@@ -1404,15 +1407,32 @@ function downloadReceipt() {
   ctx.fillText("Screenshot or save this file.", 540, 1780);
   ctx.fillText("Transmission ended.", 540, 1830);
 
-  // 7. Output to Mobile/PC
-  const imgURL = canvas.toDataURL("image/png");
-  const link = document.createElement("a");
-  link.href = imgURL;
-  // Dynamic filename based on customer's phone number
-  link.download = "SILLY_SOCKS_WALLPAPER_" + currentOrderDetails.phone + ".png";
-  document.body.appendChild(link);
-  link.click();
-  document.body.removeChild(link);
+  // 7. Output to Mobile/PC using Blob and Web Share API (Safari Fix)
+  canvas.toBlob(function(blob) {
+    const fileName = "SILLY_SOCKS_" + currentOrderDetails.phone + ".png";
+    
+    // Attempt to use native mobile Share/Save menu (Works perfectly on iOS Safari)
+    if (navigator.canShare && navigator.share) {
+      const file = new File([blob], fileName, { type: "image/png" });
+      if (navigator.canShare({ files: [file] })) {
+        navigator.share({
+          files: [file],
+          title: 'Silly Socks Receipt'
+        }).catch(console.error);
+        return;
+      }
+    }
+    
+    // Fallback for Desktop / Browsers without Web Share API
+    const blobURL = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.href = blobURL;
+    link.download = fileName;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    setTimeout(() => URL.revokeObjectURL(blobURL), 100);
+  }, "image/png");
 }
 
 
