@@ -592,7 +592,7 @@ details > summary::-webkit-details-marker { display: none; }
           <div class="live-watch">🔥 SHOP FAVORITE</div>
           <img src="mirror_placeholder.jpg" class="cam-img" alt="Traffic Mirror" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'300\' height=\'200\'><rect width=\'100%\' height=\'100%\' fill=\'#333\'/><text x=\'50%\' y=\'50%\' font-family=\'monospace\' font-size=\'14\' fill=\'#fff\' dominant-baseline=\'middle\' text-anchor=\'middle\'>IMG MISSING</text></svg>'" />
           <!-- MIRROR WATERMARK -->
-          <div class="watermark-overlay">
+          <div class="watermark-overlay" id="mirrorWatermark" style="display: none;">
             <div class="watermark-text">SOLD OUT</div>
           </div>
         </div>
@@ -618,8 +618,8 @@ details > summary::-webkit-details-marker { display: none; }
             </div>
             <span class="disc-tag">🔥 SAVE ৳501</span>
           </div>
-          <!-- MIRROR DISABLED BUTTON -->
-          <button class="buy-btn disabled-btn" disabled>SOLD OUT</button>
+          <!-- MIRROR BUTTON -->
+          <button class="buy-btn" id="mirrorBuyBtn" onclick="openCheckoutMirror()">SECURE ITEM</button>
         </div>
       </div>
     </div>
@@ -1032,6 +1032,7 @@ function skipToCatalog() {
     tttScreen.style.display = "none";
     catalog.style.display = "block";
     refreshCatalogPrices();
+    fetchInventory(); // FIRE THE GOOGLE SHEETS LIVE INVENTORY CHECK
     
     setTimeout(() => {
       catalog.classList.add("visible");
@@ -1274,7 +1275,7 @@ document.getElementById("orderForm").addEventListener("submit", function(e) {
   btn.style.pointerEvents = "none";
   btn.style.opacity = "0.7";
 
-  var googleScriptURL = "https://script.google.com/macros/s/AKfycbz63q-ymnIFpCyZevxcvnDuvTK5iwYgQELtSwmAQ4GxuqJ7namo5TqP3cJldpC8o1_4/exec";
+  var googleScriptURL = "https://script.google.com/macros/s/AKfycbyYvaRsNI8FSJ8p1WNd3_9YSx10uuNjxNTriiAM2-nkXflv8ZAfIeaee06R1sM-VApI/exec";
 
   var searchParams = new URLSearchParams();
   var formData = new FormData(this);
@@ -1336,16 +1337,17 @@ function getPriceHTML(isWithSD) {
   }
 }
 
+// NOTE: Hardcoded default states. The fetchInventory function will OVERRIDE these live if the Google Sheet changes.
 var camColors = [
-  { n:"Cloud 99 White", v:"Clean & modern", i:"cam_white.jpg", c:"White", swatch:"#ffffff", badge:"🔥 BESTSELLER" },
-  { n:"Midnight Black", v:"Neon noir aesthetic", i:"cam_black.jpg", c:"Black", swatch:"#111111", badge:"🔥 BESTSELLER" },
+  { n:"Cloud 99 White", v:"Clean & modern", i:"cam_white.jpg", c:"White", swatch:"#ffffff", badge:"🔥 BESTSELLER", soldOut: false },
+  { n:"Midnight Black", v:"Neon noir aesthetic", i:"cam_black.jpg", c:"Black", swatch:"#111111", badge:"🔥 BESTSELLER", soldOut: false },
   { n:"Clear Gameboy", v:"Raw Y2K tech", i:"cam_transparent.jpg", c:"Transparent", swatch:"#d9f7ff", badge:"❌ SOLD OUT", soldOut: true },
   { n:"Glitch Green", v:"90s personality", i:"cam_green.jpg", c:"Green", swatch:"#39ff6a", badge:"❌ SOLD OUT", soldOut: true },
-  { n:"Arcade Red", v:"Bold streetwear energy", i:"cam_red.jpg", c:"Red", swatch:"#ff2b2b", badge:"✨ FAN FAVORITE" },
-  { n:"Pac-Maze Yellow", v:"Sunny 80s nostalgia", i:"cam_yellow.jpg", c:"Yellow", swatch:"#ffe23d", badge:"✨ FAN FAVORITE" },
-  { n:"Synthwave Blue", v:"Cool coastal feel", i:"cam_blue.jpg", c:"Blue", swatch:"#3d8bff", badge:"✨ FAN FAVORITE" },
-  { n:"Mint Condition", v:"Rare retro drop", i:"cam_lightgreen.jpg", c:"Light Green", swatch:"#b6ffcf", badge:"✨ FAN FAVORITE" },
-  { n:"Console Grey", v:"Classic 8-bit vibes", i:"cam_grey.jpg", c:"Grey", swatch:"#9a9a9a", badge:"✨ FAN FAVORITE" }
+  { n:"Arcade Red", v:"Bold streetwear energy", i:"cam_red.jpg", c:"Red", swatch:"#ff2b2b", badge:"✨ FAN FAVORITE", soldOut: false },
+  { n:"Pac-Maze Yellow", v:"Sunny 80s nostalgia", i:"cam_yellow.jpg", c:"Yellow", swatch:"#ffe23d", badge:"✨ FAN FAVORITE", soldOut: false },
+  { n:"Synthwave Blue", v:"Cool coastal feel", i:"cam_blue.jpg", c:"Blue", swatch:"#3d8bff", badge:"✨ FAN FAVORITE", soldOut: false },
+  { n:"Mint Condition", v:"Rare retro drop", i:"cam_lightgreen.jpg", c:"Light Green", swatch:"#b6ffcf", badge:"✨ FAN FAVORITE", soldOut: false },
+  { n:"Console Grey", v:"Classic 8-bit vibes", i:"cam_grey.jpg", c:"Grey", swatch:"#9a9a9a", badge:"✨ FAN FAVORITE", soldOut: false }
 ];
 var currentColorIdx = 0;
 var currentSD = false;
@@ -1451,7 +1453,6 @@ function updateMirrorPrice(radio) {
   let basePrice = 3599;
 
   if (gameDiscountActive) {
-    // 5% discount logic applied
     let discountedPrice = 3419;
     let totalSaved = oldPrice - discountedPrice;
     priceRow.innerHTML = '<div class="price-stack"><span class="old-price">৳' + oldPrice + '</span><span class="new-price" style="color:#0f0; text-shadow:0 0 10px #0f0;">৳' + discountedPrice + '</span></div><span class="disc-tag" style="background:#0f0; color:#000;">🎮 5% OFF APPLIED (SAVE ৳' + totalSaved + ')</span>';
@@ -1494,7 +1495,12 @@ function showToast() {
   
   const toast = document.getElementById('social-proof-toast');
   const loc = locations[Math.floor(Math.random() * locations.length)];
-  const item = camColors[Math.floor(Math.random() * camColors.length)];
+  
+  // Filter out sold out items so it only shows proof for available ones
+  const availableItems = camColors.filter(c => !c.soldOut);
+  if(availableItems.length === 0) return; // safety check
+  
+  const item = availableItems[Math.floor(Math.random() * availableItems.length)];
   const time = Math.floor(Math.random() * 12) + 1; 
 
   document.getElementById('toast-img-src').src = item.i;
@@ -1505,6 +1511,55 @@ function showToast() {
   setTimeout(() => { toast.classList.remove('show'); }, 4000);
 }
 
+// --- LIVE GOOGLE SHEETS INVENTORY SYNC ---
+function fetchInventory() {
+  // Uses your exact same Google Apps Script URL
+  const scriptURL = "https://script.google.com/macros/s/AKfycbyYvaRsNI8FSJ8p1WNd3_9YSx10uuNjxNTriiAM2-nkXflv8ZAfIeaee06R1sM-VApI/exec";
+  
+  fetch(scriptURL)
+    .then(res => res.json())
+    .then(data => {
+      if(data.status === "success" && data.inventory) {
+        
+        // 1. Sync the Cameras
+        camColors.forEach(col => {
+          if (data.inventory[col.c] === true) { 
+            col.soldOut = true;
+            col.badge = "❌ SOLD OUT";
+          } else {
+            col.soldOut = false;
+            if(col.badge === "❌ SOLD OUT") col.badge = "🔥 IN STOCK"; 
+          }
+        });
+        
+        // Refresh the UI to instantly show changes
+        selectColor(currentColorIdx);
+
+        // 2. Sync the Mirror
+        let mirrorSoldOut = data.inventory["Mirror"];
+        // Fallback: If it's undefined in the sheet, check if we forced it hardcoded initially
+        if (mirrorSoldOut === undefined) mirrorSoldOut = true; // We default it to true based on your request
+        
+        let mBtn = document.getElementById("mirrorBuyBtn");
+        let mWatermark = document.getElementById("mirrorWatermark");
+        
+        if (mirrorSoldOut) {
+          mBtn.innerText = "SOLD OUT";
+          mBtn.classList.add("disabled-btn");
+          mBtn.disabled = true;
+          mWatermark.style.display = "flex";
+        } else {
+          mBtn.innerText = "SECURE ITEM";
+          mBtn.classList.remove("disabled-btn");
+          mBtn.disabled = false;
+          mWatermark.style.display = "none";
+        }
+      }
+    })
+    .catch(err => console.log("Inventory Sync bypassed or failed. Proceeding with hardcoded defaults.", err));
+}
+
+// Initialize the first page
 showPage(1);
 </script>
 </body>
