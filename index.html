@@ -281,7 +281,7 @@ body {
 
 .qty-nudge { font-size: 11px; font-weight: 800; color: var(--text-muted); margin: 10px 0 15px; line-height: 1.6; }
 
-.sticky-buy-bar { position: fixed; bottom: 0; left: 0; width: 100%; background: var(--card-bg); border-top: 4px solid var(--card-border); padding: 15px 20px; padding-bottom: calc(15px + env(safe-area-inset-bottom)); display: none; align-items: center; justify-content: space-between; gap: 15px; z-index: 9998; box-shadow: 0 -4px 20px rgba(0,0,0,0.6); }
+.sticky-buy-bar { position: fixed; bottom: 0; left: 0; width: 100%; background: var(--card-bg); border: 4px solid var(--card-border); padding: 15px 20px; padding-bottom: calc(15px + env(safe-area-inset-bottom)); display: none; align-items: center; justify-content: space-between; gap: 15px; z-index: 9998; box-shadow: 0 -4px 20px rgba(0,0,0,0.6); }
 .sticky-buy-bar.visible { display: flex; }
 .sticky-buy-price { font-family: var(--font-retro); font-size: 16px; color: var(--accent-3); }
 .sticky-buy-btn { font-family: var(--font-retro); font-size: 12px; background: var(--accent-1); color: #fff; border: 2px solid var(--card-border); padding: 14px 20px; cursor: pointer; white-space: nowrap; box-shadow: 4px 4px 0 #fff;}
@@ -489,9 +489,9 @@ details > summary::-webkit-details-marker { display: none; }
 
     <div class="score-tally" id="final-score">SCORE: 0000</div>
 
-    <!-- NEW RECEIPT DOWNLOAD BUTTON ADDED HERE -->
-    <button class="retro-btn" onclick="downloadReceipt()" style="background: var(--accent-1); color: #fff; font-size: 14px; margin-top: 10px; box-shadow: 4px 4px 0 #fff;">💾 DOWNLOAD RECEIPT</button>
-    
+    <!-- NEW RECEIPT WALLPAPER DOWNLOAD BUTTON -->
+    <button class="retro-btn" onclick="downloadReceipt()" style="background: var(--accent-2); color: #000; font-size: 12px; margin-top: 10px; box-shadow: 4px 4px 0 #fff; border: 3px solid #fff;">📸 DOWNLOAD WALLPAPER RECEIPT</button>
+
     <button class="retro-btn" onclick="closeSuccessScreen()" style="background: var(--accent-3); color: #000; font-size: 14px; margin-top: 15px;">CONTINUE TO CATALOG</button>
   </div>
 </div>
@@ -643,11 +643,6 @@ details > summary::-webkit-details-marker { display: none; }
   <div class="float-btn wa-btn" onclick="window.open('https://wa.me/8801961515240?text=Hi!%20I%20have%20a%20question%20about%20Silly%20Socks', '_blank')" aria-label="Chat on WhatsApp">
     <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
   </div>
-  <div class="float-btn ig-btn" onclick="window.open('https://www.instagram.com/your.sillysocks/', '_blank')" aria-label="Instagram">
-    <svg viewBox="0 0 24 24">
-      <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 1.76-6.98 6.276-.058 1.281-.072 1.688-.072 4.947s.014 3.666.072 4.947c.2 4.515 2.622 6.076 6.98 6.276 1.28.058 1.687.072 4.947.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-1.76 6.979-6.276.059-1.281.073-1.689.073-4.947 0-3.258-.014-3.667-.072-4.947-.196-4.516-2.624-6.076-6.979-6.276-1.28-.058-1.688-.072-4.948-.072zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
-    </svg>
-  </div>
 </div>
 
 <!-- Social Proof Toast Notification (CRO) -->
@@ -672,7 +667,7 @@ let gameDiscountActive = false;
 let bgmTimeout = null;
 
 let currentCheckoutProduct = 'camera'; 
-// NEW: Global object to hold receipt info
+// Global object to hold receipt info for the wallpaper generator
 let currentOrderDetails = {};
 
 function initAudio() {
@@ -714,7 +709,6 @@ function unlockAudioMobile() {
 }
 
 // Attach to click, touchstart, and touchend to capture any first interaction on mobile
-// The 'true' uses the capture phase so it triggers before your other button clicks
 ['click', 'touchstart', 'touchend'].forEach(evt => {
   document.body.addEventListener(evt, unlockAudioMobile, true);
 });
@@ -1270,61 +1264,154 @@ function closeSuccessScreen() {
   }, 400);
 }
 
-// --- RETRO ASCII RECEIPT GENERATOR ---
+// --- HD WALLPAPER RECEIPT GENERATOR ---
 function downloadReceipt() {
   soundClick();
   
-  const receiptASCII = `
-======================================
-           SILLY SOCKS              
-         ARCADE DROP LOG            
-======================================
-TXN DATE : ${currentOrderDetails.date}
-PLAYER   : ${currentOrderDetails.name}
-PHONE    : ${currentOrderDetails.phone}
-ADDRESS  : ${currentOrderDetails.address}
---------------------------------------
->> GEAR SECURED
-ITEM     : ${currentOrderDetails.color}
-CONFIG   : ${currentOrderDetails.addons}
-QTY      : ${currentOrderDetails.qty}
---------------------------------------
-PAYMENT  : ${currentOrderDetails.payment}
-TOTAL    : BDT ${currentOrderDetails.total}
-STATUS   : DISPATCH PREP
-======================================
-      THANK YOU FOR PLAYING!        
-======================================
-  `;
-  
-  // Create an invisible anchor tag to trigger text file download
-  const blob = new Blob([receiptASCII], { type: "text/plain" });
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement("a");
-  a.href = url;
-  a.download = "SILLY_SOCKS_RECEIPT.txt";
-  document.body.appendChild(a);
-  a.click();
-  document.body.removeChild(a);
-  URL.revokeObjectURL(url);
+  // Creates an invisible canvas to draw the 1080x1920 HD Wallpaper
+  const canvas = document.createElement("canvas");
+  canvas.width = 1080;
+  canvas.height = 1920;
+  const ctx = canvas.getContext("2d");
+
+  // 1. Synthwave Background Gradient
+  const gradient = ctx.createLinearGradient(0, 0, 0, 1920);
+  gradient.addColorStop(0, "#0b0c10");
+  gradient.addColorStop(1, "#1f0033"); // Deep purple fade at the bottom
+  ctx.fillStyle = gradient;
+  ctx.fillRect(0, 0, 1080, 1920);
+
+  // 2. Neon Perspective Grid
+  ctx.strokeStyle = "rgba(0, 255, 255, 0.15)";
+  ctx.lineWidth = 2;
+  for (let i = 0; i <= 1080; i += 60) {
+    ctx.beginPath(); ctx.moveTo(i, 0); ctx.lineTo(i, 1920); ctx.stroke();
+  }
+  for (let i = 0; i <= 1920; i += 60) {
+    ctx.beginPath(); ctx.moveTo(0, i); ctx.lineTo(1080, i); ctx.stroke();
+  }
+
+  // 3. Glowing Border
+  ctx.strokeStyle = "#ff00ff";
+  ctx.lineWidth = 12;
+  ctx.shadowColor = "#ff00ff";
+  ctx.shadowBlur = 30;
+  ctx.strokeRect(40, 40, 1000, 1840);
+  ctx.strokeStyle = "#00ffff";
+  ctx.lineWidth = 4;
+  ctx.strokeRect(55, 55, 970, 1810);
+  ctx.shadowBlur = 0; // Reset shadows
+
+  // 4. Header Titles
+  ctx.textAlign = "center";
+  ctx.fillStyle = "#ffffff";
+  ctx.font = "900 80px 'Montserrat', sans-serif";
+  ctx.fillText("SILLY SOCKS", 540, 220);
+
+  // Retro font fallback stack
+  ctx.fillStyle = "#ffff00";
+  ctx.font = "40px 'Press Start 2P', 'Courier New', monospace";
+  ctx.shadowColor = "#ffff00";
+  ctx.shadowBlur = 15;
+  ctx.fillText(">> MISSION SUCCESS <<", 540, 320);
+  ctx.shadowBlur = 0;
+
+  // Separator Line
+  ctx.strokeStyle = "#ff00ff";
+  ctx.lineWidth = 6;
+  ctx.setLineDash([15, 15]);
+  ctx.beginPath(); ctx.moveTo(100, 420); ctx.lineTo(980, 420); ctx.stroke();
+  ctx.setLineDash([]);
+
+  // 5. Draw Order Data Function
+  ctx.textAlign = "left";
+  let startY = 550;
+  let lineH = 90;
+  let col1 = 120;
+  let col2 = 450;
+
+  const drawTextRow = (label, val, y, color = "#ffffff") => {
+    ctx.fillStyle = "#00ffff";
+    ctx.font = "28px 'Press Start 2P', 'Courier New', monospace";
+    ctx.fillText(label, col1, y);
+    
+    ctx.fillStyle = color;
+    ctx.font = "bold 40px 'Montserrat', sans-serif";
+    // Truncate overly long data so it doesn't spill over the canvas border
+    let safeVal = String(val).substring(0, 22);
+    ctx.fillText(safeVal, col2, y - 5);
+  };
+
+  drawTextRow("PLAYER_ID:", currentOrderDetails.name.toUpperCase(), startY);
+  drawTextRow("COMM_LINK:", currentOrderDetails.phone, startY + lineH);
+  drawTextRow("TIMESTAMP:", currentOrderDetails.date.split(",")[0], startY + lineH * 2);
+
+  // Section 2
+  startY = startY + lineH * 3.5;
+  ctx.fillStyle = "#ff00ff";
+  ctx.font = "35px 'Press Start 2P', 'Courier New', monospace";
+  ctx.fillText("ACQUIRED LOOT", col1, startY - 50);
+
+  drawTextRow("ITEM_NAME:", currentOrderDetails.color.toUpperCase(), startY);
+  drawTextRow("SPEC_MODE:", currentOrderDetails.addons.toUpperCase(), startY + lineH);
+  drawTextRow("MULTIPLIER:", "x" + currentOrderDetails.qty, startY + lineH * 2);
+  drawTextRow("PAY_METHOD:", currentOrderDetails.payment.toUpperCase(), startY + lineH * 3);
+
+  // Separator Line
+  startY = startY + lineH * 4;
+  ctx.strokeStyle = "#ff00ff";
+  ctx.setLineDash([15, 15]);
+  ctx.beginPath(); ctx.moveTo(100, startY); ctx.lineTo(980, startY); ctx.stroke();
+  ctx.setLineDash([]);
+
+  // Total
+  startY += 120;
+  ctx.fillStyle = "#ffffff";
+  ctx.font = "40px 'Press Start 2P', 'Courier New', monospace";
+  ctx.fillText("FINAL SCORE:", col1, startY);
+
+  ctx.fillStyle = "#0f0";
+  ctx.font = "bold 70px 'Montserrat', sans-serif";
+  ctx.shadowColor = "#0f0";
+  ctx.shadowBlur = 25;
+  ctx.fillText("৳" + currentOrderDetails.total, col2 + 50, startY + 10);
+  ctx.shadowBlur = 0;
+
+  // 6. Footer
+  ctx.textAlign = "center";
+  ctx.fillStyle = "#aaaaaa";
+  ctx.font = "italic 30px 'Montserrat', sans-serif";
+  ctx.fillText("Screenshot or save this file.", 540, 1780);
+  ctx.fillText("Transmission ended.", 540, 1830);
+
+  // 7. Output to Mobile/PC
+  const imgURL = canvas.toDataURL("image/png");
+  const link = document.createElement("a");
+  link.href = imgURL;
+  // Dynamic filename based on customer's phone number
+  link.download = "SILLY_SOCKS_WALLPAPER_" + currentOrderDetails.phone + ".png";
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
 }
+
 
 // --- AJAX Form Submit to Google Apps Script ---
 document.getElementById("orderForm").addEventListener("submit", function(e) {
   e.preventDefault(); 
   soundClick();
   
-  // Capture order details to generate the receipt later
+  // Capture order details to generate the wallpaper receipt later
   const formData = new FormData(this);
   currentOrderDetails = {
-    name: formData.get("Full Name"),
-    phone: formData.get("Phone Number"),
-    address: formData.get("Delivery Address"),
-    color: formData.get("Product Color"),
-    addons: formData.get("Add-ons"),
-    qty: formData.get("Quantity"),
-    payment: formData.get("Payment Method"),
-    total: document.getElementById('form-total-payable').value,
+    name: formData.get("Full Name") || "GUEST",
+    phone: formData.get("Phone Number") || "000",
+    address: formData.get("Delivery Address") || "N/A",
+    color: formData.get("Product Color") || "N/A",
+    addons: formData.get("Add-ons") || "N/A",
+    qty: formData.get("Quantity") || "1",
+    payment: formData.get("Payment Method") || "COD",
+    total: document.getElementById('form-total-payable').value || "0",
     date: new Date().toLocaleString()
   };
   
