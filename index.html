@@ -1335,22 +1335,22 @@ function downloadReceipt() {
   ctx.setLineDash([]);
 
   // 5. Draw Order Data Function
-  ctx.textAlign = "left";
-  let startY = 550;
+  let startY = 520;
   let lineH = 90;
-  let col1 = 120;
-  let col2 = 470;
 
   const drawTextRow = (label, val, y, color = "#ffffff") => {
+    // Left Align the Labels
+    ctx.textAlign = "left";
     ctx.fillStyle = "#00ffff";
-    ctx.font = "28px 'Press Start 2P', 'Courier New', monospace";
-    ctx.fillText(label, col1, y);
+    ctx.font = "26px 'Press Start 2P', 'Courier New', monospace";
+    ctx.fillText(label, 80, y);
     
+    // Right Align the Values to prevent overlapping
+    ctx.textAlign = "right";
     ctx.fillStyle = color;
-    ctx.font = "bold 40px 'Montserrat', sans-serif";
-    // Truncate overly long data so it doesn't spill over the canvas border
-    let safeVal = String(val).substring(0, 25);
-    ctx.fillText(safeVal, col2, y - 5);
+    ctx.font = "bold 34px 'Montserrat', sans-serif";
+    let safeVal = String(val).substring(0, 30); // Max 30 chars
+    ctx.fillText(safeVal, 1000, y - 2);
   };
 
   drawTextRow("PLAYER_ID:", currentOrderDetails.name.toUpperCase(), startY);
@@ -1359,16 +1359,17 @@ function downloadReceipt() {
 
   // Section 2
   startY = startY + lineH * 3.5;
+  ctx.textAlign = "left";
   ctx.fillStyle = "#ff00ff";
-  ctx.font = "35px 'Press Start 2P', 'Courier New', monospace";
-  ctx.fillText("ACQUIRED LOOT", col1, startY - 50);
+  ctx.font = "32px 'Press Start 2P', 'Courier New', monospace";
+  ctx.fillText("ACQUIRED LOOT", 80, startY - 50);
 
   // Formats item name dynamically (Camera vs Decor)
   let itemNameStr = currentOrderDetails.color.toUpperCase();
   if(itemNameStr !== "ORANGE") {
     // Check if it already contains "THUMB CAMERA" to avoid duplication
-    if (!itemNameStr.includes("THUMB CAMERA")) {
-      itemNameStr = "THUMB CAMERA - " + itemNameStr;
+    if (!itemNameStr.includes("CAMERA")) {
+      itemNameStr = "THUMB CAMERA - " + itemNameStr.replace("CLOUD 99 ", "").replace("CLEAR ", "").replace("ARCADE ", "");
     }
   } else {
     itemNameStr = "TRAFFIC MIRROR";
@@ -1386,18 +1387,19 @@ function downloadReceipt() {
   ctx.beginPath(); ctx.moveTo(100, startY); ctx.lineTo(980, startY); ctx.stroke();
   ctx.setLineDash([]);
 
-  // Total - ALIGNED TO CENTER TO PREVENT OVERLAP
-  startY += 150;
-  ctx.textAlign = "center";
+  // Total - Fixed Alignment (Left for Title, Right for Score)
+  startY += 120;
+  ctx.textAlign = "left";
   ctx.fillStyle = "#ffffff";
-  ctx.font = "35px 'Press Start 2P', 'Courier New', monospace";
-  ctx.fillText(">> FINAL SCORE <<", 540, startY);
+  ctx.font = "38px 'Press Start 2P', 'Courier New', monospace";
+  ctx.fillText("FINAL SCORE:", 80, startY);
 
+  ctx.textAlign = "right";
   ctx.fillStyle = "#0f0";
-  ctx.font = "bold 90px 'Montserrat', sans-serif";
+  ctx.font = "bold 75px 'Montserrat', sans-serif";
   ctx.shadowColor = "#0f0";
-  ctx.shadowBlur = 30;
-  ctx.fillText("৳" + currentOrderDetails.total, 540, startY + 110);
+  ctx.shadowBlur = 25;
+  ctx.fillText("BDT " + currentOrderDetails.total, 1000, startY + 10);
   ctx.shadowBlur = 0;
 
   // 6. Footer
