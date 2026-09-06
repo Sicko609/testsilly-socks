@@ -84,8 +84,8 @@ body {
   display: flex; flex-direction: column; align-items: center; justify-content: center;
   background: var(--bg); z-index: 5000; transition: all 0.6s cubic-bezier(0.8, -0.2, 0.2, 1.5);
 }
-#tictactoe-screen, #checkout-screen, #success-screen { display: none; opacity: 0; transform: scale(0.8); }
-#tictactoe-screen.visible, #checkout-screen.visible, #success-screen.visible { opacity: 1; transform: scale(1); }
+#tictactoe-screen, #checkout-screen, #success-screen, #wallpaper-modal { display: none; opacity: 0; transform: scale(0.8); }
+#tictactoe-screen.visible, #checkout-screen.visible, #success-screen.visible, #wallpaper-modal.visible { opacity: 1; transform: scale(1); }
 
 /* --- SCREEN 1: HERO & ARCADE BUTTONS --- */
 #hero-screen { cursor: pointer; display: flex; opacity: 1; transform: scale(1); }
@@ -281,7 +281,7 @@ body {
 
 .qty-nudge { font-size: 11px; font-weight: 800; color: var(--text-muted); margin: 10px 0 15px; line-height: 1.6; }
 
-.sticky-buy-bar { position: fixed; bottom: 0; left: 0; width: 100%; background: var(--card-bg); border: 4px solid var(--card-border); padding: 15px 20px; padding-bottom: calc(15px + env(safe-area-inset-bottom)); display: none; align-items: center; justify-content: space-between; gap: 15px; z-index: 9998; box-shadow: 0 -4px 20px rgba(0,0,0,0.6); }
+.sticky-buy-bar { position: fixed; bottom: 0; left: 0; width: 100%; background: var(--card-bg); border-top: 4px solid var(--card-border); padding: 15px 20px; padding-bottom: calc(15px + env(safe-area-inset-bottom)); display: none; align-items: center; justify-content: space-between; gap: 15px; z-index: 9998; box-shadow: 0 -4px 20px rgba(0,0,0,0.6); }
 .sticky-buy-bar.visible { display: flex; }
 .sticky-buy-price { font-family: var(--font-retro); font-size: 16px; color: var(--accent-3); }
 .sticky-buy-btn { font-family: var(--font-retro); font-size: 12px; background: var(--accent-1); color: #fff; border: 2px solid var(--card-border); padding: 14px 20px; cursor: pointer; white-space: nowrap; box-shadow: 4px 4px 0 #fff;}
@@ -496,6 +496,22 @@ details > summary::-webkit-details-marker { display: none; }
   </div>
 </div>
 
+<!-- RETRO WALLPAPER MODAL (100% SAFARI / IPHONE / ANDROID / DESKTOP COMPATIBLE) -->
+<div id="wallpaper-modal" class="screen-layer" style="z-index: 99999; background: rgba(0,0,0,0.9); padding: 15px;">
+  <div class="retro-box" style="max-width: 440px; padding: 1.2rem; border-color: var(--accent-2);">
+    <div class="gate-title" style="color: var(--accent-3); font-size: 13px; margin-bottom: 6px;">WALLPAPER RECEIPT READY</div>
+    <p style="font-family: var(--font-retro); font-size: 9px; color: #00ffff; margin-bottom: 12px; line-height: 1.6;">
+      📱 ON IPHONE: PRESS & HOLD IMAGE TO SAVE TO PHOTOS<br>
+      💻 ON PC: AUTO-DOWNLOADED TO YOUR FOLDER
+    </p>
+    <div style="width: 100%; max-height: 50vh; overflow: hidden; border: 2px solid var(--accent-1); margin-bottom: 12px; background: #000; display: flex; justify-content: center; align-items: center;">
+      <img id="wallpaper-preview-img" style="max-height: 50vh; width: auto; object-fit: contain; display: block;" alt="Wallpaper Receipt" />
+    </div>
+    <button type="button" class="retro-btn" id="modal-share-btn" style="background: var(--accent-1); color: #fff; margin-bottom: 8px;">📲 SAVE / SHARE AGAIN</button>
+    <button type="button" class="retro-btn" onclick="closeWallpaperModal()" style="background: #333; border-color: #555;">✖ CLOSE</button>
+  </div>
+</div>
+
 <!-- SCREEN 6: CATALOG SECTION -->
 <div id="catalog">
   <header class="cat-header">
@@ -643,6 +659,11 @@ details > summary::-webkit-details-marker { display: none; }
   <div class="float-btn wa-btn" onclick="window.open('https://wa.me/8801961515240?text=Hi!%20I%20have%20a%20question%20about%20Silly%20Socks', '_blank')" aria-label="Chat on WhatsApp">
     <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
   </div>
+  <div class="float-btn ig-btn" onclick="window.open('https://www.instagram.com/your.sillysocks/', '_blank')" aria-label="Instagram">
+    <svg viewBox="0 0 24 24">
+      <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 1.76-6.98 6.276-.058 1.281-.072 1.688-.072 4.947s.014 3.666.072 4.947c.2 4.515 2.622 6.076 6.98 6.276 1.28.058 1.687.072 4.947.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-1.76 6.979-6.276.059-1.281.073-1.689.073-4.947 0-3.258-.014-3.667-.072-4.947-.196-4.516-2.624-6.076-6.979-6.276-1.28-.058-1.688-.072-4.948-.072zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+    </svg>
+  </div>
 </div>
 
 <!-- Social Proof Toast Notification (CRO) -->
@@ -667,9 +688,11 @@ let gameDiscountActive = false;
 let bgmTimeout = null;
 
 let currentCheckoutProduct = 'camera'; 
-// Global object to hold receipt info for the wallpaper generator
 let currentOrderDetails = {};
-let isWinnableGame = false; // Initialize Tic-Tac-Toe winnable flag globally
+let isWinnableGame = false;
+
+// Wallpaper cached payload for cross-platform sharing
+let cachedWallpaperFile = null;
 
 function initAudio() {
   if (!audioCtx) {
@@ -686,7 +709,6 @@ function initAudio() {
 function unlockAudioMobile() {
   initAudio();
   
-  // Play a silent tone to forcibly unlock iOS Safari Web Audio
   const osc = audioCtx.createOscillator();
   const gain = audioCtx.createGain();
   gain.gain.value = 0;
@@ -695,7 +717,6 @@ function unlockAudioMobile() {
   osc.start(0);
   osc.stop(audioCtx.currentTime + 0.001);
   
-  // Auto-start sound if not enabled yet
   if (!soundEnabled) {
     soundEnabled = true;
     const btn = document.getElementById('soundToggle');
@@ -703,13 +724,11 @@ function unlockAudioMobile() {
     startBGM();
   }
 
-  // Once unlocked, remove the listeners so it doesn't fire continuously
   ['click', 'touchstart', 'touchend'].forEach(evt => {
     document.body.removeEventListener(evt, unlockAudioMobile, true);
   });
 }
 
-// Attach to click, touchstart, and touchend to capture any first interaction on mobile
 ['click', 'touchstart', 'touchend'].forEach(evt => {
   document.body.addEventListener(evt, unlockAudioMobile, true);
 });
@@ -736,12 +755,10 @@ function playCoinSound() {
   setTimeout(() => playTone(1318.51, 'square', 0.4, 0.05), 100);
 }
 
-// Continuous Synthwave Arpeggio loop (less annoying than Pacman for continuous BGM)
+// Continuous Synthwave Arpeggio loop
 const arcadeBGM = [
-  // C minor arpeggio
   { f: 261.63, d: 200 }, { f: 311.13, d: 200 }, { f: 392.00, d: 200 }, { f: 523.25, d: 200 },
   { f: 392.00, d: 200 }, { f: 311.13, d: 200 }, { f: 261.63, d: 200 }, { f: 196.00, d: 200 },
-  // Ab major arpeggio
   { f: 207.65, d: 200 }, { f: 261.63, d: 200 }, { f: 311.13, d: 200 }, { f: 415.30, d: 200 },
   { f: 311.13, d: 200 }, { f: 261.63, d: 200 }, { f: 207.65, d: 200 }, { f: 155.56, d: 200 }
 ];
@@ -755,7 +772,6 @@ function startBGM() {
   function playNextNote() {
     if (!isBgmRunning || !soundEnabled) return;
     let note = arcadeBGM[noteIndex % arcadeBGM.length];
-    // Very subtle low volume BGM
     playTone(note.f, 'sawtooth', note.d / 1000, 0.015);
     noteIndex++;
     bgmTimeout = setTimeout(playNextNote, note.d);
@@ -907,7 +923,7 @@ function makeMove(index) {
   setTimeout(botMove, 600);
 }
 
-// --- MINIMAX AI IMPLEMENTATION (UNBEATABLE BOT) ---
+// --- MINIMAX AI IMPLEMENTATION ---
 function minimax(newBoard, player, depth) {
   let availSpots = [];
   for (let i = 0; i < 9; i++) {
@@ -972,7 +988,6 @@ function botMove() {
   soundBotMove();
   let bestMove;
 
-  // 5% chance the bot glitches and plays a random empty spot instead of Minimax
   if (isWinnableGame) {
     bestMove = emptyIndices[Math.floor(Math.random() * emptyIndices.length)];
   } else {
@@ -1023,7 +1038,7 @@ function resetBoard() {
   soundClick();
   board = ["", "", "", "", "", "", "", "", ""];
   gameActive = true;
-  isWinnableGame = Math.random() < 0.05; // Re-roll 5% chance on reset
+  isWinnableGame = Math.random() < 0.05;
   updateBoard();
   statusText.innerText = "PLAYER 1 IS 'X'. YOUR TURN!";
   statusText.style.color = "var(--accent-3)";
@@ -1032,7 +1047,6 @@ function resetBoard() {
 
 function skipToCatalog() {
   soundClick();
-  // We DO NOT call stopBGM() here so the retro music plays continuously through the shop
   tttScreen.style.opacity = "0";
   tttScreen.style.transform = "scale(0.5)";
   tttScreen.style.pointerEvents = "none";
@@ -1042,7 +1056,7 @@ function skipToCatalog() {
     tttScreen.style.display = "none";
     catalog.style.display = "block";
     refreshCatalogPrices();
-    fetchInventory(); // FIRE THE GOOGLE SHEETS LIVE INVENTORY CHECK
+    fetchInventory(); 
     
     setTimeout(() => {
       catalog.classList.add("visible");
@@ -1067,9 +1081,8 @@ function refreshCatalogPrices() {
 function updateCheckoutSavingsBanner() {
   const addonSelect = document.getElementById('form-addons');
   const banner = document.getElementById('checkout-savings-banner');
-  let savings = 800; // Base generic savings
+  let savings = 800; 
   
-  // Calculate based on the dropdown selections
   if (addonSelect.value.includes("1614")) {
     savings = 885;
   } else if (addonSelect.value.includes("2089")) {
@@ -1101,7 +1114,6 @@ function updateCheckoutTotal() {
   const subtotal = basePrice * qty;
   let deliveryFee = 0;
 
-  // Apply delivery fee dynamically
   if (currentCheckoutProduct === 'decor') {
       deliveryFee = 200;
   } else {
@@ -1116,14 +1128,13 @@ function updateCheckoutTotal() {
   document.getElementById('checkout-final-total').innerText = '৳' + total;
   document.getElementById('form-total-payable').value = total;
 
-  // Sync the savings banner whenever a price/addon is changed
   updateCheckoutSavingsBanner();
 }
 
 // --- SECURE CHECKOUT LOGIC FOR CAMERA GEAR ---
 function openCheckout(itemColor, isWithSD) {
   soundClick();
-  currentCheckoutProduct = 'camera'; // Set flag for dynamic totals
+  currentCheckoutProduct = 'camera'; 
   document.getElementById('catalog').style.opacity = "0";
   
   setTimeout(() => {
@@ -1144,7 +1155,6 @@ function openCheckout(itemColor, isWithSD) {
     colorDropdown.value = itemColor;
 
     let addonDropdown = document.getElementById('form-addons');
-    // We add data-price attributes to properly calculate math
     if (gameDiscountActive) {
       addonDropdown.innerHTML = `
         <option value="Without SD card (5% OFF) 1614" data-price="1614">Without SD card 1614 (5% OFF)</option>
@@ -1159,12 +1169,12 @@ function openCheckout(itemColor, isWithSD) {
       addonDropdown.value = isWithSD ? "With 8GB SD card 2199" : "Without SD card 1699";
     }
 
-    document.getElementById('form-quantity').value = "1"; // Reset quantity
+    document.getElementById('form-quantity').value = "1";
     document.getElementById('lbl-color').innerText = "> SELECT PRODUCT COLOR *";
     document.getElementById('lbl-addons').innerText = "> CHOOSE ADD-ONS *";
     document.getElementById('form-brocode').value = gameDiscountActive ? "ARCADE5" : "";
     
-    updateCheckoutTotal(); // Fires total calculation logic
+    updateCheckoutTotal();
 
     checkoutScreen.style.display = "flex";
     setTimeout(() => { 
@@ -1177,7 +1187,7 @@ function openCheckout(itemColor, isWithSD) {
 // --- SECURE CHECKOUT LOGIC FOR MIRROR ---
 function openCheckoutMirror() {
   soundClick();
-  currentCheckoutProduct = 'decor'; // Set flag for dynamic totals
+  currentCheckoutProduct = 'decor';
   document.getElementById('catalog').style.opacity = "0";
   
   setTimeout(() => {
@@ -1201,12 +1211,12 @@ function openCheckoutMirror() {
       addonDropdown.value = "30 cm (3599)";
     }
 
-    document.getElementById('form-quantity').value = "1"; // Reset quantity
+    document.getElementById('form-quantity').value = "1";
     document.getElementById('lbl-color').innerText = "> SELECT COLOR (ORANGE ONLY) *";
     document.getElementById('lbl-addons').innerText = "> CHOOSE MIRROR SIZE *";
     document.getElementById('form-brocode').value = gameDiscountActive ? "ARCADE5" : "";
     
-    updateCheckoutTotal(); // Fires total calculation logic
+    updateCheckoutTotal(); 
 
     checkoutScreen.style.display = "flex";
     setTimeout(() => { 
@@ -1275,11 +1285,56 @@ function closeSuccessScreen() {
   }, 400);
 }
 
+// --- SYNCHRONOUS BASE64 TO FILE CONVERTER (CRITICAL FOR SAFARI) ---
+function dataURLtoFile(dataurl, filename) {
+  var arr = dataurl.split(','), mime = arr[0].match(/:(.*?);/)[1],
+      bstr = atob(arr[1]), n = bstr.length, u8arr = new Uint8Array(n);
+  while(n--){
+      u8arr[n] = bstr.charCodeAt(n);
+  }
+  return new File([u8arr], filename, {type:mime});
+}
+
+// --- MODAL CONTROLS ---
+function openWallpaperModal(dataUrl, file, fileName) {
+  cachedWallpaperFile = file;
+  document.getElementById("wallpaper-preview-img").src = dataUrl;
+  
+  const modal = document.getElementById("wallpaper-modal");
+  modal.style.display = "flex";
+  setTimeout(() => modal.classList.add("visible"), 30);
+
+  // Re-attach sync share handler
+  document.getElementById("modal-share-btn").onclick = function() {
+    soundClick();
+    if (navigator.canShare && navigator.canShare({ files: [cachedWallpaperFile] })) {
+      navigator.share({
+        files: [cachedWallpaperFile],
+        title: 'Silly Socks Arcade Receipt'
+      }).catch(console.error);
+    } else {
+      // Fallback: direct download link
+      const link = document.createElement("a");
+      link.href = dataUrl;
+      link.download = fileName;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    }
+  };
+}
+
+function closeWallpaperModal() {
+  soundClick();
+  const modal = document.getElementById("wallpaper-modal");
+  modal.classList.remove("visible");
+  setTimeout(() => modal.style.display = "none", 400);
+}
+
 // --- HD WALLPAPER RECEIPT GENERATOR ---
 function downloadReceipt() {
   soundClick();
   
-  // Creates an invisible canvas to draw the 1080x1920 HD Wallpaper
   const canvas = document.createElement("canvas");
   canvas.width = 1080;
   canvas.height = 1920;
@@ -1288,7 +1343,7 @@ function downloadReceipt() {
   // 1. Synthwave Background Gradient
   const gradient = ctx.createLinearGradient(0, 0, 0, 1920);
   gradient.addColorStop(0, "#0b0c10");
-  gradient.addColorStop(1, "#1f0033"); // Deep purple fade at the bottom
+  gradient.addColorStop(1, "#1f0033");
   ctx.fillStyle = gradient;
   ctx.fillRect(0, 0, 1080, 1920);
 
@@ -1311,7 +1366,7 @@ function downloadReceipt() {
   ctx.strokeStyle = "#00ffff";
   ctx.lineWidth = 4;
   ctx.strokeRect(55, 55, 970, 1810);
-  ctx.shadowBlur = 0; // Reset shadows
+  ctx.shadowBlur = 0;
 
   // 4. Header Titles
   ctx.textAlign = "center";
@@ -1319,7 +1374,6 @@ function downloadReceipt() {
   ctx.font = "900 80px 'Montserrat', sans-serif";
   ctx.fillText("SILLY SOCKS", 540, 220);
 
-  // Retro font fallback stack
   ctx.fillStyle = "#ffff00";
   ctx.font = "40px 'Press Start 2P', 'Courier New', monospace";
   ctx.shadowColor = "#ffff00";
@@ -1334,23 +1388,21 @@ function downloadReceipt() {
   ctx.beginPath(); ctx.moveTo(100, 420); ctx.lineTo(980, 420); ctx.stroke();
   ctx.setLineDash([]);
 
-  // 5. Draw Order Data Function
+  // 5. Draw Order Data Function with Left / Right Justification
   let startY = 520;
   let lineH = 90;
 
   const drawTextRow = (label, val, y, color = "#ffffff") => {
-    // Left Align the Labels
     ctx.textAlign = "left";
     ctx.fillStyle = "#00ffff";
     ctx.font = "26px 'Press Start 2P', 'Courier New', monospace";
-    ctx.fillText(label, 80, y);
+    ctx.fillText(label, 90, y);
     
-    // Right Align the Values to prevent overlapping
     ctx.textAlign = "right";
     ctx.fillStyle = color;
     ctx.font = "bold 34px 'Montserrat', sans-serif";
-    let safeVal = String(val).substring(0, 30); // Max 30 chars
-    ctx.fillText(safeVal, 1000, y - 2);
+    let safeVal = String(val).substring(0, 30);
+    ctx.fillText(safeVal, 990, y - 2);
   };
 
   drawTextRow("PLAYER_ID:", currentOrderDetails.name.toUpperCase(), startY);
@@ -1362,17 +1414,15 @@ function downloadReceipt() {
   ctx.textAlign = "left";
   ctx.fillStyle = "#ff00ff";
   ctx.font = "32px 'Press Start 2P', 'Courier New', monospace";
-  ctx.fillText("ACQUIRED LOOT", 80, startY - 50);
+  ctx.fillText("ACQUIRED LOOT", 90, startY - 50);
 
-  // Formats item name dynamically (Camera vs Decor)
-  let itemNameStr = currentOrderDetails.color.toUpperCase();
-  if(itemNameStr !== "ORANGE") {
-    // Check if it already contains "THUMB CAMERA" to avoid duplication
-    if (!itemNameStr.includes("CAMERA")) {
-      itemNameStr = "THUMB CAMERA - " + itemNameStr.replace("CLOUD 99 ", "").replace("CLEAR ", "").replace("ARCADE ", "");
-    }
-  } else {
+  // Always display THUMB CAMERA - [COLOR] (or TRAFFIC MIRROR for decor)
+  let rawColor = (currentOrderDetails.color || "GEAR").toUpperCase();
+  let itemNameStr = "";
+  if (currentCheckoutProduct === 'decor' || rawColor === "ORANGE") {
     itemNameStr = "TRAFFIC MIRROR";
+  } else {
+    itemNameStr = "THUMB CAMERA - " + rawColor.replace("CLOUD 99 ", "").replace("CLEAR ", "").replace("ARCADE ", "");
   }
 
   drawTextRow("ITEM_NAME:", itemNameStr, startY);
@@ -1387,19 +1437,18 @@ function downloadReceipt() {
   ctx.beginPath(); ctx.moveTo(100, startY); ctx.lineTo(980, startY); ctx.stroke();
   ctx.setLineDash([]);
 
-  // Total - Fixed Alignment (Left for Title, Right for Score)
-  startY += 120;
-  ctx.textAlign = "left";
+  // Final Score Section - Center stacked and using BDT to prevent glyph overlaps
+  startY += 130;
+  ctx.textAlign = "center";
   ctx.fillStyle = "#ffffff";
-  ctx.font = "38px 'Press Start 2P', 'Courier New', monospace";
-  ctx.fillText("FINAL SCORE:", 80, startY);
+  ctx.font = "32px 'Press Start 2P', 'Courier New', monospace";
+  ctx.fillText(">> FINAL SCORE <<", 540, startY);
 
-  ctx.textAlign = "right";
-  ctx.fillStyle = "#0f0";
-  ctx.font = "bold 75px 'Montserrat', sans-serif";
-  ctx.shadowColor = "#0f0";
-  ctx.shadowBlur = 25;
-  ctx.fillText("BDT " + currentOrderDetails.total, 1000, startY + 10);
+  ctx.fillStyle = "#00ff66";
+  ctx.font = "900 85px 'Montserrat', sans-serif";
+  ctx.shadowColor = "#00ff66";
+  ctx.shadowBlur = 30;
+  ctx.fillText("BDT " + currentOrderDetails.total, 540, startY + 110);
   ctx.shadowBlur = 0;
 
   // 6. Footer
@@ -1409,41 +1458,38 @@ function downloadReceipt() {
   ctx.fillText("Screenshot or save this file.", 540, 1780);
   ctx.fillText("Transmission ended.", 540, 1830);
 
-  // 7. Output to Mobile/PC using Blob and Web Share API (Safari Fix)
-  canvas.toBlob(function(blob) {
-    const fileName = "SILLY_SOCKS_" + currentOrderDetails.phone + ".png";
-    
-    // Attempt to use native mobile Share/Save menu (Works perfectly on iOS Safari)
-    if (navigator.canShare && navigator.share) {
-      const file = new File([blob], fileName, { type: "image/png" });
-      if (navigator.canShare({ files: [file] })) {
-        navigator.share({
-          files: [file],
-          title: 'Silly Socks Receipt'
-        }).catch(console.error);
-        return;
-      }
-    }
-    
-    // Fallback for Desktop / Browsers without Web Share API
-    const blobURL = URL.createObjectURL(blob);
+  // 7. Synchronous conversion & multi-platform share/download dispatch
+  const dataUrl = canvas.toDataURL("image/png");
+  const fileName = "SILLY_SOCKS_" + (currentOrderDetails.phone || "RECEIPT") + ".png";
+  const file = dataURLtoFile(dataUrl, fileName);
+
+  // Open the preview modal immediately so it's impossible to miss
+  openWallpaperModal(dataUrl, file, fileName);
+
+  // If on Safari/Mobile and native sharing is supported, invoke it synchronously inside the tap event
+  if (navigator.canShare && navigator.canShare({ files: [file] })) {
+    navigator.share({
+      files: [file],
+      title: 'Silly Socks Arcade Receipt'
+    }).catch(() => {
+      // User dismissed share sheet or system rejected; modal is already visible
+    });
+  } else {
+    // Desktop auto-download
     const link = document.createElement("a");
-    link.href = blobURL;
+    link.href = dataUrl;
     link.download = fileName;
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
-    setTimeout(() => URL.revokeObjectURL(blobURL), 100);
-  }, "image/png");
+  }
 }
-
 
 // --- AJAX Form Submit to Google Apps Script ---
 document.getElementById("orderForm").addEventListener("submit", function(e) {
   e.preventDefault(); 
   soundClick();
   
-  // Capture order details to generate the wallpaper receipt later
   const formData = new FormData(this);
   currentOrderDetails = {
     name: formData.get("Full Name") || "GUEST",
@@ -1523,7 +1569,6 @@ function getPriceHTML(isWithSD) {
   }
 }
 
-// NOTE: Hardcoded default states. The fetchInventory function will OVERRIDE these live if the Google Sheet changes.
 var camColors = [
   { n:"Cloud 99 White", v:"Clean & modern", i:"cam_white.jpg", c:"White", swatch:"#ffffff", badge:"🔥 BESTSELLER", soldOut: false },
   { n:"Midnight Black", v:"Neon noir aesthetic", i:"cam_black.jpg", c:"Black", swatch:"#111111", badge:"🔥 BESTSELLER", soldOut: false },
@@ -1682,9 +1727,8 @@ function showToast() {
   const toast = document.getElementById('social-proof-toast');
   const loc = locations[Math.floor(Math.random() * locations.length)];
   
-  // Filter out sold out items so it only shows proof for available ones
   const availableItems = camColors.filter(c => !c.soldOut);
-  if(availableItems.length === 0) return; // safety check
+  if(availableItems.length === 0) return;
   
   const item = availableItems[Math.floor(Math.random() * availableItems.length)];
   const time = Math.floor(Math.random() * 12) + 1; 
@@ -1699,15 +1743,12 @@ function showToast() {
 
 // --- LIVE GOOGLE SHEETS INVENTORY SYNC ---
 function fetchInventory() {
-  // Uses your exact same Google Apps Script URL
   const scriptURL = "https://script.google.com/macros/s/AKfycbyYvaRsNI8FSJ8p1WNd3_9YSx10uuNjxNTriiAM2-nkXflv8ZAfIeaee06R1sM-VApI/exec";
   
   fetch(scriptURL)
     .then(res => res.json())
     .then(data => {
       if(data.status === "success" && data.inventory) {
-        
-        // 1. Sync the Cameras
         camColors.forEach(col => {
           if (data.inventory[col.c] === true) { 
             col.soldOut = true;
@@ -1718,13 +1759,10 @@ function fetchInventory() {
           }
         });
         
-        // Refresh the UI to instantly show changes
         selectColor(currentColorIdx);
 
-        // 2. Sync the Mirror
         let mirrorSoldOut = data.inventory["Mirror"];
-        // Fallback: If it's undefined in the sheet, check if we forced it hardcoded initially
-        if (mirrorSoldOut === undefined) mirrorSoldOut = true; // We default it to true based on your request
+        if (mirrorSoldOut === undefined) mirrorSoldOut = true;
         
         let mBtn = document.getElementById("mirrorBuyBtn");
         let mWatermark = document.getElementById("mirrorWatermark");
