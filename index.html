@@ -298,13 +298,10 @@ body {
 .sticky-buy-btn { font-family: var(--font-retro); font-size: 12px; background: var(--accent-1); color: #fff; border: 2px solid var(--card-border); padding: 14px 20px; cursor: pointer; white-space: nowrap; box-shadow: 4px 4px 0 #fff;}
 
 /* --- SOCIAL PROOF TOAST & FLOATING BUTTONS --- */
-/* Z-INDEX BUMPED TO AVOID OVERLAP */
 .floating-actions { position: fixed; bottom: 105px; right: 15px; display: flex; flex-direction: column; gap: 15px; z-index: 9999; }
 .float-btn { width: 56px; height: 56px; display: flex; align-items: center; justify-content: center; border: 3px solid var(--card-border); cursor: pointer; box-shadow: 4px 4px 0 var(--card-border); transition: all 0.2s; border-radius: 50%; }
 .float-btn:active { transform: translate(4px, 4px); box-shadow: 0 0 0 transparent; }
 .float-btn svg { width: 30px; height: 30px; fill: #fff; }
-
-/* RENAMED IG BUTTON TO BYPASS ADBLOCKERS */
 .insta-btn { background: var(--accent-1); }
 .wa-btn { background: #25D366; border-color: #000; box-shadow: 4px 4px 0 #000; }
 
@@ -941,7 +938,6 @@ function makeMove(index) {
   setTimeout(botMove, 600);
 }
 
-// --- MINIMAX AI IMPLEMENTATION ---
 function minimax(newBoard, player, depth) {
   let availSpots = [];
   for (let i = 0; i < 9; i++) {
@@ -970,7 +966,7 @@ function minimax(newBoard, player, depth) {
     }
 
     newBoard[availSpots[i]] = "";
-    moves.push(move); // FIXED reference issue here
+    moves.push(move); // Appending directly to moves array
   }
 
   let bestMove;
@@ -1026,7 +1022,7 @@ function botMove() {
 function updateBoard() {
   cells.forEach((cell, i) => {
     cell.innerText = board[i];
-    cell.className = "ttt-cell " + (board[i] === "X" ? "x" : (board[i] === "O" ? "o" : "")); // FIXED spacing issue here
+    cell.className = "ttt-cell " + (board[i] === "X" ? "x" : (board[i] === "O" ? "o" : "")); // Properly spacing the applied classes
   });
 }
 
@@ -1303,16 +1299,6 @@ function closeSuccessScreen() {
   }, 400);
 }
 
-// --- SYNCHRONOUS BASE64 TO FILE CONVERTER ---
-function dataURLtoFile(dataurl, filename) {
-  var arr = dataurl.split(','), mime = arr[0].match(/:(.*?);/)[1],
-      bstr = atob(arr[1]), n = bstr.length, u8arr = new Uint8Array(n);
-  while(n--){
-      u8arr[n] = bstr.charCodeAt(n);
-  }
-  return new File([u8arr], filename, {type:mime});
-}
-
 // --- MODAL CONTROLS ---
 function openWallpaperModal(dataUrl, file, fileName) {
   cachedWallpaperFile = file;
@@ -1326,11 +1312,13 @@ function openWallpaperModal(dataUrl, file, fileName) {
   document.getElementById("modal-download-btn").onclick = function() {
     soundClick();
     const link = document.createElement("a");
-    link.href = dataUrl;
+    const blobUrl = URL.createObjectURL(cachedWallpaperFile);
+    link.href = blobUrl;
     link.download = fileName;
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
+    setTimeout(() => URL.revokeObjectURL(blobUrl), 2000);
   };
 
   // Share Button Handler (Calls Native Share Menu)
@@ -1483,21 +1471,34 @@ function downloadReceipt() {
   ctx.fillText("Screenshot or save this file.", 540, 1780);
   ctx.fillText("Transmission ended.", 540, 1830);
 
-  // 7. Output processing
+  // 7. Synchronous conversion & direct execution to beat Safari blockers
   const dataUrl = canvas.toDataURL("image/png");
   const fileName = "SILLY_SOCKS_LEVEL_UP_CARD_" + (currentOrderDetails.phone || "RECEIPT") + ".png";
-  const file = dataURLtoFile(dataUrl, fileName);
+  
+  // Convert to File Object synchronously
+  var arr = dataUrl.split(','), mime = arr[0].match(/:(.*?);/)[1], bstr = atob(arr[1]), n = bstr.length, u8arr = new Uint8Array(n);
+  while(n--){ u8arr[n] = bstr.charCodeAt(n); }
+  const file = new File([u8arr], fileName, {type:mime});
 
   // Display Modal Preview first
   openWallpaperModal(dataUrl, file, fileName);
 
   // Synchronous initial trigger attempt for Safari bypass
-  const link = document.createElement("a");
-  link.href = dataUrl;
-  link.download = fileName;
-  document.body.appendChild(link);
-  link.click();
-  document.body.removeChild(link);
+  if (navigator.canShare && navigator.canShare({ files: [file] })) {
+      navigator.share({
+        files: [file],
+        title: 'Silly Socks Level Up Card'
+      }).catch(err => console.log(err));
+  } else {
+      const link = document.createElement("a");
+      const blobUrl = URL.createObjectURL(file);
+      link.href = blobUrl;
+      link.download = fileName;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      setTimeout(() => URL.revokeObjectURL(blobUrl), 2000);
+  }
 }
 
 // --- AJAX Form Submit to Google Apps Script ---
