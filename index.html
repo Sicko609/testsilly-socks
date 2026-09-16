@@ -309,6 +309,15 @@ body {
 .buy-btn:hover { background: var(--accent-2); color: #000; transform: translate3d(-2px, -2px, 0); box-shadow: 6px 6px 0 var(--card-border); }
 .buy-btn:active { transform: translate3d(3px, 3px, 0); box-shadow: 0 0 0 transparent; }
 
+.buy-btn.disabled-btn, .sticky-buy-btn.disabled-btn {
+  background: #222 !important;
+  color: #666 !important;
+  border-color: #444 !important;
+  cursor: not-allowed !important;
+  box-shadow: none !important;
+  transform: none !important;
+}
+
 .page-nav { display: flex; gap: 10px; padding: 0 1rem; margin-top: 2rem; justify-content: center; flex-wrap: wrap;}
 .page-tab { background: var(--bg); border: 3px solid var(--card-border); padding: 12px 18px; font-family: var(--font-retro); font-size: 10px; color: var(--text); cursor: pointer; box-shadow: 4px 4px 0 var(--card-border); transition: transform 0.15s ease; line-height: 1.4;}
 .page-tab.active { background: var(--accent-1); color: #fff; transform: translate3d(2px, 2px, 0); box-shadow: 2px 2px 0 var(--card-border); }
@@ -525,16 +534,16 @@ details > summary::-webkit-details-marker { display: none; }
       </div>
 
       <label style="margin-top: 15px;">&gt; BUYER PROTECTION</label>
-      <div class="checkout-hype-banner" style="margin-bottom:10px; text-align:left; line-height:1.7;">
+      <div id="buyer-protection-banner" class="checkout-hype-banner" style="margin-bottom:10px; text-align:left; line-height:1.7;">
         ✅ 3-DAY REPLACEMENT WARRANTY ON MANUFACTURING DEFECTS<br>
         ✅ REAL HUMAN SUPPORT VIA INSTAGRAM DM<br>
-        ✅ ORDERS PACKED &amp; DISPATCHED WITHIN 24-48H
+        <span id="dispatch-time-text">✅ ORDERS PACKED &amp; DISPATCHED WITHIN 24-48H</span>
       </div>
 
       <details style="margin-bottom:10px;">
         <summary style="font-family: var(--font-retro); font-size: 10px; color: var(--accent-2); cursor:pointer; padding: 12px 0; font-weight: 800;">&gt; VIEW FULL TERMS &amp; WARRANTY POLICY</summary>
         <div class="tc-box" style="margin-top:8px;">
-          <strong>1. ORDER CHANGES:</strong> We may occasionally adjust quantity, size, or dispatch timing on an order and will contact you first if that happens.<br><br>
+          <strong>1. ORDER CHANGES:</strong> We may occasionally adjust quantity, size, or dispatch timing on an order and will contact you first if that happens. (Pre-orders require up to 10 days for dispatch).<br><br>
           <strong>2. CASH ON DELIVERY:</strong> COD orders are held for you specifically — repeated refusal of COD deliveries may result in future orders from that number requiring advance payment.<br><br>
           <strong>3. AFTER DELIVERY:</strong> Once an order is delivered in good condition, the customer is responsible for care of the product going forward.<br><br>
           <strong>4. WARRANTY WINDOW:</strong> Manufacturing defects are replaced free within 3 days of delivery — just message us with a photo/video. Claims outside this window aren't covered.<br><br>
@@ -782,7 +791,7 @@ details > summary::-webkit-details-marker { display: none; }
   </div>
 </div>
 
-<!-- Social Proof Toast Notification (CRO) -->
+<!-- Social Proof Toast Notification -->
 <div id="social-proof-toast">
   <img src="cam_white.jpg" id="toast-img-src" class="toast-img" alt="Purchased Item">
   <div>
@@ -793,7 +802,7 @@ details > summary::-webkit-details-marker { display: none; }
 
 <script>
 // ==========================================
-// 80s WEB AUDIO API SYNTHESIZER & CONTINUOUS BGM
+// 80s WEB AUDIO API & SYNTHWAVE BGM
 // ==========================================
 let audioCtx;
 let isPoweredOn = false;
@@ -807,9 +816,8 @@ let currentCheckoutProduct = 'camera';
 let currentOrderDetails = {};
 let isWinnableGame = false;
 let isMirrorPreorder = false;
-let isPrankPreorder = false; // Set to true if prank category is out of stock
+let isPrankPreorder = false; 
 
-// Cached payload for cross-platform sharing
 let cachedWallpaperFile = null;
 
 function initAudio() {
@@ -1211,12 +1219,24 @@ function updateCheckoutSavingsBanner() {
   } else if (addonSelect.value.includes("30 cm")) {
     savings = 501;
   } else if (addonSelect.value.includes("332")) {
-    savings = 168; // Prank discount
+    savings = 168; 
   } else if (addonSelect.value.includes("350")) {
-    savings = 150; // Prank regular
+    savings = 150; 
   }
 
   banner.innerText = `⚡ YOU ARE SAVING ৳${savings} TODAY ⚡`;
+}
+
+// --- DYNAMIC TOTAL CALCULATOR & DISPATCH TEXT ---
+function updateDispatchText(isPreorder) {
+    const dispatchEl = document.getElementById('dispatch-time-text');
+    if (isPreorder) {
+        dispatchEl.innerHTML = "⏳ PRE-ORDER: DISPATCHED WITHIN 10 DAYS";
+        dispatchEl.style.color = "var(--accent-3)";
+    } else {
+        dispatchEl.innerHTML = "✅ ORDERS PACKED &amp; DISPATCHED WITHIN 24-48H";
+        dispatchEl.style.color = "";
+    }
 }
 
 function updateCheckoutTotal() {
@@ -1248,6 +1268,10 @@ function updateCheckoutTotal() {
 function openCheckout(itemColor, isWithSD) {
   soundClick();
   currentCheckoutProduct = 'camera'; 
+  
+  let isPreorder = itemColor.includes("[PRE-ORDER]");
+  updateDispatchText(isPreorder);
+  
   document.getElementById('catalog').style.opacity = "0";
   
   setTimeout(() => {
@@ -1290,6 +1314,8 @@ function openCheckout(itemColor, isWithSD) {
 function openCheckoutMirror() {
   soundClick();
   currentCheckoutProduct = 'decor';
+  updateDispatchText(isMirrorPreorder);
+  
   document.getElementById('catalog').style.opacity = "0";
   
   setTimeout(() => {
@@ -1327,6 +1353,8 @@ function openCheckoutMirror() {
 function openCheckoutPrank() {
   soundClick();
   currentCheckoutProduct = 'prank';
+  updateDispatchText(isPrankPreorder);
+  
   document.getElementById('catalog').style.opacity = "0";
   
   setTimeout(() => {
@@ -1920,7 +1948,7 @@ function fetchInventory() {
         camColors.forEach(col => {
           if (data.inventory[col.c] === true) { 
             col.soldOut = true;
-            col.badge = "🔥 BESTSELLER"; // Keep badge, we change the overlay
+            col.badge = "🔥 BESTSELLER"; 
           } else {
             col.soldOut = false;
           }
@@ -1951,6 +1979,32 @@ function fetchInventory() {
           mBtn.style.background = '';
           mBtn.style.color = '';
           mWatermark.style.display = "none";
+        }
+        
+        // Pranks
+        let prankSoldOut = data.inventory["Prank"];
+        if (prankSoldOut === undefined) prankSoldOut = true;
+        isPrankPreorder = prankSoldOut;
+        
+        let pBtn = document.getElementById("prankBuyBtn");
+        let pWatermark = document.getElementById("prankWatermark");
+        
+        if (prankSoldOut) {
+          pBtn.innerText = "PRE-ORDER ITEM";
+          pBtn.classList.remove("disabled-btn");
+          pBtn.disabled = false;
+          pBtn.style.background = 'var(--accent-3)';
+          pBtn.style.color = '#000';
+          
+          pWatermark.style.display = "flex";
+          pWatermark.querySelector('.watermark-text').innerText = 'PRE-ORDER';
+          pWatermark.querySelector('.watermark-text').style.color = '#ffff00';
+          pWatermark.querySelector('.watermark-text').style.borderColor = '#ffff00';
+        } else {
+          pBtn.innerText = "SECURE ITEM";
+          pBtn.style.background = '';
+          pBtn.style.color = '';
+          pWatermark.style.display = "none";
         }
       }
     })
