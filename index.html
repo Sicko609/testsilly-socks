@@ -5,22 +5,24 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
 <title>SILLY SOCKS | ARCADE DROP</title>
 
-<!-- Google tag (gtag.js) -->
+<!-- High-Speed Preconnect & Non-Blocking Font Loading -->
+<link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,400;0,800;0,900;1,900&family=Press+Start+2P&display=swap">
+
+<!-- Google tag (gtag.js) - Asynchronous -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-T4S3G24ZEG"></script>
 <script>
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
   gtag('js', new Date());
-
   gtag('config', 'G-T4S3G24ZEG');
 </script>
 
 <style>
 /* ===========================================
-  80s SYNTHWAVE / MEMPHIS THEME - STRICT SEQUENCE
+  80s SYNTHWAVE / MEMPHIS THEME - GPU OPTIMIZED
 =========================================== */
-@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Montserrat:ital,wght@0,400;0,800;0,900;1,900&display=swap');
-
 :root {
   --bg: #0b0c10;
   --text: #ffffff;
@@ -31,7 +33,7 @@
   --card-bg: rgba(20, 10, 30, 0.85);
   --card-border: #ff00ff;
   --grid-line: rgba(0, 255, 255, 0.4);
-  --grid-glow: rgba(255, 0, 255, 0.3);
+  --grid-glow: rgba(255, 0, 255, 0.25);
   --font-main: 'Montserrat', sans-serif;
   --font-retro: 'Press Start 2P', cursive;
   --shadow-retro: 0 0 10px var(--accent-1), 0 0 20px var(--accent-2);
@@ -51,7 +53,11 @@
   --shadow-retro: 8px 8px 0px var(--card-border);
 }
 
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+*, *::before, *::after { 
+  box-sizing: border-box; 
+  margin: 0; 
+  padding: 0; 
+}
 
 body {
   font-family: var(--font-main);
@@ -60,66 +66,109 @@ body {
   overflow-x: hidden;
   height: 100vh;
   overflow-y: hidden;
-  transition: background-color 0.5s, color 0.5s;
+  transition: background-color 0.3s ease, color 0.3s ease;
   -webkit-tap-highlight-color: transparent;
+  text-rendering: optimizeLegibility;
 }
 
-/* --- 80s PERSPECTIVE GRID --- */
+/* --- 80s PERSPECTIVE GRID (GPU-ACCELERATED) --- */
 .synth-grid {
-  position: fixed; bottom: -20vh; left: -50vw; width: 200vw; height: 70vh;
+  position: fixed; 
+  bottom: -20vh; 
+  left: -50vw; 
+  width: 200vw; 
+  height: 70vh;
   background-image: 
     linear-gradient(var(--grid-line) 2px, transparent 2px),
     linear-gradient(90deg, var(--grid-line) 2px, transparent 2px);
   background-size: 50px 50px;
-  transform: perspective(600px) rotateX(70deg);
-  transform-origin: top; z-index: -2;
+  transform: perspective(600px) rotateX(70deg) translate3d(0, 0, 0);
+  transform-origin: top; 
+  z-index: -2;
   animation: gridScroll 2s linear infinite;
-  box-shadow: 0 -40px 100px var(--grid-glow);
+  box-shadow: 0 -40px 80px var(--grid-glow);
   pointer-events: none;
-}
-@keyframes gridScroll {
-  0% { transform: perspective(600px) rotateX(70deg) translateY(0); }
-  100% { transform: perspective(600px) rotateX(70deg) translateY(50px); }
+  will-change: transform;
 }
 
-.memphis-shapes { position: fixed; top:0; left:0; width:100%; height:100%; z-index:-1; pointer-events: none; opacity: 0; transition: opacity 0.5s; }
+@keyframes gridScroll {
+  0% { transform: perspective(600px) rotateX(70deg) translate3d(0, 0, 0); }
+  100% { transform: perspective(600px) rotateX(70deg) translate3d(0, 50px, 0); }
+}
+
+.memphis-shapes { 
+  position: fixed; 
+  top: 0; 
+  left: 0; 
+  width: 100%; 
+  height: 100%; 
+  z-index: -1; 
+  pointer-events: none; 
+  opacity: 0; 
+  transition: opacity 0.3s ease; 
+}
 [data-theme="light"] .memphis-shapes { opacity: 1; }
-.shape { position: absolute; border: 4px solid var(--card-border); }
-.circle { border-radius: 50%; width: 80px; height: 80px; background: var(--accent-3); top: 10%; left: 5%; animation: float 10s infinite alternate; }
-.triangle { width: 0; height: 0; border-left: 50px solid transparent; border-right: 50px solid transparent; border-bottom: 80px solid var(--accent-1); border-top: none; background: transparent; top: 70%; right: 10%; animation: float 12s infinite alternate-reverse; }
+.shape { position: absolute; border: 4px solid var(--card-border); will-change: transform; }
+.circle { border-radius: 50%; width: 80px; height: 80px; background: var(--accent-3); top: 10%; left: 5%; animation: float 10s infinite alternate ease-in-out; }
+.triangle { width: 0; height: 0; border-left: 50px solid transparent; border-right: 50px solid transparent; border-bottom: 80px solid var(--accent-1); border-top: none; background: transparent; top: 70%; right: 10%; animation: float 12s infinite alternate-reverse ease-in-out; }
 .squiggle { width: 120px; height: 15px; background: repeating-linear-gradient(45deg, var(--accent-2), var(--accent-2) 10px, transparent 10px, transparent 20px); top: 25%; right: 15%; animation: spin 15s linear infinite; }
+
+@keyframes float { 0% { transform: translate3d(0, 0, 0); } 100% { transform: translate3d(0, 20px, 0); } }
+@keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
 
 /* --- SCREENS CONFIGURATION --- */
 .screen-layer {
   position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
   display: flex; flex-direction: column; align-items: center; justify-content: center;
-  background: var(--bg); z-index: 5000; transition: all 0.6s cubic-bezier(0.8, -0.2, 0.2, 1.5);
+  background: var(--bg); z-index: 5000; 
+  transition: opacity 0.35s cubic-bezier(0.16, 1, 0.3, 1), transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: opacity, transform;
 }
-#tictactoe-screen, #checkout-screen, #success-screen, #wallpaper-modal { display: none; opacity: 0; transform: scale(0.8); }
+#tictactoe-screen, #checkout-screen, #success-screen, #wallpaper-modal { display: none; opacity: 0; transform: scale(0.95); }
 #tictactoe-screen.visible, #checkout-screen.visible, #success-screen.visible, #wallpaper-modal.visible { opacity: 1; transform: scale(1); }
 
 /* --- SCREEN 1: HERO & ARCADE BUTTONS --- */
 #hero-screen { cursor: pointer; display: flex; opacity: 1; transform: scale(1); }
-.hero-logo { font-family: var(--font-retro); font-size: clamp(24px, 8vw, 60px); text-align: center; color: #fff; text-shadow: 0 0 10px var(--accent-1), 4px 4px 0px var(--accent-2); margin-bottom: 10px; z-index: 10; animation: pulseLogo 2s infinite alternate; padding: 0 15px; }
-@keyframes pulseLogo { 0% { transform: scale(1) skewX(0deg); text-shadow: 0 0 10px var(--accent-1), 4px 4px 0px var(--accent-2); } 100% { transform: scale(1.05) skewX(-5deg); text-shadow: 0 0 25px var(--accent-1), 6px 6px 0px var(--accent-2); } }
-.hero-prompt { font-family: var(--font-retro); font-size: clamp(10px, 3vw, 12px); color: var(--accent-3); animation: blink 1s steps(2, start) infinite; z-index: 10; text-align: center; padding: 0 10px; line-height: 1.5; margin-bottom: 25px;}
+.hero-logo { 
+  font-family: var(--font-retro); 
+  font-size: clamp(24px, 8vw, 60px); 
+  text-align: center; 
+  color: #fff; 
+  text-shadow: 0 0 10px var(--accent-1), 4px 4px 0px var(--accent-2); 
+  margin-bottom: 10px; 
+  z-index: 10; 
+  padding: 0 15px; 
+  letter-spacing: 1px;
+}
+.hero-prompt { 
+  font-family: var(--font-retro); 
+  font-size: clamp(10px, 3vw, 12px); 
+  color: var(--accent-3); 
+  animation: blink 1s steps(2, start) infinite; 
+  z-index: 10; 
+  text-align: center; 
+  padding: 0 10px; 
+  line-height: 1.5; 
+  margin-bottom: 25px;
+}
 @keyframes blink { to { visibility: hidden; } }
 
 .arcade-blocks { z-index: 20; display: flex; flex-direction: column; align-items: center; gap: 20px; width: 100%; padding: 0 20px; }
 .arcade-btn {
   width: 100%; max-width: 320px;
-  background: rgba(0, 0, 0, 0.8);
+  background: rgba(0, 0, 0, 0.85);
   border: 4px solid var(--accent-1);
-  padding: 20px 15px;
+  padding: 18px 15px;
   cursor: pointer;
   display: flex; flex-direction: column; align-items: center; gap: 8px;
-  transition: all 0.2s ease-in-out;
-  box-shadow: 6px 6px 0 var(--accent-1);
+  transition: transform 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease;
+  box-shadow: 5px 5px 0 var(--accent-1);
+  will-change: transform;
 }
-.arcade-btn:hover { transform: translate(-4px, -4px); box-shadow: 10px 10px 0 var(--accent-2); border-color: var(--accent-2); }
-.arcade-btn:active { transform: translate(4px, 4px); box-shadow: 0 0 0 transparent; }
-.arcade-btn.shop { border-color: #0f0; box-shadow: 6px 6px 0 #0f0; }
-.arcade-btn.shop:hover { box-shadow: 10px 10px 0 #fff; border-color: #fff; }
+.arcade-btn:hover { transform: translate3d(-3px, -3px, 0); box-shadow: 8px 8px 0 var(--accent-2); border-color: var(--accent-2); }
+.arcade-btn:active { transform: translate3d(3px, 3px, 0); box-shadow: 0 0 0 transparent; }
+.arcade-btn.shop { border-color: #0f0; box-shadow: 5px 5px 0 #0f0; }
+.arcade-btn.shop:hover { box-shadow: 8px 8px 0 #fff; border-color: #fff; }
 .arcade-btn .btn-title { font-family: var(--font-retro); font-size: 14px; color: var(--accent-3); text-shadow: 2px 2px 0 #000; }
 .arcade-btn.shop .btn-title { color: #0f0; }
 .arcade-btn .btn-sub { font-family: var(--font-main); font-size: 11px; font-weight: 900; color: #fff; letter-spacing: 1px; text-align: center;}
@@ -127,26 +176,43 @@ body {
 .hero-sound-toggle { position: fixed; top: 16px; right: 16px; z-index: 30; font-family: var(--font-retro); font-size: 8px; background: #000; color: var(--accent-2); border: 2px solid var(--accent-2); padding: 10px 12px; cursor: pointer; }
 
 #sock-rain { position: absolute; top: 0; left: 0; width: 100%; height: 100%; overflow: hidden; pointer-events: none; z-index: 1;}
-.falling-sock { position: absolute; top: -10%; font-size: 35px; animation: dropSock linear infinite; filter: drop-shadow(0 0 10px var(--accent-1)); }
-@keyframes dropSock { 0% { transform: translateY(-10vh) rotate(0deg); } 100% { transform: translateY(110vh) rotate(360deg); } }
+.falling-sock { 
+  position: absolute; 
+  top: -10%; 
+  font-size: 32px; 
+  animation: dropSock linear infinite; 
+  will-change: transform;
+}
+@keyframes dropSock { 
+  0% { transform: translate3d(0, -10vh, 0) rotate(0deg); } 
+  100% { transform: translate3d(0, 110vh, 0) rotate(360deg); } 
+}
 
 /* --- REUSABLE RETRO BOX --- */
-.retro-box { width: 95%; max-width: 500px; text-align: center; padding: 2.5rem 1.5rem; background: var(--card-bg); border: 4px solid var(--card-border); box-shadow: var(--shadow-retro); position: relative; margin: 0 auto; max-height: 90vh; overflow-y: auto; -webkit-overflow-scrolling: touch;}
+.retro-box { 
+  width: 95%; max-width: 500px; text-align: center; padding: 2rem 1.5rem; 
+  background: var(--card-bg); border: 4px solid var(--card-border); box-shadow: var(--shadow-retro); 
+  position: relative; margin: 0 auto; max-height: 90vh; overflow-y: auto; -webkit-overflow-scrolling: touch;
+}
 .retro-box::before { content: ''; position: absolute; top: 5px; left: 5px; right: 5px; bottom: 5px; border: 1px dashed var(--accent-2); pointer-events: none; }
-.retro-btn { padding: 15px; background: var(--accent-1); color: #fff; border: 3px solid var(--card-border); font-family: var(--font-retro); font-size: 11px; cursor: pointer; transition: all 0.2s; box-shadow: 4px 4px 0 var(--accent-2); text-transform: uppercase; margin: 5px 0; width: 100%; display: block; }
-.retro-btn:hover { background: var(--accent-2); color: #000; box-shadow: 4px 4px 0 var(--accent-1); transform: translate(-2px, -2px); }
-.retro-btn:active { transform: translate(2px, 2px); box-shadow: 0 0 0 transparent; }
+.retro-btn { 
+  padding: 14px; background: var(--accent-1); color: #fff; border: 3px solid var(--card-border); 
+  font-family: var(--font-retro); font-size: 11px; cursor: pointer; transition: transform 0.15s ease, background-color 0.15s ease; 
+  box-shadow: 4px 4px 0 var(--accent-2); text-transform: uppercase; margin: 5px 0; width: 100%; display: block; 
+}
+.retro-btn:hover { background: var(--accent-2); color: #000; box-shadow: 4px 4px 0 var(--accent-1); transform: translate3d(-2px, -2px, 0); }
+.retro-btn:active { transform: translate3d(2px, 2px, 0); box-shadow: 0 0 0 transparent; }
 
 /* --- SCREEN 2: TIC-TAC-TOE --- */
 .ttt-board { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; width: 100%; max-width: 320px; margin: 20px auto; aspect-ratio: 1/1; background: var(--card-border); border: 4px solid var(--card-border); box-shadow: 0 0 20px rgba(0,0,0,0.5); }
-.ttt-cell { background: var(--bg); display: flex; align-items: center; justify-content: center; font-family: var(--font-retro); font-size: clamp(35px, 10vw, 50px); cursor: pointer; transition: background 0.2s; }
+.ttt-cell { background: var(--bg); display: flex; align-items: center; justify-content: center; font-family: var(--font-retro); font-size: clamp(35px, 10vw, 50px); cursor: pointer; transition: background 0.15s; }
 .ttt-cell:hover { background: rgba(255,255,255,0.1); }
 .ttt-cell.x { color: var(--accent-1); text-shadow: 0 0 15px var(--accent-1); }
 .ttt-cell.o { color: var(--accent-2); text-shadow: 0 0 15px var(--accent-2); }
-#ttt-status { font-family: var(--font-retro); font-size: 11px; color: var(--accent-3); margin-top: 10px; line-height: 1.6; animation: pulseLogo 1.5s infinite alternate; transition: color 0.3s;}
+#ttt-status { font-family: var(--font-retro); font-size: 11px; color: var(--accent-3); margin-top: 10px; line-height: 1.6; }
 
 /* --- SCREEN 4 & 6: CHECKOUT & SUCCESS UI --- */
-.gate-title { font-family: var(--font-retro); font-size: 16px; line-height: 1.5; margin-bottom: 15px; color: var(--accent-1); text-shadow: 2px 2px 0 #000; transition: color 0.5s ease; }
+.gate-title { font-family: var(--font-retro); font-size: 16px; line-height: 1.5; margin-bottom: 15px; color: var(--accent-1); text-shadow: 2px 2px 0 #000; }
 .checkout-form { display: flex; flex-direction: column; gap: 12px; text-align: left; margin-top: 5px;}
 .checkout-form label { font-size: 10px; font-weight: 800; font-family: var(--font-retro); color: var(--accent-2); margin-top: 6px;}
 
@@ -154,7 +220,7 @@ body {
 .retro-input::placeholder { color: rgba(0,255,0,0.4); text-transform: uppercase;}
 .retro-input:focus, .retro-select:focus { border-color: var(--accent-2); box-shadow: inset 0 0 15px var(--accent-2); }
 
-.checkout-hype-banner { background: rgba(0, 255, 0, 0.15); border: 2px dashed #0f0; color: #0f0; padding: 12px; text-align: center; font-size: 11px; font-family: var(--font-retro); line-height: 1.5; margin-bottom: 15px; box-shadow: 0 0 10px rgba(0,255,0,0.2); text-shadow: 0 0 5px #0f0;}
+.checkout-hype-banner { background: rgba(0, 255, 0, 0.15); border: 2px dashed #0f0; color: #0f0; padding: 12px; text-align: center; font-size: 11px; font-family: var(--font-retro); line-height: 1.5; margin-bottom: 15px; text-shadow: 0 0 5px #0f0;}
 
 .tc-box { height: 90px; overflow-y: auto; background: #000; border: 2px dashed var(--accent-1); padding: 10px; font-size: 11px; color: var(--text-muted); line-height: 1.6; margin-bottom: 10px; -webkit-overflow-scrolling: touch;}
 .tc-box strong { color: var(--accent-1); font-weight: 900;}
@@ -178,40 +244,51 @@ body {
 .blink-text { animation: blink 1s steps(2, start) infinite; }
 
 /* --- SCREEN 5: CATALOG UI --- */
-#catalog { display: none; min-height: 100vh; opacity: 0; transform: translateY(100px); transition: all 0.8s cubic-bezier(0.2, 1, 0.3, 1); padding-bottom: 80px; z-index: 10; position: relative;}
-#catalog.visible { opacity: 1; transform: translateY(0); }
+#catalog { 
+  display: none; 
+  min-height: 100vh; 
+  opacity: 0; 
+  transform: translate3d(0, 40px, 0); 
+  transition: opacity 0.4s ease, transform 0.4s ease; 
+  padding-bottom: 80px; 
+  z-index: 10; 
+  position: relative;
+  will-change: opacity, transform;
+}
+#catalog.visible { opacity: 1; transform: translate3d(0, 0, 0); }
 
 .cat-header { background: var(--card-bg); border-bottom: 4px solid var(--card-border); padding: 1rem; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px; position: sticky; top: 0; z-index: 100; box-shadow: var(--shadow-retro); }
 .header-logo { font-family: var(--font-retro); font-size: clamp(14px, 4vw, 18px); color: var(--accent-2); text-shadow: 2px 2px 0 var(--accent-1); }
-.timer-container { font-family: var(--font-retro); font-size: 10px; color: #ff0055; background: #000; padding: 6px 10px; border: 2px solid #ff0055; animation: pulseBorder 1s infinite alternate; white-space: nowrap;}
-@keyframes pulseBorder { 0% { box-shadow: 0 0 5px #ff0055; } 100% { box-shadow: 0 0 15px #ff0055; } }
+.timer-container { font-family: var(--font-retro); font-size: 10px; color: #ff0055; background: #000; padding: 6px 10px; border: 2px solid #ff0055; white-space: nowrap;}
 
 .welcome-pill { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; width: 100%; gap: 10px; border: 2px solid var(--accent-3); padding: 8px 12px; font-family: var(--font-retro); font-size: 10px; color: var(--accent-3); background: #000; }
-.theme-toggle-btn { background: var(--bg); color: var(--text); font-weight: 900; font-family: var(--font-retro); font-size: 8px; text-transform: uppercase; cursor: pointer; border: 2px solid var(--accent-3); padding: 8px 12px; box-shadow: 2px 2px 0 var(--accent-3); transition: all 0.2s; margin: 0; }
-.theme-toggle-btn:active { transform: translate(2px, 2px); box-shadow: none; }
+.theme-toggle-btn { background: var(--bg); color: var(--text); font-weight: 900; font-family: var(--font-retro); font-size: 8px; text-transform: uppercase; cursor: pointer; border: 2px solid var(--accent-3); padding: 8px 12px; box-shadow: 2px 2px 0 var(--accent-3); transition: transform 0.1s; margin: 0; }
+.theme-toggle-btn:active { transform: translate3d(2px, 2px, 0); box-shadow: none; }
 
 .ticker-wrap { width: 100%; overflow: hidden; background: #000; color: var(--accent-3); padding: 10px 0; font-family: var(--font-retro); font-size: 11px; border-bottom: 2px dashed var(--accent-3); white-space: nowrap; }
-.ticker { display: inline-block; white-space: nowrap; animation: ticker 25s linear infinite; }
+.ticker { display: inline-block; white-space: nowrap; animation: ticker 25s linear infinite; will-change: transform; }
 .ticker span { margin-right: 30px; }
 
-.disc-bar { background: var(--accent-1); padding: 12px 1rem; text-align: center; font-size: 11px; font-family: var(--font-retro); color: #fff; line-height: 1.6; border-bottom: 4px solid #000; transition: all 0.5s;}
+@keyframes ticker { 0% { transform: translate3d(0, 0, 0); } 100% { transform: translate3d(-50%, 0, 0); } }
+
+.disc-bar { background: var(--accent-1); padding: 12px 1rem; text-align: center; font-size: 11px; font-family: var(--font-retro); color: #fff; line-height: 1.6; border-bottom: 4px solid #000;}
 
 .cat-body { max-width: 1200px; margin: 0 auto; padding: 2rem 1rem 0; }
 .section-label { font-family: var(--font-retro); font-size: 14px; color: var(--text); margin-bottom: 1.5rem; text-shadow: 2px 2px 0 var(--accent-1); line-height: 1.4; }
 
-/* --- BLOCK-TAP TOGGLES (MOBILE OPTIMIZED) --- */
+/* --- BLOCK-TAP TOGGLES --- */
 .variant-toggle { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 15px; }
-.toggle-opt { position: relative; font-family: var(--font-retro); font-size: 9px; color: var(--accent-2); background: #000; border: 2px solid var(--accent-2); padding: 14px 5px; cursor: pointer; text-align: center; transition: all 0.2s; display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 4px; line-height: 1.4; box-shadow: inset 0 0 10px rgba(0,255,255,0.1);}
+.toggle-opt { position: relative; font-family: var(--font-retro); font-size: 9px; color: var(--accent-2); background: #000; border: 2px solid var(--accent-2); padding: 14px 5px; cursor: pointer; text-align: center; transition: all 0.15s ease; display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 4px; line-height: 1.4;}
 .toggle-opt input { display: none; }
-.toggle-opt:has(input:checked) { background: var(--accent-1); color: #fff; border-color: #fff; box-shadow: 4px 4px 0 #fff; transform: translate(-2px, -2px); text-shadow: 1px 1px 0 #000;}
+.toggle-opt:has(input:checked) { background: var(--accent-1); color: #fff; border-color: #fff; box-shadow: 4px 4px 0 #fff; transform: translate3d(-2px, -2px, 0); text-shadow: 1px 1px 0 #000;}
 
-/* --- HIGH-CONVERTING PRODUCT CARDS (MIRROR TAB) --- */
+/* --- PRODUCT CARDS --- */
 .cam-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 30px; }
-.cam-card { background: var(--card-bg); border: 4px solid var(--card-border); position: relative; transition: all 0.2s ease; box-shadow: 6px 6px 0 var(--accent-1); display: flex; flex-direction: column;}
+.cam-card { background: var(--card-bg); border: 4px solid var(--card-border); position: relative; box-shadow: 6px 6px 0 var(--accent-1); display: flex; flex-direction: column;}
 .img-wrapper { width: 100%; height: 260px; border-bottom: 4px solid var(--card-border); background: #ffffff; overflow: hidden; position: relative;}
-.cam-img { width: 100%; height: 100%; object-fit: contain; padding: 10px; transition: transform 0.5s; }
+.cam-img { width: 100%; height: 100%; object-fit: contain; padding: 10px; }
 
-.live-watch { position: absolute; top: 10px; left: 10px; background: rgba(0,0,0,0.8); color: #fff; font-family: var(--font-main); font-weight: 800; font-size: 10px; padding: 8px 12px; border: 1px solid var(--accent-2); display: flex; align-items: center; gap: 5px; z-index: 5;}
+.live-watch { position: absolute; top: 10px; left: 10px; background: rgba(0,0,0,0.85); color: #fff; font-family: var(--font-main); font-weight: 800; font-size: 10px; padding: 8px 12px; border: 1px solid var(--accent-2); display: flex; align-items: center; gap: 5px; z-index: 5;}
 .dot { width: 8px; height: 8px; background: red; border-radius: 50%; animation: blink 1s infinite; }
 
 .cam-info { padding: 15px; flex-grow: 1; display: flex; flex-direction: column; }
@@ -228,23 +305,13 @@ body {
 .new-price { font-family: var(--font-retro); font-size: 18px; color: var(--accent-3); text-shadow: 1px 1px 0 #000;}
 .disc-tag { font-family: var(--font-retro); font-size: 10px; background: #0f0; padding: 8px 10px; color: #000; border: 2px solid #000; display: inline-block;}
 
-.buy-btn { width: 100%; padding: 18px; background: var(--accent-1); color: #fff; border: 3px solid var(--card-border); font-family: var(--font-retro); font-size: 14px; cursor: pointer; box-shadow: 4px 4px 0 var(--card-border); transition: all 0.2s; }
-.buy-btn:hover { background: var(--accent-2); color: #000; transform: translate(-2px, -2px); box-shadow: 6px 6px 0 var(--card-border); }
-.buy-btn:active { transform: translate(4px, 4px); box-shadow: 0 0 0 transparent; }
-
-/* Disabled Button CSS */
-.buy-btn.disabled-btn, .sticky-buy-btn.disabled-btn {
-  background: #222 !important;
-  color: #666 !important;
-  border-color: #444 !important;
-  cursor: not-allowed !important;
-  box-shadow: none !important;
-  transform: none !important;
-}
+.buy-btn { width: 100%; padding: 18px; background: var(--accent-1); color: #fff; border: 3px solid var(--card-border); font-family: var(--font-retro); font-size: 14px; cursor: pointer; box-shadow: 4px 4px 0 var(--card-border); transition: transform 0.15s ease; }
+.buy-btn:hover { background: var(--accent-2); color: #000; transform: translate3d(-2px, -2px, 0); box-shadow: 6px 6px 0 var(--card-border); }
+.buy-btn:active { transform: translate3d(3px, 3px, 0); box-shadow: 0 0 0 transparent; }
 
 .page-nav { display: flex; gap: 10px; padding: 0 1rem; margin-top: 2rem; justify-content: center; flex-wrap: wrap;}
-.page-tab { background: var(--bg); border: 3px solid var(--card-border); padding: 12px 18px; font-family: var(--font-retro); font-size: 10px; color: var(--text); cursor: pointer; box-shadow: 4px 4px 0 var(--card-border); transition: all 0.2s; line-height: 1.4;}
-.page-tab.active { background: var(--accent-1); color: #fff; transform: translate(2px, 2px); box-shadow: 2px 2px 0 var(--card-border); }
+.page-tab { background: var(--bg); border: 3px solid var(--card-border); padding: 12px 18px; font-family: var(--font-retro); font-size: 10px; color: var(--text); cursor: pointer; box-shadow: 4px 4px 0 var(--card-border); transition: transform 0.15s ease; line-height: 1.4;}
+.page-tab.active { background: var(--accent-1); color: #fff; transform: translate3d(2px, 2px, 0); box-shadow: 2px 2px 0 var(--card-border); }
 
 .footer { text-align: center; padding: 3rem 1.5rem 6rem; font-family: var(--font-retro); font-size: 10px; color: var(--text-muted); border-top: 2px dashed var(--card-border); margin-top: 3rem; line-height: 2;}
 
@@ -264,7 +331,6 @@ body {
 .flagship-img-wrap img { width: 100%; height: 100%; object-fit: contain; padding: 20px; }
 .flagship-badge { position: absolute; top: 10px; left: 10px; background: rgba(0,0,0,0.85); color: #0f0; font-size: 10px; font-family: var(--font-main); font-weight: 900; padding: 8px 12px; border: 1px solid #0f0; }
 
-/* WATERMARK CSS */
 .watermark-overlay {
   position: absolute;
   top: 0; left: 0; right: 0; bottom: 0;
@@ -281,37 +347,54 @@ body {
   border: 4px solid #ff2b2b;
   padding: 10px 15px;
   transform: rotate(-15deg);
-  background: rgba(0, 0, 0, 0.8);
+  background: rgba(0, 0, 0, 0.85);
   letter-spacing: 2px;
 }
 
 .swatch-row { display: flex; flex-wrap: wrap; gap: 10px; margin: 12px 0 10px; }
-.swatch { width: 40px; height: 40px; border-radius: 50%; border: 3px solid var(--card-border); cursor: pointer; transition: transform 0.15s; }
+.swatch { width: 40px; height: 40px; border-radius: 50%; border: 3px solid var(--card-border); cursor: pointer; transition: transform 0.15s ease; will-change: transform; }
 .swatch.active { border-color: var(--accent-3); transform: scale(1.15); box-shadow: 0 0 10px var(--accent-3); }
 .swatch-label { font-size: 12px; font-weight: 900; color: var(--accent-2); margin-top: 4px; text-transform: uppercase; }
 
 .qty-nudge { font-size: 11px; font-weight: 800; color: var(--text-muted); margin: 10px 0 15px; line-height: 1.6; }
 
-.sticky-buy-bar { position: fixed; bottom: 0; left: 0; width: 100%; background: var(--card-bg); border: 4px solid var(--card-border); padding: 15px 20px; padding-bottom: calc(15px + env(safe-area-inset-bottom)); display: none; align-items: center; justify-content: space-between; gap: 15px; z-index: 9998; box-shadow: 0 -4px 20px rgba(0,0,0,0.6); }
-.sticky-buy-bar.visible { display: flex; }
+.sticky-buy-bar { 
+  position: fixed; bottom: 0; left: 0; width: 100%; background: var(--card-bg); 
+  border-top: 4px solid var(--card-border); padding: 15px 20px; 
+  padding-bottom: calc(15px + env(safe-area-inset-bottom)); 
+  display: flex; align-items: center; justify-content: space-between; gap: 15px; 
+  z-index: 9998; box-shadow: 0 -4px 20px rgba(0,0,0,0.6);
+  transform: translate3d(0, 100%, 0);
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: transform;
+}
+.sticky-buy-bar.visible { transform: translate3d(0, 0, 0); }
 .sticky-buy-price { font-family: var(--font-retro); font-size: 16px; color: var(--accent-3); }
 .sticky-buy-btn { font-family: var(--font-retro); font-size: 12px; background: var(--accent-1); color: #fff; border: 2px solid var(--card-border); padding: 14px 20px; cursor: pointer; white-space: nowrap; box-shadow: 4px 4px 0 #fff;}
 
-/* --- SOCIAL PROOF TOAST & FLOATING BUTTONS --- */
+/* --- FLOATING BUTTONS & TOAST --- */
 .floating-actions { position: fixed; bottom: 105px; right: 15px; display: flex; flex-direction: column; gap: 15px; z-index: 9999; }
-.float-btn { width: 56px; height: 56px; display: flex; align-items: center; justify-content: center; border: 3px solid var(--card-border); cursor: pointer; box-shadow: 4px 4px 0 var(--card-border); transition: all 0.2s; border-radius: 50%; }
-.float-btn:active { transform: translate(4px, 4px); box-shadow: 0 0 0 transparent; }
+.float-btn { width: 56px; height: 56px; display: flex; align-items: center; justify-content: center; border: 3px solid var(--card-border); cursor: pointer; box-shadow: 4px 4px 0 var(--card-border); transition: transform 0.15s ease; border-radius: 50%; will-change: transform; }
+.float-btn:active { transform: translate3d(3px, 3px, 0); box-shadow: 0 0 0 transparent; }
 .float-btn svg { width: 30px; height: 30px; fill: #fff; }
+
 .insta-btn { background: var(--accent-1); }
 .wa-btn { background: #25D366; border-color: #000; box-shadow: 4px 4px 0 #000; }
 
-#social-proof-toast { position: fixed; bottom: 105px; left: 10px; right: 10px; max-width: calc(100% - 20px); background: var(--card-bg); border: 3px solid var(--accent-2); padding: 12px 15px; display: flex; align-items: center; gap: 12px; z-index: 9998; box-shadow: 6px 6px 0 rgba(0,0,0,0.5); transform: translateX(-150%); transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
-#social-proof-toast.show { transform: translateX(0); }
+#social-proof-toast { 
+  position: fixed; bottom: 105px; left: 10px; right: 10px; max-width: calc(100% - 20px); 
+  background: var(--card-bg); border: 3px solid var(--accent-2); padding: 12px 15px; 
+  display: flex; align-items: center; gap: 12px; z-index: 9998; 
+  box-shadow: 6px 6px 0 rgba(0,0,0,0.5); 
+  transform: translate3d(-150%, 0, 0); 
+  transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
+  will-change: transform;
+}
+#social-proof-toast.show { transform: translate3d(0, 0, 0); }
 .toast-img { width: 45px; height: 45px; object-fit: cover; border: 2px solid #fff; background: #fff;}
 .toast-text { font-family: var(--font-main); font-size: 11px; line-height: 1.4; color: #fff; font-weight: 800;}
 .toast-time { font-size: 9px; color: var(--accent-3); font-family: var(--font-retro); margin-top: 5px;}
 
-/* Tech Specs details styling */
 details > summary { list-style: none; outline: none;}
 details > summary::-webkit-details-marker { display: none; }
 
@@ -323,7 +406,6 @@ details > summary::-webkit-details-marker { display: none; }
   .theme-toggle-btn { margin-left: 0; margin-top: 5px; }
   .retro-box { padding: 1.5rem 1rem; width: 95%; }
   .cam-grid { grid-template-columns: 1fr; }
-  
   .floating-actions { bottom: 95px; right: 15px; }
   #social-proof-toast { bottom: 95px; left: 10px; right: 10px; max-width: calc(100% - 20px); }
 }
@@ -331,22 +413,20 @@ details > summary::-webkit-details-marker { display: none; }
 </head>
 <body>
 
-<!-- Light Mode Memphis Shapes -->
 <div class="memphis-shapes">
   <div class="shape circle"></div>
   <div class="shape triangle"></div>
   <div class="shape squiggle"></div>
 </div>
 
-<!-- 80s Perspective Grid -->
 <div class="synth-grid"></div>
 
-<!-- SCREEN 1: HERO SECTION & ARCADE BLOCKS -->
+<!-- SCREEN 1: HERO -->
 <button class="hero-sound-toggle" id="soundToggle" onclick="toggleSound(event)">🔇 SOUND: OFF</button>
 <div id="hero-screen" class="screen-layer">
   <div id="sock-rain"></div>
   <h1 class="hero-logo">SILLY SOCKS</h1>
-  <p class="hero-prompt">>> THE NOSTALGIA VAULT IS OPEN <<</p>
+  <p class="hero-prompt">&gt;&gt; THE NOSTALGIA VAULT IS OPEN &lt;&lt;</p>
   
   <div class="arcade-blocks">
     <button class="arcade-btn shop" onclick="event.stopPropagation(); leaveHero('catalog');">
@@ -360,9 +440,9 @@ details > summary::-webkit-details-marker { display: none; }
   </div>
 </div>
 
-<!-- SCREEN 2: TIC-TAC-TOE BATTLE SECTION -->
+<!-- SCREEN 2: TIC-TAC-TOE -->
 <div id="tictactoe-screen" class="screen-layer">
-  <div class="retro-box" style="padding: 1.5rem 1rem;">
+  <div class="retro-box">
     <div class="gate-title" style="margin-bottom: 20px;">BEAT THE IMPOSSIBLE BOT FOR 5% OFF</div>
     <p class="gate-sub" id="ttt-status">PLAYER 1 IS 'X'. YOUR TURN!</p>
     
@@ -385,10 +465,9 @@ details > summary::-webkit-details-marker { display: none; }
   </div>
 </div>
 
-<!-- SCREEN 4: SECURE CHECKOUT -->
+<!-- SCREEN 4: CHECKOUT -->
 <div id="checkout-screen" class="screen-layer">
-  <div class="retro-box" style="padding: 1.5rem 1rem;">
-    
+  <div class="retro-box">
     <div id="checkout-savings-banner" class="checkout-hype-banner">
       ⚡ YOU ARE SAVING ৳XXX TODAY ⚡
     </div>
@@ -396,25 +475,25 @@ details > summary::-webkit-details-marker { display: none; }
     <div class="gate-title" style="color: var(--accent-3);">SECURE CHECKOUT</div>
     
     <form id="orderForm" class="checkout-form">
-      <label>> FULL NAME *</label>
+      <label>&gt; FULL NAME *</label>
       <input type="text" name="Full Name" class="retro-input" required placeholder="JOHN DOE" />
       
-      <label>> PHONE NUMBER *</label>
+      <label>&gt; PHONE NUMBER *</label>
       <input type="tel" name="Phone Number" class="retro-input" required placeholder="+8801XXXXXXXXX" />
       
-      <label>> DELIVERY ADDRESS *</label>
+      <label>&gt; DELIVERY ADDRESS *</label>
       <textarea name="Delivery Address" class="retro-input" required placeholder="HOUSE, ROAD, DHAKA..." rows="3" style="resize:none; font-family: var(--font-main);"></textarea>
       
-      <label id="lbl-color">> SELECT PRODUCT COLOR *</label>
+      <label id="lbl-color">&gt; SELECT PRODUCT COLOR *</label>
       <select name="Product Color" id="form-color" class="retro-select" required></select>
 
-      <label id="lbl-addons">> CHOOSE ADD-ONS *</label>
+      <label id="lbl-addons">&gt; CHOOSE ADD-ONS *</label>
       <select name="Add-ons" id="form-addons" class="retro-select" required onchange="updateCheckoutTotal()"></select>
 
-      <label>> DISCOUNT APPLIED (IF WON)</label>
+      <label>&gt; DISCOUNT APPLIED (IF WON)</label>
       <input type="text" name="BRO CODE" id="form-brocode" class="retro-input" placeholder="LOCKED" readonly />
 
-      <label>> QUANTITY *</label>
+      <label>&gt; QUANTITY *</label>
       <select name="Quantity" id="form-quantity" class="retro-select" required onchange="updateCheckoutTotal()">
         <option value="1">1</option>
         <option value="2">2</option>
@@ -423,39 +502,37 @@ details > summary::-webkit-details-marker { display: none; }
         <option value="5">5</option>
       </select>
 
-      <!-- DYNAMIC TOTAL BOX MOVED HERE -->
-      <label style="margin-top: 15px;">> ORDER SUMMARY</label>
+      <label style="margin-top: 15px;">&gt; ORDER SUMMARY</label>
       <div id="checkout-total-box" style="background: #000; border: 2px solid var(--accent-3); padding: 12px; margin-top: 5px; margin-bottom: 15px; color: #fff; font-family: var(--font-retro); font-size: 11px; line-height: 1.6;">
-        <div style="display: flex; justify-content: space-between;"><span>> SUBTOTAL:</span> <span id="checkout-subtotal">৳0</span></div>
-        <div style="display: flex; justify-content: space-between;"><span>> DELIVERY:</span> <span id="checkout-delivery" style="color: var(--accent-1);">৳0</span></div>
+        <div style="display: flex; justify-content: space-between;"><span>&gt; SUBTOTAL:</span> <span id="checkout-subtotal">৳0</span></div>
+        <div style="display: flex; justify-content: space-between;"><span>&gt; DELIVERY:</span> <span id="checkout-delivery" style="color: var(--accent-1);">৳0</span></div>
         <hr style="border: 1px dashed #333; margin: 8px 0;">
-        <div style="display: flex; justify-content: space-between; color: var(--accent-3); font-size: 14px; text-shadow: 0 0 5px var(--accent-3);"><span>> TOTAL:</span> <span id="checkout-final-total">৳0</span></div>
+        <div style="display: flex; justify-content: space-between; color: var(--accent-3); font-size: 14px; text-shadow: 0 0 5px var(--accent-3);"><span>&gt; TOTAL:</span> <span id="checkout-final-total">৳0</span></div>
         <input type="hidden" name="Total Payable" id="form-total-payable" value="" />
       </div>
 
-      <label>> PREFERRED PAYMENT METHOD *</label>
+      <label>&gt; PREFERRED PAYMENT METHOD *</label>
       <div class="radio-group">
         <label><input type="radio" name="Payment Method" value="Cash on Delivery (COD)" required onclick="toggleBkash(false)" checked> Cash on Delivery</label>
         <label><input type="radio" name="Payment Method" value="Bkash" required onclick="toggleBkash(true)"> Bkash (pay now)</label>
       </div>
-      <p style="font-size: 11px; color: var(--accent-3); font-weight:900; margin-top:-4px;">💚 PAY VIA BKASH & SKIP THE COD VERIFICATION CALL — ORDER SHIPS FASTER</p>
+      <p style="font-size: 11px; color: var(--accent-3); font-weight:900; margin-top:-4px;">💚 PAY VIA BKASH &amp; SKIP THE COD VERIFICATION CALL — ORDER SHIPS FASTER</p>
 
       <div id="bkash-field" class="bkash-info-box" style="display:none;">
-        <div class="bkash-number">> SEND MONEY (PERSONAL): 01961515240</div>
-        <label style="margin-top: 4px;">> BKASH TRANSACTION ID *</label>
+        <div class="bkash-number">&gt; SEND MONEY (PERSONAL): 01961515240</div>
+        <label style="margin-top: 4px;">&gt; BKASH TRANSACTION ID *</label>
         <input type="text" name="Transaction ID" id="trx-input" class="retro-input" placeholder="ENTER TRX ID..." />
       </div>
 
-      <!-- BUYER PROTECTION MOVED HERE -->
-      <label style="margin-top: 15px;">> BUYER PROTECTION</label>
+      <label style="margin-top: 15px;">&gt; BUYER PROTECTION</label>
       <div class="checkout-hype-banner" style="margin-bottom:10px; text-align:left; line-height:1.7;">
         ✅ 3-DAY REPLACEMENT WARRANTY ON MANUFACTURING DEFECTS<br>
         ✅ REAL HUMAN SUPPORT VIA INSTAGRAM DM<br>
-        ✅ ORDERS PACKED & DISPATCHED WITHIN 24-48H
+        ✅ ORDERS PACKED &amp; DISPATCHED WITHIN 24-48H
       </div>
 
       <details style="margin-bottom:10px;">
-        <summary style="font-family: var(--font-retro); font-size: 10px; color: var(--accent-2); cursor:pointer; padding: 12px 0; font-weight: 800;">> VIEW FULL TERMS & WARRANTY POLICY</summary>
+        <summary style="font-family: var(--font-retro); font-size: 10px; color: var(--accent-2); cursor:pointer; padding: 12px 0; font-weight: 800;">&gt; VIEW FULL TERMS &amp; WARRANTY POLICY</summary>
         <div class="tc-box" style="margin-top:8px;">
           <strong>1. ORDER CHANGES:</strong> We may occasionally adjust quantity, size, or dispatch timing on an order and will contact you first if that happens.<br><br>
           <strong>2. CASH ON DELIVERY:</strong> COD orders are held for you specifically — repeated refusal of COD deliveries may result in future orders from that number requiring advance payment.<br><br>
@@ -469,7 +546,7 @@ details > summary::-webkit-details-marker { display: none; }
         <input type="checkbox" required /> I have read and agree to the Privacy Policy.
       </label>
       <label class="checkbox-row">
-        <input type="checkbox" required /> I accept the Terms & Conditions above.
+        <input type="checkbox" required /> I accept the Terms &amp; Conditions above.
       </label>
 
       <button type="submit" id="submitOrderBtn" class="retro-btn" style="background: var(--accent-3); color: #000; font-size: 14px; margin-top: 15px;">CONFIRM ORDER</button>
@@ -480,16 +557,16 @@ details > summary::-webkit-details-marker { display: none; }
         <span>🎁 MYSTERY GIFT</span>
       </div>
 
-      <button type="button" class="retro-btn" onclick="cancelCheckout()" style="background: #333; border-color: #555; margin-top: 15px;">CANCEL & RETURN</button>
+      <button type="button" class="retro-btn" onclick="cancelCheckout()" style="background: #333; border-color: #555; margin-top: 15px;">CANCEL &amp; RETURN</button>
     </form>
   </div>
 </div>
 
-<!-- SCREEN 5: ARCADE SUCCESS ENDING -->
+<!-- SCREEN 5: STAGE CLEAR -->
 <div id="success-screen" class="screen-layer">
   <div class="retro-box" style="padding: 3rem 1.5rem;">
     <h2 class="gate-title blink-text" style="color: #0f0; font-size: 24px; text-shadow: 0 0 15px #0f0; margin-bottom: 25px;">STAGE CLEAR</h2>
-    <p class="gate-sub" style="color: #fff; font-size: 13px;">>> ORDER DATA TRANSMITTED <<</p>
+    <p class="gate-sub" style="color: #fff; font-size: 13px;">&gt;&gt; ORDER DATA TRANSMITTED &lt;&lt;</p>
     
     <div style="margin: 30px 0; text-align: left; display: inline-block;">
       <div class="stat-row">RANK: <span class="stat-val">S-CLASS</span></div>
@@ -499,20 +576,18 @@ details > summary::-webkit-details-marker { display: none; }
 
     <div class="score-tally" id="final-score">SCORE: 0000</div>
 
-    <!-- NEW RECEIPT LEVEL UP CARD DOWNLOAD BUTTON -->
     <button class="retro-btn" onclick="downloadReceipt()" style="background: var(--accent-2); color: #000; font-size: 12px; margin-top: 10px; box-shadow: 4px 4px 0 #fff; border: 3px solid #fff;">📸 DOWNLOAD LEVEL UP CARD</button>
 
     <button class="retro-btn" onclick="closeSuccessScreen()" style="background: var(--accent-3); color: #000; font-size: 14px; margin-top: 15px;">CONTINUE TO CATALOG</button>
   </div>
 </div>
 
-<!-- RETRO LEVEL UP CARD MODAL (100% SAFARI / IPHONE / ANDROID / DESKTOP COMPATIBLE) -->
-<div id="wallpaper-modal" class="screen-layer" style="z-index: 99999; background: rgba(0,0,0,0.9); padding: 15px;">
+<!-- RETRO LEVEL UP CARD MODAL -->
+<div id="wallpaper-modal" class="screen-layer" style="z-index: 99999; background: rgba(0,0,0,0.92); padding: 15px;">
   <div class="retro-box" style="max-width: 440px; padding: 1.2rem; border-color: var(--accent-2);">
     <div class="gate-title" style="color: var(--accent-3); font-size: 13px; margin-bottom: 6px;">LEVEL UP CARD GENERATED!</div>
     <p style="font-family: var(--font-retro); font-size: 9px; color: #00ffff; margin-bottom: 12px; line-height: 1.6;">
-      Your download should start automatically.<br><br>
-      📱 IF BLOCKED: PRESS & HOLD IMAGE TO SAVE
+      TAP DOWNLOAD BELOW OR PRESS &amp; HOLD IMAGE TO SAVE TO PHOTOS.
     </p>
     <div style="width: 100%; max-height: 45vh; overflow: hidden; border: 2px solid var(--accent-1); margin-bottom: 12px; background: #000; display: flex; justify-content: center; align-items: center;">
       <img id="wallpaper-preview-img" style="max-height: 45vh; width: auto; object-fit: contain; display: block;" alt="Level Up Card" />
@@ -527,7 +602,7 @@ details > summary::-webkit-details-marker { display: none; }
   </div>
 </div>
 
-<!-- SCREEN 6: CATALOG SECTION -->
+<!-- SCREEN 6: CATALOG -->
 <div id="catalog">
   <header class="cat-header">
     <div class="header-logo">SILLY SOCKS</div>
@@ -548,35 +623,35 @@ details > summary::-webkit-details-marker { display: none; }
   <div class="page-nav">
     <div class="page-tab active" id="tab1" onclick="showPage(1)">LVL 1: CAMS</div>
     <div class="page-tab" id="tab2" onclick="showPage(2)">LVL 2: DECOR</div>
+    <div class="page-tab" id="tab3" onclick="showPage(3)">LVL 3: PRANK</div>
   </div>
   
-  <!-- LVL 1 (CAMERAS - FLAGSHIP LAYOUT) -->
+  <!-- LVL 1 (CAMERAS) -->
   <div class="cat-body" id="page1Body">
-    <div class="section-label">> THE NOSTALGIA VAULT</div>
+    <div class="section-label">&gt; THE NOSTALGIA VAULT</div>
 
     <div class="explainer-box">
-      <div class="explainer-title">> WHAT YOU'RE GETTING</div>
+      <div class="explainer-title">&gt; WHAT YOU'RE GETTING</div>
       <div class="explainer-list">
-        <div class="explainer-item">📸 REAL CLIP-ON CAMERA — TAKES PHOTOS & SHORT VIDEOS</div>
+        <div class="explainer-item">📸 REAL CLIP-ON CAMERA — TAKES PHOTOS &amp; SHORT VIDEOS</div>
         <div class="explainer-item">🔌 USB C RECHARGEABLE — NO BATTERIES NEEDED</div>
         <div class="explainer-item">🔑 KEYCHAIN SIZE — CLIPS TO BAGS, BELTS, KEYS</div>
       </div>
       
-      <!-- Tech Specs Expandable Dropdown -->
       <details style="margin-top: 15px; text-align: left;">
-        <summary style="font-family: var(--font-retro); font-size: 10px; color: var(--accent-2); cursor:pointer; padding: 12px; border: 2px dashed var(--accent-2); text-align: center; background: #000; transition: all 0.2s;">> VIEW FULL TECH SPECS <</summary>
+        <summary style="font-family: var(--font-retro); font-size: 10px; color: var(--accent-2); cursor:pointer; padding: 12px; border: 2px dashed var(--accent-2); text-align: center; background: #000;">&gt; VIEW FULL TECH SPECS &lt;</summary>
         <div class="tc-box" style="margin-top:8px; height: auto; max-height: 350px; font-size: 11px;">
-          <strong style="color: #0f0;">[ OPTICS & DISPLAY ]</strong><br><br>
-          > <strong>Video Resolution:</strong> 1080P and 720P HD<br>
-          > <strong>Photo Resolution:</strong> 2 Megapixels (CMOS sensor)<br>
-          > <strong>Lens Field of View:</strong> 130° wide-angle with autofocus (AF)<br>
-          > <strong>Display Screen:</strong> 0.96-inch TFT LCD screen<br><br>
+          <strong style="color: #0f0;">[ OPTICS &amp; DISPLAY ]</strong><br><br>
+          &gt; <strong>Video Resolution:</strong> 1080P and 720P HD<br>
+          &gt; <strong>Photo Resolution:</strong> 2 Megapixels (CMOS sensor)<br>
+          &gt; <strong>Lens Field of View:</strong> 130° wide-angle with autofocus (AF)<br>
+          &gt; <strong>Display Screen:</strong> 0.96-inch TFT LCD screen<br><br>
           
-          <strong style="color: #0f0;">[ BUILD & POWER ]</strong><br><br>
-          > <strong>Dimensions & Weight:</strong> Approx. 63 × 27 × 22 mm; weight around 26g to 34g<br>
-          > <strong>Body Material:</strong> ABS / PC plastic<br>
-          > <strong>Battery Life:</strong> 50 minutes to 3 hours of runtime depending on usage<br>
-          > <strong>Charging/Data Port:</strong> High-speed Type-C USB port
+          <strong style="color: #0f0;">[ BUILD &amp; POWER ]</strong><br><br>
+          &gt; <strong>Dimensions &amp; Weight:</strong> Approx. 63 × 27 × 22 mm; weight around 26g to 34g<br>
+          &gt; <strong>Body Material:</strong> ABS / PC plastic<br>
+          &gt; <strong>Battery Life:</strong> 50 minutes to 3 hours of runtime depending on usage<br>
+          &gt; <strong>Charging/Data Port:</strong> High-speed Type-C USB port
         </div>
       </details>
     </div>
@@ -586,22 +661,21 @@ details > summary::-webkit-details-marker { display: none; }
     <div class="flagship-wrap" id="flagshipCard">
       <div class="flagship-img-wrap">
         <div class="flagship-badge" id="flagshipBadge">🔥 BESTSELLER</div>
-        <img id="flagshipImg" src="cam_white.jpg" alt="Thumb Camera" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'300\' height=\'200\'><rect width=\'100%25\' height=\'100%25\' fill=\'%23333\'/><text x=\'50%25\' y=\'50%25\' font-family=\'monospace\' font-size=\'14\' fill=\'%23fff\' dominant-baseline=\'middle\' text-anchor=\'middle\'>IMG MISSING</text></svg>'" />
-        <!-- CAMERA WATERMARK -->
+        <img id="flagshipImg" src="cam_white.jpg" alt="Thumb Camera" decoding="async" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'300\' height=\'200\'><rect width=\'100%25\' height=\'100%25\' fill=\'%23333\'/><text x=\'50%25\' y=\'50%25\' font-family=\'monospace\' font-size=\'14\' fill=\'%23fff\' dominant-baseline=\'middle\' text-anchor=\'middle\'>IMG MISSING</text></svg>'" />
         <div class="watermark-overlay" id="camWatermark" style="display: none;">
-          <div class="watermark-text">SOLD OUT</div>
+          <div class="watermark-text">PRE-ORDER</div>
         </div>
       </div>
       <div class="cam-info" style="padding: 0;">
         <div class="cam-name" id="flagshipName">Cloud 99 White</div>
-        <div class="cam-vibe" id="flagshipVibe">Clean & modern</div>
+        <div class="cam-vibe" id="flagshipVibe">Clean &amp; modern</div>
 
-        <div class="swatch-label">> PICK A COLOR</div>
+        <div class="swatch-label">&gt; PICK A COLOR</div>
         <div class="swatch-row" id="swatchRow"></div>
 
         <div class="cam-perks" style="margin-top: 15px;">
-          <span class="perk perk-highlight">>> FREE DELIVERY NATIONWIDE</span>
-          <span class="perk">>> PARCEL CHECK ALLOWED</span>
+          <span class="perk perk-highlight">&gt;&gt; FREE DELIVERY NATIONWIDE</span>
+          <span class="perk">&gt;&gt; PARCEL CHECK ALLOWED</span>
         </div>
 
         <div class="variant-toggle">
@@ -617,17 +691,16 @@ details > summary::-webkit-details-marker { display: none; }
     </div>
   </div>
 
-  <!-- LVL 2 (ROOM DECOR) -->
+  <!-- LVL 2 (DECOR) -->
   <div class="cat-body" id="page2Body" style="display:none;">
-    <div class="section-label">> INDUSTRIAL AESTHETICS</div>
+    <div class="section-label">&gt; INDUSTRIAL AESTHETICS</div>
     <div id="mirrorGrid" class="cam-grid">
       <div class="cam-card">
         <div class="img-wrapper">
           <div class="live-watch">🔥 SHOP FAVORITE</div>
-          <img src="mirror_placeholder.jpg" class="cam-img" alt="Traffic Mirror" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'300\' height=\'200\'><rect width=\'100%\' height=\'100%\' fill=\'#333\'/><text x=\'50%\' y=\'50%\' font-family=\'monospace\' font-size=\'14\' fill=\'#fff\' dominant-baseline=\'middle\' text-anchor=\'middle\'>IMG MISSING</text></svg>'" />
-          <!-- MIRROR WATERMARK -->
+          <img src="mirror_placeholder.jpg" class="cam-img" alt="Traffic Mirror" loading="lazy" decoding="async" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'300\' height=\'200\'><rect width=\'100%\' height=\'100%\' fill=\'#333\'/><text x=\'50%\' y=\'50%\' font-family=\'monospace\' font-size=\'14\' fill=\'#fff\' dominant-baseline=\'middle\' text-anchor=\'middle\'>IMG MISSING</text></svg>'" />
           <div class="watermark-overlay" id="mirrorWatermark" style="display: none;">
-            <div class="watermark-text">SOLD OUT</div>
+            <div class="watermark-text" style="color:#ffff00; border-color:#ffff00;">PRE-ORDER</div>
           </div>
         </div>
         <div class="cam-info">
@@ -635,8 +708,8 @@ details > summary::-webkit-details-marker { display: none; }
           <div class="cam-vibe">INDUSTRIAL ORANGE / DECOR</div>
           
           <div class="cam-perks" style="margin-top: 10px;">
-            <span class="perk perk-highlight">>> STANDARD DELIVERY APPLIES (৳200)</span>
-            <span class="perk">>> PARCEL CHECK ALLOWED</span>
+            <span class="perk perk-highlight">&gt;&gt; STANDARD DELIVERY APPLIES (৳200)</span>
+            <span class="perk">&gt;&gt; PARCEL CHECK ALLOWED</span>
           </div>
           
           <div class="variant-toggle" style="grid-template-columns: 1fr;">
@@ -645,15 +718,43 @@ details > summary::-webkit-details-marker { display: none; }
             </label>
           </div>
           
-          <div class="price-row" id="mirrorPriceRow">
-            <div class="price-stack">
-              <span class="old-price">৳4100</span>
-              <span class="new-price">৳3599</span>
-            </div>
-            <span class="disc-tag">🔥 SAVE ৳501</span>
-          </div>
-          <!-- MIRROR BUTTON -->
+          <div class="price-row" id="mirrorPriceRow"></div>
           <button class="buy-btn" id="mirrorBuyBtn" onclick="openCheckoutMirror()">SECURE ITEM</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- LVL 3 (PRANKS) -->
+  <div class="cat-body" id="page3Body" style="display:none;">
+    <div class="section-label">&gt; MISCHIEF UNLOCKED</div>
+    <div id="prankGrid" class="cam-grid">
+      <div class="cam-card">
+        <div class="img-wrapper">
+          <div class="live-watch">🔥 VIRAL ITEM</div>
+          <img src="fake_cig_placeholder.jpg" class="cam-img" alt="Fake Cigarettes" loading="lazy" decoding="async" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'300\' height=\'200\'><rect width=\'100%\' height=\'100%\' fill=\'#333\'/><text x=\'50%\' y=\'50%\' font-family=\'monospace\' font-size=\'14\' fill=\'#fff\' dominant-baseline=\'middle\' text-anchor=\'middle\'>IMG MISSING</text></svg>'" />
+          <div class="watermark-overlay" id="prankWatermark" style="display: none;">
+            <div class="watermark-text" style="color:#ffff00; border-color:#ffff00;">PRE-ORDER</div>
+          </div>
+        </div>
+        <div class="cam-info">
+          <div class="cam-name">REALISTIC FAKE CIGARETTES</div>
+          <div class="cam-vibe">THE ULTIMATE PRANK DECOY</div>
+          
+          <div class="cam-perks" style="margin-top: 10px;">
+            <span class="perk perk-highlight">&gt;&gt; STANDARD DELIVERY APPLIES (৳100)</span>
+            <span class="perk">&gt;&gt; PUFFS FAKE SMOKE</span>
+            <span class="perk">&gt;&gt; SAFE &amp; NON-TOXIC</span>
+          </div>
+          
+          <div class="variant-toggle" style="grid-template-columns: 1fr;">
+            <label class="toggle-opt">
+              <input type="radio" name="prank_size" value="pack" checked onchange="soundClick();"> <span>PACK OF 2</span>
+            </label>
+          </div>
+          
+          <div class="price-row" id="prankPriceRow"></div>
+          <button class="buy-btn" id="prankBuyBtn" onclick="openCheckoutPrank()">SECURE ITEM</button>
         </div>
       </div>
     </div>
@@ -705,6 +806,8 @@ let bgmTimeout = null;
 let currentCheckoutProduct = 'camera'; 
 let currentOrderDetails = {};
 let isWinnableGame = false;
+let isMirrorPreorder = false;
+let isPrankPreorder = false; // Set to true if prank category is out of stock
 
 // Cached payload for cross-platform sharing
 let cachedWallpaperFile = null;
@@ -720,10 +823,8 @@ function initAudio() {
   isPoweredOn = true;
 }
 
-// Function to robustly unlock audio on iOS and mobile browsers
 function unlockAudioMobile() {
   initAudio();
-  
   const osc = audioCtx.createOscillator();
   const gain = audioCtx.createGain();
   gain.gain.value = 0;
@@ -770,7 +871,6 @@ function playCoinSound() {
   setTimeout(() => playTone(1318.51, 'square', 0.4, 0.05), 100);
 }
 
-// Continuous Synthwave Arpeggio loop
 const arcadeBGM = [
   { f: 261.63, d: 200 }, { f: 311.13, d: 200 }, { f: 392.00, d: 200 }, { f: 523.25, d: 200 },
   { f: 392.00, d: 200 }, { f: 311.13, d: 200 }, { f: 261.63, d: 200 }, { f: 196.00, d: 200 },
@@ -831,7 +931,6 @@ function soundWin() {
   setTimeout(() => playTone(880, 'sine', 0.6), 450);
 }
 
-// --- Theme Toggle ---
 function toggleTheme() {
   soundClick();
   const body = document.body;
@@ -845,24 +944,22 @@ function toggleTheme() {
   }
 }
 
-// --- Sock Rain ---
 function createSockRain() {
   const rainContainer = document.getElementById('sock-rain');
-  const sockCount = window.innerWidth < 768 ? 15 : 30; 
+  const sockCount = window.innerWidth < 768 ? 12 : 24; 
   for(let i = 0; i < sockCount; i++) {
     let sock = document.createElement('div');
     sock.className = 'falling-sock';
     sock.innerText = '🧦';
     sock.style.left = Math.random() * 100 + 'vw';
-    sock.style.animationDuration = (Math.random() * 3 + 2) + 's';
-    sock.style.animationDelay = (Math.random() * 5) + 's';
-    sock.style.transform = `scale(${Math.random() * 1.2 + 0.5})`;
+    sock.style.animationDuration = (Math.random() * 2.5 + 2) + 's';
+    sock.style.animationDelay = (Math.random() * 4) + 's';
+    sock.style.transform = `scale(${Math.random() * 1 + 0.5})`;
     rainContainer.appendChild(sock);
   }
 }
 createSockRain();
 
-// --- Navigation Routing ---
 let hasEnteredHero = false;
 const heroScreen = document.getElementById('hero-screen');
 const tttScreen = document.getElementById('tictactoe-screen');
@@ -884,26 +981,26 @@ function leaveHero(target) {
   }
   playCoinSound();
 
-  heroScreen.style.transform = 'translateY(-100vh) scale(1.5)';
+  heroScreen.style.transform = 'translate3d(0, -100vh, 0)';
   heroScreen.style.opacity = '0';
   document.getElementById('soundToggle').style.display = 'none';
 
   if (target === 'game') {
     tttScreen.style.display = 'flex';
-    isWinnableGame = Math.random() < 0.20; // 20% chance to win game
+    isWinnableGame = Math.random() < 0.20; 
     setTimeout(() => {
       heroScreen.style.display = 'none';
       tttScreen.classList.add('visible');
-    }, 600);
+    }, 350);
   } else {
     setTimeout(() => {
       heroScreen.style.display = 'none';
       skipToCatalog();
-    }, 500);
+    }, 350);
   }
 }
 
-// --- Tic-Tac-Toe Game Logic ---
+// --- TIC-TAC-TOE GAME ---
 let board = ["", "", "", "", "", "", "", "", ""];
 let gameActive = true;
 const cells = document.querySelectorAll('.ttt-cell');
@@ -935,7 +1032,7 @@ function makeMove(index) {
   gameActive = false;
   statusText.innerText = "BOT IS THINKING...";
   statusText.style.color = "var(--accent-3)";
-  setTimeout(botMove, 600);
+  setTimeout(botMove, 450);
 }
 
 function minimax(newBoard, player, depth) {
@@ -966,7 +1063,7 @@ function minimax(newBoard, player, depth) {
     }
 
     newBoard[availSpots[i]] = "";
-    moves.push(move); // Appending directly to moves array
+    moves.push(move);
   }
 
   let bestMove;
@@ -1022,7 +1119,7 @@ function botMove() {
 function updateBoard() {
   cells.forEach((cell, i) => {
     cell.innerText = board[i];
-    cell.className = "ttt-cell " + (board[i] === "X" ? "x" : (board[i] === "O" ? "o" : "")); // Properly spacing the applied classes
+    cell.className = "ttt-cell " + (board[i] === "X" ? "x" : (board[i] === "O" ? "o" : ""));
   });
 }
 
@@ -1039,7 +1136,7 @@ function endGame(msg, playerWon) {
     soundWin();
     gameDiscountActive = true; 
     appliedBroCode = "ARCADE5";
-    setTimeout(() => { skipToCatalog(); }, 1500); 
+    setTimeout(() => { skipToCatalog(); }, 1200); 
   } else {
     statusText.style.color = "#ff00ff";
     soundError();
@@ -1052,7 +1149,7 @@ function resetBoard() {
   soundClick();
   board = ["", "", "", "", "", "", "", "", ""];
   gameActive = true;
-  isWinnableGame = Math.random() < 0.20; // 20% chance on reset
+  isWinnableGame = Math.random() < 0.20;
   updateBoard();
   statusText.innerText = "PLAYER 1 IS 'X'. YOUR TURN!";
   statusText.style.color = "var(--accent-3)";
@@ -1062,7 +1159,7 @@ function resetBoard() {
 function skipToCatalog() {
   soundClick();
   tttScreen.style.opacity = "0";
-  tttScreen.style.transform = "scale(0.5)";
+  tttScreen.style.transform = "scale(0.85)";
   tttScreen.style.pointerEvents = "none";
   document.body.style.overflowY = 'auto';
   
@@ -1072,12 +1169,13 @@ function skipToCatalog() {
     refreshCatalogPrices();
     fetchInventory(); 
     
-    setTimeout(() => {
+    requestAnimationFrame(() => {
       catalog.classList.add("visible");
       window.scrollTo({top: 0, behavior: 'smooth'});
       startSocialProofTimer();
-    }, 50);
-  }, 600);
+      initStickyObserver(); 
+    });
+  }, 350);
 }
 
 function refreshCatalogPrices() {
@@ -1088,8 +1186,11 @@ function refreshCatalogPrices() {
     document.getElementById('topDiscBar').style.fontWeight = "900";
   }
   updateFlagshipPrice(currentSD);
+  
   var mirrorRadio = document.querySelector('input[name="mirror_size"]:checked');
   if(mirrorRadio) updateMirrorPrice(mirrorRadio);
+  
+  updatePrankPrice();
 }
 
 function updateCheckoutSavingsBanner() {
@@ -1109,12 +1210,15 @@ function updateCheckoutSavingsBanner() {
     savings = 1000;
   } else if (addonSelect.value.includes("30 cm")) {
     savings = 501;
+  } else if (addonSelect.value.includes("332")) {
+    savings = 168; // Prank discount
+  } else if (addonSelect.value.includes("350")) {
+    savings = 150; // Prank regular
   }
 
   banner.innerText = `⚡ YOU ARE SAVING ৳${savings} TODAY ⚡`;
 }
 
-// --- DYNAMIC TOTAL CALCULATOR ---
 function updateCheckoutTotal() {
   const addonDropdown = document.getElementById('form-addons');
   const qtyDropdown = document.getElementById('form-quantity');
@@ -1127,13 +1231,9 @@ function updateCheckoutTotal() {
 
   const subtotal = basePrice * qty;
   let deliveryFee = 0;
-
-  if (currentCheckoutProduct === 'decor') {
-      deliveryFee = 200;
-  } else {
-      deliveryFee = 0; 
-  }
-
+  if (currentCheckoutProduct === 'decor') deliveryFee = 200;
+  else if (currentCheckoutProduct === 'prank') deliveryFee = 100;
+  
   const total = subtotal + deliveryFee;
 
   document.getElementById('checkout-subtotal').innerText = '৳' + subtotal;
@@ -1145,7 +1245,6 @@ function updateCheckoutTotal() {
   updateCheckoutSavingsBanner();
 }
 
-// --- SECURE CHECKOUT LOGIC FOR CAMERA GEAR ---
 function openCheckout(itemColor, isWithSD) {
   soundClick();
   currentCheckoutProduct = 'camera'; 
@@ -1155,17 +1254,7 @@ function openCheckout(itemColor, isWithSD) {
     document.getElementById('catalog').style.display = "none";
     
     let colorDropdown = document.getElementById('form-color');
-    colorDropdown.innerHTML = `
-      <option value="White">White</option>
-      <option value="Red">Red</option>
-      <option value="Yellow">Yellow</option>
-      <option value="Green">Green</option>
-      <option value="Black">Black</option>
-      <option value="Blue">Blue</option>
-      <option value="Grey">Grey</option>
-      <option value="Transparent">Transparent</option>
-      <option value="Light Green">Light Green</option>
-    `;
+    colorDropdown.innerHTML = `<option value="${itemColor}">${itemColor}</option>`;
     colorDropdown.value = itemColor;
 
     let addonDropdown = document.getElementById('form-addons');
@@ -1191,14 +1280,13 @@ function openCheckout(itemColor, isWithSD) {
     updateCheckoutTotal(); 
 
     checkoutScreen.style.display = "flex";
-    setTimeout(() => { 
+    requestAnimationFrame(() => { 
       checkoutScreen.classList.add('visible'); 
       window.scrollTo(0,0); 
-    }, 50);
-  }, 400);
+    });
+  }, 350);
 }
 
-// --- SECURE CHECKOUT LOGIC FOR MIRROR ---
 function openCheckoutMirror() {
   soundClick();
   currentCheckoutProduct = 'decor';
@@ -1208,20 +1296,16 @@ function openCheckoutMirror() {
     document.getElementById('catalog').style.display = "none";
     
     let colorDropdown = document.getElementById('form-color');
-    colorDropdown.innerHTML = '<option value="Orange">Orange</option>';
-    colorDropdown.value = "Orange";
+    let itemColor = isMirrorPreorder ? "[PRE-ORDER] Orange" : "Orange";
+    colorDropdown.innerHTML = `<option value="${itemColor}">${itemColor}</option>`;
+    colorDropdown.value = itemColor;
 
     let addonDropdown = document.getElementById('form-addons');
-    
     if (gameDiscountActive) {
-      addonDropdown.innerHTML = `
-        <option value="30 cm (5% OFF) 3419" data-price="3419">30 cm 3419 (5% OFF)</option>
-      `;
+      addonDropdown.innerHTML = `<option value="30 cm (5% OFF) 3419" data-price="3419">30 cm 3419 (5% OFF)</option>`;
       addonDropdown.value = "30 cm (5% OFF) 3419";
     } else {
-      addonDropdown.innerHTML = `
-        <option value="30 cm (3599)" data-price="3599">30 cm (3599)</option>
-      `;
+      addonDropdown.innerHTML = `<option value="30 cm (3599)" data-price="3599">30 cm (3599)</option>`;
       addonDropdown.value = "30 cm (3599)";
     }
 
@@ -1233,11 +1317,48 @@ function openCheckoutMirror() {
     updateCheckoutTotal(); 
 
     checkoutScreen.style.display = "flex";
-    setTimeout(() => { 
+    requestAnimationFrame(() => { 
       checkoutScreen.classList.add('visible'); 
       window.scrollTo(0,0); 
-    }, 50);
-  }, 400);
+    });
+  }, 350);
+}
+
+function openCheckoutPrank() {
+  soundClick();
+  currentCheckoutProduct = 'prank';
+  document.getElementById('catalog').style.opacity = "0";
+  
+  setTimeout(() => {
+    document.getElementById('catalog').style.display = "none";
+    
+    let colorDropdown = document.getElementById('form-color');
+    let itemColor = isPrankPreorder ? "[PRE-ORDER] Classic" : "Classic";
+    colorDropdown.innerHTML = `<option value="${itemColor}">${itemColor}</option>`;
+    colorDropdown.value = itemColor;
+
+    let addonDropdown = document.getElementById('form-addons');
+    if (gameDiscountActive) {
+      addonDropdown.innerHTML = `<option value="Pack of 2 (5% OFF) 332" data-price="332">Pack of 2 - 332 (5% OFF)</option>`;
+      addonDropdown.value = "Pack of 2 (5% OFF) 332";
+    } else {
+      addonDropdown.innerHTML = `<option value="Pack of 2 (350)" data-price="350">Pack of 2 (350)</option>`;
+      addonDropdown.value = "Pack of 2 (350)";
+    }
+
+    document.getElementById('form-quantity').value = "1";
+    document.getElementById('lbl-color').innerText = "> SELECT VARIANT *";
+    document.getElementById('lbl-addons').innerText = "> CHOOSE SIZE *";
+    document.getElementById('form-brocode').value = gameDiscountActive ? "ARCADE5" : "";
+    
+    updateCheckoutTotal(); 
+
+    checkoutScreen.style.display = "flex";
+    requestAnimationFrame(() => { 
+      checkoutScreen.classList.add('visible'); 
+      window.scrollTo(0,0); 
+    });
+  }, 350);
 }
 
 function cancelCheckout() {
@@ -1246,11 +1367,11 @@ function cancelCheckout() {
   setTimeout(() => {
     checkoutScreen.style.display = "none";
     document.getElementById('catalog').style.display = "block";
-    setTimeout(() => { 
+    requestAnimationFrame(() => { 
       document.getElementById('catalog').style.opacity = "1"; 
       window.scrollTo(0,0);
-    }, 50);
-  }, 400);
+    });
+  }, 350);
 }
 
 function toggleBkash(show) {
@@ -1267,7 +1388,6 @@ function toggleBkash(show) {
   }
 }
 
-// --- ARCADE SUCCESS SCORE ANIMATION ---
 function animateScore() {
   let scoreObj = document.getElementById("final-score");
   let score = 0;
@@ -1292,36 +1412,37 @@ function closeSuccessScreen() {
   setTimeout(() => {
     successScreen.style.display = "none";
     document.getElementById('catalog').style.display = "block";
-    setTimeout(() => { 
+    requestAnimationFrame(() => { 
       document.getElementById('catalog').style.opacity = "1"; 
       window.scrollTo(0,0); 
-    }, 50);
-  }, 400);
+    });
+  }, 350);
 }
 
-// --- MODAL CONTROLS ---
 function openWallpaperModal(dataUrl, file, fileName) {
   cachedWallpaperFile = file;
   document.getElementById("wallpaper-preview-img").src = dataUrl;
   
   const modal = document.getElementById("wallpaper-modal");
   modal.style.display = "flex";
-  setTimeout(() => modal.classList.add("visible"), 30);
+  requestAnimationFrame(() => modal.classList.add("visible"));
 
-  // Download Button Handler (Forces Download)
   document.getElementById("modal-download-btn").onclick = function() {
     soundClick();
-    const link = document.createElement("a");
-    const blobUrl = URL.createObjectURL(cachedWallpaperFile);
-    link.href = blobUrl;
-    link.download = fileName;
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-    setTimeout(() => URL.revokeObjectURL(blobUrl), 2000);
+    if (navigator.canShare && navigator.canShare({ files: [cachedWallpaperFile] })) {
+      navigator.share({ files: [cachedWallpaperFile] }).catch(e => console.log(e));
+    } else {
+      const link = document.createElement("a");
+      const blobUrl = URL.createObjectURL(cachedWallpaperFile);
+      link.href = blobUrl;
+      link.download = fileName;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      setTimeout(() => URL.revokeObjectURL(blobUrl), 2000);
+    }
   };
 
-  // Share Button Handler (Calls Native Share Menu)
   const shareBtn = document.getElementById("modal-share-btn");
   if (navigator.canShare && navigator.canShare({ files: [cachedWallpaperFile] })) {
     shareBtn.style.display = "block";
@@ -1329,7 +1450,7 @@ function openWallpaperModal(dataUrl, file, fileName) {
       soundClick();
       navigator.share({
         files: [cachedWallpaperFile],
-        title: 'Silly Socks Level Up Card'
+        title: 'Silly Socks Arcade Receipt'
       }).catch(console.error);
     };
   } else {
@@ -1341,7 +1462,7 @@ function closeWallpaperModal() {
   soundClick();
   const modal = document.getElementById("wallpaper-modal");
   modal.classList.remove("visible");
-  setTimeout(() => modal.style.display = "none", 400);
+  setTimeout(() => modal.style.display = "none", 350);
 }
 
 // --- HD LEVEL UP CARD GENERATOR ---
@@ -1353,14 +1474,12 @@ function downloadReceipt() {
   canvas.height = 1920;
   const ctx = canvas.getContext("2d");
 
-  // 1. Synthwave Background Gradient
   const gradient = ctx.createLinearGradient(0, 0, 0, 1920);
   gradient.addColorStop(0, "#0b0c10");
   gradient.addColorStop(1, "#1f0033");
   ctx.fillStyle = gradient;
   ctx.fillRect(0, 0, 1080, 1920);
 
-  // 2. Neon Perspective Grid
   ctx.strokeStyle = "rgba(0, 255, 255, 0.15)";
   ctx.lineWidth = 2;
   for (let i = 0; i <= 1080; i += 60) {
@@ -1370,7 +1489,6 @@ function downloadReceipt() {
     ctx.beginPath(); ctx.moveTo(0, i); ctx.lineTo(1080, i); ctx.stroke();
   }
 
-  // 3. Glowing Border
   ctx.strokeStyle = "#ff00ff";
   ctx.lineWidth = 12;
   ctx.shadowColor = "#ff00ff";
@@ -1381,34 +1499,31 @@ function downloadReceipt() {
   ctx.strokeRect(55, 55, 970, 1810);
   ctx.shadowBlur = 0;
 
-  // 4. Header Titles
   ctx.textAlign = "center";
   ctx.fillStyle = "#ffffff";
   ctx.font = "900 80px 'Montserrat', sans-serif";
   ctx.fillText("SILLY SOCKS", 540, 220);
 
   ctx.fillStyle = "#ffff00";
-  ctx.font = "40px 'Press Start 2P', 'Courier New', monospace";
+  ctx.font = "40px 'Press Start 2P', monospace";
   ctx.shadowColor = "#ffff00";
   ctx.shadowBlur = 15;
   ctx.fillText(">> MISSION SUCCESS <<", 540, 320);
   ctx.shadowBlur = 0;
 
-  // Separator Line
   ctx.strokeStyle = "#ff00ff";
   ctx.lineWidth = 6;
   ctx.setLineDash([15, 15]);
   ctx.beginPath(); ctx.moveTo(100, 420); ctx.lineTo(980, 420); ctx.stroke();
   ctx.setLineDash([]);
 
-  // 5. Draw Order Data Function with Left / Right Justification
   let startY = 520;
   let lineH = 90;
 
   const drawTextRow = (label, val, y, color = "#ffffff") => {
     ctx.textAlign = "left";
     ctx.fillStyle = "#00ffff";
-    ctx.font = "26px 'Press Start 2P', 'Courier New', monospace";
+    ctx.font = "26px 'Press Start 2P', monospace";
     ctx.fillText(label, 90, y);
     
     ctx.textAlign = "right";
@@ -1422,20 +1537,31 @@ function downloadReceipt() {
   drawTextRow("COMM_LINK:", currentOrderDetails.phone, startY + lineH);
   drawTextRow("TIMESTAMP:", currentOrderDetails.date.split(",")[0], startY + lineH * 2);
 
-  // Section 2
   startY = startY + lineH * 3.5;
   ctx.textAlign = "left";
   ctx.fillStyle = "#ff00ff";
-  ctx.font = "32px 'Press Start 2P', 'Courier New', monospace";
+  ctx.font = "32px 'Press Start 2P', monospace";
   ctx.fillText("ACQUIRED LOOT", 90, startY - 50);
 
-  // Always display THUMB CAMERA - [COLOR] (or TRAFFIC MIRROR for decor)
   let rawColor = (currentOrderDetails.color || "GEAR").toUpperCase();
+  let isPre = rawColor.includes("[PRE-ORDER]");
+  let baseColor = rawColor.replace("[PRE-ORDER] ", "").trim();
+
   let itemNameStr = "";
-  if (currentCheckoutProduct === 'decor' || rawColor === "ORANGE") {
+  if (currentCheckoutProduct === 'decor') {
     itemNameStr = "TRAFFIC MIRROR";
+  } else if (currentCheckoutProduct === 'prank') {
+    itemNameStr = "FAKE CIGARETTES";
   } else {
-    itemNameStr = "THUMB CAMERA - " + rawColor.replace("CLOUD 99 ", "").replace("CLEAR ", "").replace("ARCADE ", "");
+    if (!baseColor.includes("CAMERA")) {
+      itemNameStr = "THUMB CAMERA - " + baseColor.replace("CLOUD 99 ", "").replace("CLEAR ", "").replace("ARCADE ", "");
+    } else {
+      itemNameStr = baseColor;
+    }
+  }
+
+  if (isPre) {
+    itemNameStr = "[PRE] " + itemNameStr;
   }
 
   drawTextRow("ITEM_NAME:", itemNameStr, startY);
@@ -1443,18 +1569,16 @@ function downloadReceipt() {
   drawTextRow("MULTIPLIER:", "x" + currentOrderDetails.qty, startY + lineH * 2);
   drawTextRow("PAY_METHOD:", currentOrderDetails.payment.toUpperCase(), startY + lineH * 3);
 
-  // Separator Line
   startY = startY + lineH * 4;
   ctx.strokeStyle = "#ff00ff";
   ctx.setLineDash([15, 15]);
   ctx.beginPath(); ctx.moveTo(100, startY); ctx.lineTo(980, startY); ctx.stroke();
   ctx.setLineDash([]);
 
-  // Final Score Section - Center stacked and using BDT to prevent glyph overlaps
   startY += 130;
   ctx.textAlign = "center";
   ctx.fillStyle = "#ffffff";
-  ctx.font = "32px 'Press Start 2P', 'Courier New', monospace";
+  ctx.font = "32px 'Press Start 2P', monospace";
   ctx.fillText(">> FINAL SCORE <<", 540, startY);
 
   ctx.fillStyle = "#00ff66";
@@ -1464,31 +1588,26 @@ function downloadReceipt() {
   ctx.fillText("BDT " + currentOrderDetails.total, 540, startY + 110);
   ctx.shadowBlur = 0;
 
-  // 6. Footer
   ctx.textAlign = "center";
   ctx.fillStyle = "#aaaaaa";
   ctx.font = "italic 30px 'Montserrat', sans-serif";
   ctx.fillText("Screenshot or save this file.", 540, 1780);
   ctx.fillText("Transmission ended.", 540, 1830);
 
-  // 7. Synchronous conversion & direct execution to beat Safari blockers
   const dataUrl = canvas.toDataURL("image/png");
   const fileName = "SILLY_SOCKS_LEVEL_UP_CARD_" + (currentOrderDetails.phone || "RECEIPT") + ".png";
   
-  // Convert to File Object synchronously
   var arr = dataUrl.split(','), mime = arr[0].match(/:(.*?);/)[1], bstr = atob(arr[1]), n = bstr.length, u8arr = new Uint8Array(n);
   while(n--){ u8arr[n] = bstr.charCodeAt(n); }
   const file = new File([u8arr], fileName, {type:mime});
 
-  // Display Modal Preview first
   openWallpaperModal(dataUrl, file, fileName);
 
-  // Synchronous initial trigger attempt for Safari bypass
   if (navigator.canShare && navigator.canShare({ files: [file] })) {
       navigator.share({
-        files: [file],
-        title: 'Silly Socks Level Up Card'
-      }).catch(err => console.log(err));
+        title: 'Silly Socks Level Up Card',
+        files: [file]
+      }).catch(err => console.log("Share skipped"));
   } else {
       const link = document.createElement("a");
       const blobUrl = URL.createObjectURL(file);
@@ -1501,7 +1620,7 @@ function downloadReceipt() {
   }
 }
 
-// --- AJAX Form Submit to Google Apps Script ---
+// --- ORDER DISPATCH VIA AJAX ---
 document.getElementById("orderForm").addEventListener("submit", function(e) {
   e.preventDefault(); 
   soundClick();
@@ -1537,7 +1656,7 @@ document.getElementById("orderForm").addEventListener("submit", function(e) {
     headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
     body: searchParams.toString()
   })
-  .then(response => {
+  .then(() => {
     btn.innerText = "ORDER SECURED!";
     btn.style.background = "#0f0";
     soundWin();
@@ -1547,11 +1666,11 @@ document.getElementById("orderForm").addEventListener("submit", function(e) {
        setTimeout(() => {
            checkoutScreen.style.display = "none";
            successScreen.style.display = "flex";
-           setTimeout(() => {
+           requestAnimationFrame(() => {
                successScreen.classList.add('visible');
                animateScore(); 
-           }, 50);
-       }, 400);
+           });
+       }, 350);
 
        btn.innerText = "CONFIRM ORDER";
        btn.style.pointerEvents = "auto";
@@ -1559,7 +1678,7 @@ document.getElementById("orderForm").addEventListener("submit", function(e) {
        btn.style.background = "var(--accent-3)";
        document.getElementById("orderForm").reset();
        toggleBkash(false);
-    }, 1500);
+    }, 1200);
   })
   .catch(error => {
      soundError();
@@ -1570,7 +1689,6 @@ document.getElementById("orderForm").addEventListener("submit", function(e) {
   });
 });
 
-// --- High-Converting Render Logic (flagship single-product layout) ---
 function getPriceHTML(isWithSD) {
   let oldPrice = isWithSD ? 3199 : 2499;
   let basePrice = isWithSD ? 2199 : 1699;
@@ -1627,24 +1745,35 @@ function selectColor(i) {
 
   if(col.soldOut) {
     watermark.style.display = 'flex';
+    watermark.querySelector('.watermark-text').innerText = 'PRE-ORDER';
+    watermark.querySelector('.watermark-text').style.color = '#ffff00';
+    watermark.querySelector('.watermark-text').style.borderColor = '#ffff00';
     
-    mainBtn.innerText = 'SOLD OUT';
-    mainBtn.classList.add('disabled-btn');
-    mainBtn.disabled = true;
+    mainBtn.innerText = 'PRE-ORDER ITEM';
+    mainBtn.classList.remove('disabled-btn');
+    mainBtn.disabled = false;
+    mainBtn.style.background = 'var(--accent-3)';
+    mainBtn.style.color = '#000';
 
-    stickyBtn.innerText = 'SOLD OUT';
-    stickyBtn.classList.add('disabled-btn');
-    stickyBtn.disabled = true;
+    stickyBtn.innerText = 'PRE-ORDER ITEM';
+    stickyBtn.classList.remove('disabled-btn');
+    stickyBtn.disabled = false;
+    stickyBtn.style.background = 'var(--accent-3)';
+    stickyBtn.style.color = '#000';
   } else {
     watermark.style.display = 'none';
     
     mainBtn.innerText = 'SECURE ITEM';
     mainBtn.classList.remove('disabled-btn');
     mainBtn.disabled = false;
+    mainBtn.style.background = '';
+    mainBtn.style.color = '';
 
     stickyBtn.innerText = 'SECURE ITEM';
     stickyBtn.classList.remove('disabled-btn');
     stickyBtn.disabled = false;
+    stickyBtn.style.background = '';
+    stickyBtn.style.color = '';
   }
 
   renderSwatches();
@@ -1659,25 +1788,34 @@ function updateFlagshipPrice(isWithSD) {
 }
 
 function buyFlagship() {
-  openCheckout(camColors[currentColorIdx].c, currentSD);
+  let itemColor = camColors[currentColorIdx].c;
+  if (camColors[currentColorIdx].soldOut) {
+      itemColor = "[PRE-ORDER] " + itemColor;
+  }
+  openCheckout(itemColor, currentSD);
 }
 
 renderSwatches();
 selectColor(0);
 updateFlagshipPrice(false);
 
-// --- Sticky mobile buy bar ---
-window.addEventListener('scroll', function() {
-  var bar = document.getElementById('stickyBuyBar');
-  var card = document.getElementById('flagshipCard');
-  if (!card || catalog.style.display === 'none') { bar.classList.remove('visible'); return; }
-  var rect = card.getBoundingClientRect();
-  if (rect.bottom < 0 && document.getElementById('page1Body').style.display !== 'none') {
-    bar.classList.add('visible');
-  } else {
-    bar.classList.remove('visible');
-  }
-});
+function initStickyObserver() {
+  const card = document.getElementById('flagshipCard');
+  const bar = document.getElementById('stickyBuyBar');
+  if (!card || !bar) return;
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (!entry.isIntersecting && entry.boundingClientRect.top < 0 && document.getElementById('page1Body').style.display !== 'none') {
+        bar.classList.add('visible');
+      } else {
+        bar.classList.remove('visible');
+      }
+    });
+  }, { threshold: 0.1 });
+
+  observer.observe(card);
+}
 
 function updateDispatchTimer() {
   var now = new Date();
@@ -1693,7 +1831,6 @@ function updateDispatchTimer() {
 updateDispatchTimer();
 setInterval(updateDispatchTimer, 1000);
 
-// --- Mirror Toggle Logic ---
 function updateMirrorPrice(radio) {
   var priceRow = document.getElementById('mirrorPriceRow');
   let oldPrice = 4100;
@@ -1709,28 +1846,43 @@ function updateMirrorPrice(radio) {
   }
 }
 
-// --- Page Tabs Logic ---
+function updatePrankPrice() {
+  var priceRow = document.getElementById('prankPriceRow');
+  if(!priceRow) return;
+  let oldPrice = 500;
+  let basePrice = 350;
+
+  if (gameDiscountActive) {
+    let discountedPrice = 332;
+    let totalSaved = oldPrice - discountedPrice;
+    priceRow.innerHTML = '<div class="price-stack"><span class="old-price">৳' + oldPrice + '</span><span class="new-price" style="color:#0f0; text-shadow:0 0 10px #0f0;">৳' + discountedPrice + '</span></div><span class="disc-tag" style="background:#0f0; color:#000;">🎮 5% OFF APPLIED (SAVE ৳' + totalSaved + ')</span>';
+  } else {
+    let totalSaved = oldPrice - basePrice;
+    priceRow.innerHTML = '<div class="price-stack"><span class="old-price">৳' + oldPrice + '</span><span class="new-price">৳' + basePrice + '</span></div><span class="disc-tag">🔥 SAVE ৳' + totalSaved + '</span>';
+  }
+}
+
 function showPage(page) {
   soundClick();
   document.getElementById('tab1').className = 'page-tab' + (page === 1 ? ' active' : '');
   document.getElementById('tab2').className = 'page-tab' + (page === 2 ? ' active' : '');
+  document.getElementById('tab3').className = 'page-tab' + (page === 3 ? ' active' : '');
   
-  const bodies = ['page1Body', 'page2Body'];
+  const bodies = ['page1Body', 'page2Body', 'page3Body'];
   bodies.forEach(id => document.getElementById(id).style.display = 'none');
   
   const newBody = document.getElementById('page' + page + 'Body');
   newBody.style.display = 'block'; 
   newBody.style.opacity = '0'; 
-  newBody.style.transform = 'translateY(20px)';
+  newBody.style.transform = 'translate3d(0, 15px, 0)';
   
-  setTimeout(() => { 
-    newBody.style.transition = 'all 0.4s ease'; 
+  requestAnimationFrame(() => { 
+    newBody.style.transition = 'opacity 0.25s ease, transform 0.25s ease'; 
     newBody.style.opacity = '1'; 
-    newBody.style.transform = 'translateY(0)'; 
-  }, 10);
+    newBody.style.transform = 'translate3d(0, 0, 0)'; 
+  });
 }
 
-// --- ANONYMOUS SOCIAL PROOF TOAST LOGIC ---
 const locations = ["Dhaka", "Chittagong", "Sylhet", "Rajshahi", "Khulna", "Uttara", "Mirpur", "Dhanmondi", "Bashundhara"];
 
 function startSocialProofTimer() {
@@ -1757,7 +1909,6 @@ function showToast() {
   setTimeout(() => { toast.classList.remove('show'); }, 4000);
 }
 
-// --- LIVE GOOGLE SHEETS INVENTORY SYNC ---
 function fetchInventory() {
   const scriptURL = "https://script.google.com/macros/s/AKfycbyYvaRsNI8FSJ8p1WNd3_9YSx10uuNjxNTriiAM2-nkXflv8ZAfIeaee06R1sM-VApI/exec";
   
@@ -1765,41 +1916,47 @@ function fetchInventory() {
     .then(res => res.json())
     .then(data => {
       if(data.status === "success" && data.inventory) {
+        // Cams
         camColors.forEach(col => {
           if (data.inventory[col.c] === true) { 
             col.soldOut = true;
-            col.badge = "❌ SOLD OUT";
+            col.badge = "🔥 BESTSELLER"; // Keep badge, we change the overlay
           } else {
             col.soldOut = false;
-            if(col.badge === "❌ SOLD OUT") col.badge = "🔥 IN STOCK"; 
           }
         });
-        
         selectColor(currentColorIdx);
 
+        // Mirror
         let mirrorSoldOut = data.inventory["Mirror"];
         if (mirrorSoldOut === undefined) mirrorSoldOut = true;
+        isMirrorPreorder = mirrorSoldOut;
         
         let mBtn = document.getElementById("mirrorBuyBtn");
         let mWatermark = document.getElementById("mirrorWatermark");
         
         if (mirrorSoldOut) {
-          mBtn.innerText = "SOLD OUT";
-          mBtn.classList.add("disabled-btn");
-          mBtn.disabled = true;
-          mWatermark.style.display = "flex";
-        } else {
-          mBtn.innerText = "SECURE ITEM";
+          mBtn.innerText = "PRE-ORDER ITEM";
           mBtn.classList.remove("disabled-btn");
           mBtn.disabled = false;
+          mBtn.style.background = 'var(--accent-3)';
+          mBtn.style.color = '#000';
+          
+          mWatermark.style.display = "flex";
+          mWatermark.querySelector('.watermark-text').innerText = 'PRE-ORDER';
+          mWatermark.querySelector('.watermark-text').style.color = '#ffff00';
+          mWatermark.querySelector('.watermark-text').style.borderColor = '#ffff00';
+        } else {
+          mBtn.innerText = "SECURE ITEM";
+          mBtn.style.background = '';
+          mBtn.style.color = '';
           mWatermark.style.display = "none";
         }
       }
     })
-    .catch(err => console.log("Inventory Sync bypassed or failed. Proceeding with hardcoded defaults.", err));
+    .catch(err => console.log("Inventory Sync bypassed.", err));
 }
 
-// Initialize the first page
 showPage(1);
 </script>
 </body>
