@@ -1175,7 +1175,6 @@ function skipToCatalog() {
     tttScreen.style.display = "none";
     catalog.style.display = "block";
     refreshCatalogPrices();
-    fetchInventory(); 
     
     requestAnimationFrame(() => {
       catalog.classList.add("visible");
@@ -1937,80 +1936,96 @@ function showToast() {
   setTimeout(() => { toast.classList.remove('show'); }, 4000);
 }
 
+// --- APPLY CACHED & FRESH DATA SEAMLESSLY ---
+function applyInventoryData(inventory) {
+  // Cams
+  camColors.forEach(col => {
+    if (inventory[col.c] === true) { 
+      col.soldOut = true;
+      col.badge = "🔥 BESTSELLER"; 
+    } else {
+      col.soldOut = false;
+    }
+  });
+  selectColor(currentColorIdx);
+
+  // Mirror
+  let mirrorSoldOut = inventory["Mirror"];
+  if (mirrorSoldOut === undefined) mirrorSoldOut = true;
+  isMirrorPreorder = mirrorSoldOut;
+  
+  let mBtn = document.getElementById("mirrorBuyBtn");
+  let mWatermark = document.getElementById("mirrorWatermark");
+  
+  if (mirrorSoldOut) {
+    mBtn.innerText = "PRE-ORDER ITEM";
+    mBtn.classList.remove("disabled-btn");
+    mBtn.disabled = false;
+    mBtn.style.background = 'var(--accent-3)';
+    mBtn.style.color = '#000';
+    
+    mWatermark.style.display = "flex";
+    mWatermark.querySelector('.watermark-text').innerText = 'PRE-ORDER';
+    mWatermark.querySelector('.watermark-text').style.color = '#ffff00';
+    mWatermark.querySelector('.watermark-text').style.borderColor = '#ffff00';
+  } else {
+    mBtn.innerText = "SECURE ITEM";
+    mBtn.style.background = '';
+    mBtn.style.color = '';
+    mWatermark.style.display = "none";
+  }
+  
+  // Pranks
+  let prankSoldOut = inventory["Prank"];
+  if (prankSoldOut === undefined) prankSoldOut = true;
+  isPrankPreorder = prankSoldOut;
+  
+  let pBtn = document.getElementById("prankBuyBtn");
+  let pWatermark = document.getElementById("prankWatermark");
+  
+  if (prankSoldOut) {
+    pBtn.innerText = "PRE-ORDER ITEM";
+    pBtn.classList.remove("disabled-btn");
+    pBtn.disabled = false;
+    pBtn.style.background = 'var(--accent-3)';
+    pBtn.style.color = '#000';
+    
+    pWatermark.style.display = "flex";
+    pWatermark.querySelector('.watermark-text').innerText = 'PRE-ORDER';
+    pWatermark.querySelector('.watermark-text').style.color = '#ffff00';
+    pWatermark.querySelector('.watermark-text').style.borderColor = '#ffff00';
+  } else {
+    pBtn.innerText = "SECURE ITEM";
+    pBtn.style.background = '';
+    pBtn.style.color = '';
+    pWatermark.style.display = "none";
+  }
+}
+
+// --- GOOGLE SHEETS LIVE INVENTORY SYNC ---
 function fetchInventory() {
   const scriptURL = "https://script.google.com/macros/s/AKfycbyYvaRsNI8FSJ8p1WNd3_9YSx10uuNjxNTriiAM2-nkXflv8ZAfIeaee06R1sM-VApI/exec";
   
+  // 1. Instantly apply known cached state
+  const cached = localStorage.getItem('sillySocksInventory');
+  if (cached) {
+    try { applyInventoryData(JSON.parse(cached)); } catch(e){}
+  }
+
+  // 2. Fetch fresh data in the background
   fetch(scriptURL)
     .then(res => res.json())
     .then(data => {
       if(data.status === "success" && data.inventory) {
-        // Cams
-        camColors.forEach(col => {
-          if (data.inventory[col.c] === true) { 
-            col.soldOut = true;
-            col.badge = "🔥 BESTSELLER"; 
-          } else {
-            col.soldOut = false;
-          }
-        });
-        selectColor(currentColorIdx);
-
-        // Mirror
-        let mirrorSoldOut = data.inventory["Mirror"];
-        if (mirrorSoldOut === undefined) mirrorSoldOut = true;
-        isMirrorPreorder = mirrorSoldOut;
-        
-        let mBtn = document.getElementById("mirrorBuyBtn");
-        let mWatermark = document.getElementById("mirrorWatermark");
-        
-        if (mirrorSoldOut) {
-          mBtn.innerText = "PRE-ORDER ITEM";
-          mBtn.classList.remove("disabled-btn");
-          mBtn.disabled = false;
-          mBtn.style.background = 'var(--accent-3)';
-          mBtn.style.color = '#000';
-          
-          mWatermark.style.display = "flex";
-          mWatermark.querySelector('.watermark-text').innerText = 'PRE-ORDER';
-          mWatermark.querySelector('.watermark-text').style.color = '#ffff00';
-          mWatermark.querySelector('.watermark-text').style.borderColor = '#ffff00';
-        } else {
-          mBtn.innerText = "SECURE ITEM";
-          mBtn.style.background = '';
-          mBtn.style.color = '';
-          mWatermark.style.display = "none";
-        }
-        
-        // Pranks
-        let prankSoldOut = data.inventory["Prank"];
-        if (prankSoldOut === undefined) prankSoldOut = true;
-        isPrankPreorder = prankSoldOut;
-        
-        let pBtn = document.getElementById("prankBuyBtn");
-        let pWatermark = document.getElementById("prankWatermark");
-        
-        if (prankSoldOut) {
-          pBtn.innerText = "PRE-ORDER ITEM";
-          pBtn.classList.remove("disabled-btn");
-          pBtn.disabled = false;
-          pBtn.style.background = 'var(--accent-3)';
-          pBtn.style.color = '#000';
-          
-          pWatermark.style.display = "flex";
-          pWatermark.querySelector('.watermark-text').innerText = 'PRE-ORDER';
-          pWatermark.querySelector('.watermark-text').style.color = '#ffff00';
-          pWatermark.querySelector('.watermark-text').style.borderColor = '#ffff00';
-        } else {
-          pBtn.innerText = "SECURE ITEM";
-          pBtn.style.background = '';
-          pBtn.style.color = '';
-          pWatermark.style.display = "none";
-        }
+        localStorage.setItem('sillySocksInventory', JSON.stringify(data.inventory));
+        applyInventoryData(data.inventory);
       }
     })
     .catch(err => console.log("Inventory Sync bypassed.", err));
 }
 
+// TRIGGER FETCH ON PAGE LOAD
+fetchInventory();
 showPage(1);
 </script>
 </body>
