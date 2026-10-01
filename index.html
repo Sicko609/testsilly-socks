@@ -742,14 +742,6 @@ details > summary::-webkit-details-marker { display: none; }
   </div>
 </div>
 
-<div id="social-proof-toast">
-  <img src="cam_white.jpg" id="toast-img-src" class="toast-img" alt="Purchased Item">
-  <div>
-    <div class="toast-text" id="toast-msg">Someone from Dhaka just bought Cloud 99 White!</div>
-    <div class="toast-time" id="toast-time">2 mins ago</div>
-  </div>
-</div>
-
 <script>
 // ==========================================
 // 80s WEB AUDIO API & SYNTHWAVE BGM
@@ -1168,8 +1160,8 @@ function updateCheckoutSavingsBanner() {
       if (addonSelect.value.includes("3419")) savings = 681;
       else if (addonSelect.value.includes("3599")) savings = 501;
   } else if (currentCheckoutProduct === 'prank') {
-      if (addonSelect.value.includes("332")) savings = 168;
-      else if (addonSelect.value.includes("350")) savings = 150;
+      if (addonSelect.value.includes("379")) savings = 121;
+      else if (addonSelect.value.includes("399")) savings = 101;
   } else if (currentCheckoutProduct === 'lamp') {
       if (addonSelect.value.includes("2089")) savings = 711; 
       else if (addonSelect.value.includes("2199")) savings = 601; 
@@ -1322,11 +1314,11 @@ function openCheckoutPrank() {
 
     let addonDropdown = document.getElementById('form-addons');
     if (gameDiscountActive) {
-      addonDropdown.innerHTML = `<option value="Pack of 2 (5% OFF) 332" data-price="332">Pack of 2 - 332 (5% OFF)</option>`;
-      addonDropdown.value = "Pack of 2 (5% OFF) 332";
+      addonDropdown.innerHTML = `<option value="Pack of 2 (5% OFF) 379" data-price="379">Pack of 2 - 379 (5% OFF)</option>`;
+      addonDropdown.value = "Pack of 2 (5% OFF) 379";
     } else {
-      addonDropdown.innerHTML = `<option value="Pack of 2 (350)" data-price="350">Pack of 2 (350)</option>`;
-      addonDropdown.value = "Pack of 2 (350)";
+      addonDropdown.innerHTML = `<option value="Pack of 2 (399)" data-price="399">Pack of 2 (399)</option>`;
+      addonDropdown.value = "Pack of 2 (399)";
     }
 
     document.getElementById('form-quantity').value = "1";
@@ -1847,37 +1839,6 @@ function selectColor(i) {
   renderSwatches();
 }
 
-// --- WATERBAG DATA & RENDER ---
-var waterbagColors = [
-  { n:"Comfort Waterbag (Pink)", c:"Pink", swatch:"#ffb6c1", i:"waterbag_pink.jpg" },
-  { n:"Comfort Waterbag (Blue)", c:"Blue", swatch:"#87ceeb", i:"waterbag_blue.jpg" },
-  { n:"Comfort Waterbag (Grey)", c:"Grey", swatch:"#aaaaaa", i:"waterbag_grey.jpg" },
-  { n:"Comfort Waterbag (Beige)", c:"Beige", swatch:"#f5f5dc", i:"waterbag_beige.jpg" }
-];
-var currentWaterbagIdx = 0;
-
-function renderWaterbagSwatches() {
-  var row = document.getElementById('waterbagSwatchRow');
-  row.innerHTML = '';
-  waterbagColors.forEach((col, i) => {
-    var sw = document.createElement('div');
-    sw.className = 'swatch' + (i === currentWaterbagIdx ? ' active' : '');
-    sw.style.background = col.swatch;
-    sw.title = col.n;
-    sw.onclick = function() { selectWaterbagColor(i); };
-    row.appendChild(sw);
-  });
-}
-
-function selectWaterbagColor(i) {
-  soundClick();
-  currentWaterbagIdx = i;
-  var col = waterbagColors[i];
-  document.getElementById('waterbagImg').src = col.i;
-  document.getElementById('waterbagName').innerText = col.n.toUpperCase();
-  renderWaterbagSwatches();
-}
-
 function updateFlagshipPrice(isWithSD) {
   currentSD = isWithSD;
   var html = getPriceHTML(isWithSD);
@@ -1898,9 +1859,6 @@ function buyFlagship() {
 renderSwatches();
 selectColor(0);
 updateFlagshipPrice(false);
-
-renderWaterbagSwatches();
-selectWaterbagColor(0);
 
 function initStickyObserver() {
   const card = document.getElementById('flagshipCard');
@@ -1953,10 +1911,10 @@ function updatePrankPrice() {
   var priceRow = document.getElementById('prankPriceRow');
   if(!priceRow) return;
   let oldPrice = 500;
-  let basePrice = 350;
+  let basePrice = 399;
 
   if (gameDiscountActive) {
-    let discountedPrice = 332;
+    let discountedPrice = 379;
     let totalSaved = oldPrice - discountedPrice;
     priceRow.innerHTML = '<div class="price-stack"><span class="old-price">৳' + oldPrice + '</span><span class="new-price" style="color:#0f0; text-shadow:0 0 10px #0f0;">৳' + discountedPrice + '</span></div><span class="disc-tag" style="background:#0f0; color:#000;">🎮 5% OFF APPLIED (SAVE ৳' + totalSaved + ')</span>';
   } else {
