@@ -382,7 +382,7 @@ details > summary::-webkit-details-marker { display: none; }
       <textarea name="Delivery Address" class="retro-input" required placeholder="HOUSE, ROAD, DHAKA..." rows="3" style="resize:none; font-family: var(--font-main);"></textarea>
       
       <label id="lbl-color">&gt; SELECT PRODUCT COLOR *</label>
-      <select name="Product Color" id="form-color" class="retro-select" required></select>
+      <select name="Product Color" id="form-color" class="retro-select" required onchange="handleCheckoutColorChange()"></select>
 
       <label id="lbl-addons">&gt; CHOOSE ADD-ONS *</label>
       <select name="Add-ons" id="form-addons" class="retro-select" required onchange="updateCheckoutTotal()"></select>
@@ -518,11 +518,11 @@ details > summary::-webkit-details-marker { display: none; }
     ⚡ HUGE SAVINGS DROPPED ⚡ CAMERAS SHIP FREE ⚡ VIP ACCESS GRANTED
   </div>
   
-  <div class="page-nav">
-    <div class="page-tab active" id="tab1" onclick="showPage(1)">LVL 1: CAMS</div>
-    <div class="page-tab" id="tab2" onclick="showPage(2)">LVL 2: DECOR</div>
-    <div class="page-tab" id="tab3" onclick="showPage(3)">LVL 3: PRANK</div>
-    <div class="page-tab" id="tab4" onclick="showPage(4)">LVL 4: HEAL</div>
+  <div class="page-nav" id="pageNavContainer">
+    <div class="page-tab active" id="tab1" onclick="showPage(1, true)">LVL 1: CAMS</div>
+    <div class="page-tab" id="tab2" onclick="showPage(2, true)">LVL 2: DECOR</div>
+    <div class="page-tab" id="tab3" onclick="showPage(3, true)">LVL 3: PRANK</div>
+    <div class="page-tab" id="tab4" onclick="showPage(4, true)">LVL 4: HEAL</div>
   </div>
   
   <!-- LVL 1 (CAMERAS) -->
@@ -593,9 +593,9 @@ details > summary::-webkit-details-marker { display: none; }
   <!-- LVL 2 (DECOR - MIRROR & LAMP) -->
   <div class="cat-body" id="page2Body" style="display:none;">
     <div class="section-label">&gt; INDUSTRIAL &amp; NEON AESTHETICS</div>
-    <div class="cam-grid">
+    <div class="cam-grid" id="decorGrid">
       <!-- MIRROR -->
-      <div class="cam-card">
+      <div class="cam-card" id="cardMirror">
         <div class="img-wrapper">
           <div class="live-watch">🔥 SHOP FAVORITE</div>
           <img src="mirror_placeholder.jpg" class="cam-img" alt="Traffic Mirror" loading="lazy" decoding="async" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'300\' height=\'200\'><rect width=\'100%\' height=\'100%\' fill=\'#333\'/><text x=\'50%\' y=\'50%\' font-family=\'monospace\' font-size=\'14\' fill=\'#fff\' dominant-baseline=\'middle\' text-anchor=\'middle\'>IMG MISSING</text></svg>'" />
@@ -624,7 +624,7 @@ details > summary::-webkit-details-marker { display: none; }
       </div>
 
       <!-- LAMP -->
-      <div class="cam-card">
+      <div class="cam-card" id="cardLamp">
         <div class="img-wrapper">
           <div class="live-watch">🔥 COZY VIBES</div>
           <img src="lamp_placeholder.jpg" class="cam-img" alt="Retro Lamp" loading="lazy" decoding="async" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'300\' height=\'200\'><rect width=\'100%\' height=\'100%\' fill=\'#333\'/><text x=\'50%\' y=\'50%\' font-family=\'monospace\' font-size=\'14\' fill=\'#fff\' dominant-baseline=\'middle\' text-anchor=\'middle\'>IMG MISSING</text></svg>'" />
@@ -735,6 +735,19 @@ details > summary::-webkit-details-marker { display: none; }
   <div class="float-btn wa-btn" onclick="window.open('https://wa.me/8801961515240?text=Hi!%20I%20have%20a%20question%20about%20Silly%20Socks', '_blank')" aria-label="Chat on WhatsApp">
     <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
   </div>
+  <div class="float-btn insta-btn" onclick="window.open('https://www.instagram.com/your.sillysocks/', '_blank')" aria-label="Instagram">
+    <svg viewBox="0 0 448 512" xmlns="http://www.w3.org/2000/svg">
+      <path d="M224.1 141c-63.6 0-114.9 51.3-114.9 114.9s51.3 114.9 114.9 114.9S339 319.5 339 255.9 287.7 141 224.1 141zm0 189.6c-41.1 0-74.7-33.5-74.7-74.7s33.5-74.7 74.7-74.7 74.7 33.5 74.7 74.7-33.6 74.7-74.7 74.7zm146.4-194.3c0 14.9-12 26.8-26.8 26.8-14.9 0-26.8-12-26.8-26.8s12-26.8 26.8-26.8 26.8 12 26.8 26.8zm76.1 27.2c-1.7-35.9-9.9-67.7-36.2-93.9-26.2-26.2-58-34.4-93.9-36.2-37-2.1-147.9-2.1-184.9 0-35.8 1.7-67.6 9.9-93.9 36.1s-34.4 58-36.2 93.9c-2.1 37-2.1 147.9 0 184.9 1.7 35.9 9.9 67.7 36.2 93.9s58 34.4 93.9 36.2c37 2.1 147.9 2.1 184.9 0 35.9-1.7 67.7-9.9 93.9-36.2 26.2-26.2 34.4-58 36.2-93.9 2.1-37 2.1-147.8 0-184.8zM398.8 388c-7.8 19.6-22.9 34.7-42.6 42.6-29.5 11.7-99.5 9-132.1 9s-102.7 2.6-132.1-9c-19.6-7.8-34.7-22.9-42.6-42.6-11.7-29.5-9-99.5-9-132.1s-2.6-102.7 9-132.1c7.8-19.6 22.9-34.7 42.6-42.6 29.5-11.7 99.5-9 132.1-9s102.7-2.6 132.1 9c19.6 7.8 34.7 22.9 42.6 42.6 11.7 29.5 9 99.5 9 132.1s2.7 102.7-9 132.1z"/>
+    </svg>
+  </div>
+</div>
+
+<div id="social-proof-toast">
+  <img src="cam_black.jpg" id="toast-img-src" class="toast-img" alt="Purchased Item">
+  <div>
+    <div class="toast-text" id="toast-msg">Someone from Dhaka just bought Midnight Black!</div>
+    <div class="toast-time" id="toast-time">2 mins ago</div>
+  </div>
 </div>
 
 <script>
@@ -755,6 +768,7 @@ let isWinnableGame = false;
 let isMirrorPreorder = false;
 let isPrankPreorder = false; 
 let isLampPreorder = false;
+let hasUserClickedTab = false;
 
 let cachedWallpaperFile = null;
 
@@ -1177,6 +1191,12 @@ function updateDispatchText(isPreorder) {
         dispatchEl.innerHTML = "✅ ORDERS PACKED &amp; DISPATCHED WITHIN 24-48H";
         dispatchEl.style.color = "";
     }
+}
+
+function handleCheckoutColorChange() {
+  const colorVal = document.getElementById('form-color').value;
+  const isPre = colorVal.includes("[PRE-ORDER]");
+  updateDispatchText(isPre);
 }
 
 function updateCheckoutTotal() {
@@ -1768,7 +1788,7 @@ function getPriceHTML(isWithSD) {
   }
 }
 
-// --- CAMERAS DATA & RENDER (with defaultOrder for dynamic sorting) ---
+// --- CAMERAS DATA & RENDER ---
 var camColors = [
   { defaultOrder: 0, n:"Midnight Black", v:"Neon noir aesthetic", i:"cam_black.jpg", c:"Black", swatch:"#111111", badge:"🔥 BESTSELLER", soldOut: false },
   { defaultOrder: 1, n:"Synthwave Blue", v:"Cool coastal feel", i:"cam_blue.jpg", c:"Blue", swatch:"#3d8bff", badge:"✨ FAN FAVORITE", soldOut: false },
@@ -1845,12 +1865,12 @@ function selectColor(i) {
   renderSwatches();
 }
 
-// --- WATERBAG DATA & RENDER (with defaultOrder for dynamic sorting) ---
+// --- WATERBAG DATA & RENDER ---
 var waterbagColors = [
-  { defaultOrder: 0, n:"Comfort Waterbag (Pink)", c:"Waterbag Pink", swatch:"#ffb6c1", i:"waterbag_pink.jpg", soldOut: false },
-  { defaultOrder: 1, n:"Comfort Waterbag (Blue)", c:"Waterbag Blue", swatch:"#87ceeb", i:"waterbag_blue.jpg", soldOut: false },
-  { defaultOrder: 2, n:"Comfort Waterbag (Grey)", c:"Waterbag Grey", swatch:"#aaaaaa", i:"waterbag_grey.jpg", soldOut: false },
-  { defaultOrder: 3, n:"Comfort Waterbag (Beige)", c:"Waterbag Beige", swatch:"#f5f5dc", i:"waterbag_beige.jpg", soldOut: false }
+  { defaultOrder: 0, n:"Comfort Waterbag (Pink)", c:"Pink", swatch:"#ffb6c1", i:"waterbag_pink.jpg", soldOut: false },
+  { defaultOrder: 1, n:"Comfort Waterbag (Blue)", c:"Blue", swatch:"#87ceeb", i:"waterbag_blue.jpg", soldOut: false },
+  { defaultOrder: 2, n:"Comfort Waterbag (Grey)", c:"Grey", swatch:"#aaaaaa", i:"waterbag_grey.jpg", soldOut: false },
+  { defaultOrder: 3, n:"Comfort Waterbag (Beige)", c:"Beige", swatch:"#f5f5dc", i:"waterbag_beige.jpg", soldOut: false }
 ];
 var currentWaterbagIdx = 0;
 
@@ -2020,26 +2040,31 @@ function updateWaterbagPrice() {
   }
 }
 
-function showPage(page) {
-  soundClick();
-  document.getElementById('tab1').className = 'page-tab' + (page === 1 ? ' active' : '');
-  document.getElementById('tab2').className = 'page-tab' + (page === 2 ? ' active' : '');
-  document.getElementById('tab3').className = 'page-tab' + (page === 3 ? ' active' : '');
-  document.getElementById('tab4').className = 'page-tab' + (page === 4 ? ' active' : '');
+function showPage(page, isManual = false) {
+  if (isManual) {
+    hasUserClickedTab = true;
+    soundClick();
+  }
   
-  const bodies = ['page1Body', 'page2Body', 'page3Body', 'page4Body'];
-  bodies.forEach(id => document.getElementById(id).style.display = 'none');
+  for (let i = 1; i <= 4; i++) {
+    const tabEl = document.getElementById('tab' + i);
+    const bodyEl = document.getElementById('page' + i + 'Body');
+    if (tabEl) tabEl.className = 'page-tab' + (page === i ? ' active' : '');
+    if (bodyEl) bodyEl.style.display = 'none';
+  }
   
   const newBody = document.getElementById('page' + page + 'Body');
-  newBody.style.display = 'block'; 
-  newBody.style.opacity = '0'; 
-  newBody.style.transform = 'translate3d(0, 15px, 0)';
-  
-  requestAnimationFrame(() => { 
-    newBody.style.transition = 'opacity 0.25s ease, transform 0.25s ease'; 
-    newBody.style.opacity = '1'; 
-    newBody.style.transform = 'translate3d(0, 0, 0)'; 
-  });
+  if (newBody) {
+    newBody.style.display = 'block'; 
+    newBody.style.opacity = '0'; 
+    newBody.style.transform = 'translate3d(0, 15px, 0)';
+    
+    requestAnimationFrame(() => { 
+      newBody.style.transition = 'opacity 0.25s ease, transform 0.25s ease'; 
+      newBody.style.opacity = '1'; 
+      newBody.style.transform = 'translate3d(0, 0, 0)'; 
+    });
+  }
 }
 
 const locations = ["Dhaka", "Chittagong", "Sylhet", "Rajshahi", "Khulna", "Uttara", "Mirpur", "Dhanmondi", "Bashundhara"];
@@ -2068,44 +2093,50 @@ function showToast() {
   setTimeout(() => { toast.classList.remove('show'); }, 4000);
 }
 
-// --- APPLY CACHED & FRESH DATA SEAMLESSLY (WITH DYNAMIC SORTING) ---
+// --- APPLY CACHED & FRESH DATA SEAMLESSLY (WITH COMPREHENSIVE DYNAMIC SHIFTING) ---
 function applyInventoryData(inventory) {
   
   // 1. DYNAMICALLY SORT CAMERAS
   camColors.forEach(col => {
-    if (inventory[col.c] === true) col.soldOut = true;
-    else if (inventory[col.c] === false) col.soldOut = false;
+    let keyMatches = [col.c, col.n];
+    for (let k of keyMatches) {
+      if (inventory[k] === true) { col.soldOut = true; break; }
+      if (inventory[k] === false) { col.soldOut = false; break; }
+    }
   });
   
   camColors.sort((a, b) => {
-    if (a.soldOut === b.soldOut) return a.defaultOrder - b.defaultOrder; // Keep original order if both are same status
-    return a.soldOut ? 1 : -1; // Push Sold Out to bottom
+    if (a.soldOut === b.soldOut) return a.defaultOrder - b.defaultOrder; 
+    return a.soldOut ? 1 : -1; 
   });
-  
-  selectColor(0); // Instantly select the first available camera
+  selectColor(0);
 
-  // 2. DYNAMICALLY SORT WATERBAGS
+  // 2. DYNAMICALLY SORT WATERBAGS (INDIVIDUAL TRACKING)
   waterbagColors.forEach(col => {
-    if (inventory[col.c] === true) col.soldOut = true;
-    else if (inventory[col.c] === false) col.soldOut = false;
+    let keyMatches = [
+      "Waterbag " + col.c, 
+      col.c + " Waterbag", 
+      col.c,
+      "Waterbag"
+    ];
+    for (let k of keyMatches) {
+      if (inventory[k] === true) { col.soldOut = true; break; }
+      if (inventory[k] === false) { col.soldOut = false; break; }
+    }
   });
   
   waterbagColors.sort((a, b) => {
     if (a.soldOut === b.soldOut) return a.defaultOrder - b.defaultOrder; 
     return a.soldOut ? 1 : -1; 
   });
-  
   selectWaterbagColor(0);
 
   // 3. Mirror Logic
-  let mirrorSoldOut = inventory["Mirror"];
-  if (mirrorSoldOut === undefined) mirrorSoldOut = true;
-  isMirrorPreorder = mirrorSoldOut;
-  
+  isMirrorPreorder = inventory["Mirror"] === true;
   let mBtn = document.getElementById("mirrorBuyBtn");
   let mWatermark = document.getElementById("mirrorWatermark");
   
-  if (mirrorSoldOut) {
+  if (isMirrorPreorder) {
     mBtn.innerText = "PRE-ORDER ITEM";
     mBtn.classList.remove("disabled-btn");
     mBtn.disabled = false;
@@ -2124,14 +2155,11 @@ function applyInventoryData(inventory) {
   }
   
   // 4. Pranks Logic
-  let prankSoldOut = inventory["Prank"];
-  if (prankSoldOut === undefined) prankSoldOut = true;
-  isPrankPreorder = prankSoldOut;
-  
+  isPrankPreorder = inventory["Prank"] === true;
   let pBtn = document.getElementById("prankBuyBtn");
   let pWatermark = document.getElementById("prankWatermark");
   
-  if (prankSoldOut) {
+  if (isPrankPreorder) {
     pBtn.innerText = "PRE-ORDER ITEM";
     pBtn.classList.remove("disabled-btn");
     pBtn.disabled = false;
@@ -2150,14 +2178,11 @@ function applyInventoryData(inventory) {
   }
 
   // 5. Lamp Logic
-  let lampSoldOut = inventory["Lamp"];
-  if (lampSoldOut === undefined) lampSoldOut = true;
-  isLampPreorder = lampSoldOut;
-  
+  isLampPreorder = inventory["Lamp"] === true;
   let lBtn = document.getElementById("lampBuyBtn");
   let lWatermark = document.getElementById("lampWatermark");
   
-  if (lampSoldOut) {
+  if (isLampPreorder) {
     lBtn.innerText = "PRE-ORDER ITEM";
     lBtn.classList.remove("disabled-btn");
     lBtn.disabled = false;
@@ -2173,6 +2198,50 @@ function applyInventoryData(inventory) {
     lBtn.style.background = '';
     lBtn.style.color = '';
     lWatermark.style.display = "none";
+  }
+
+  // 6. DYNAMICALLY SHIFT DECOR PRODUCTS (MIRROR VS LAMP)
+  const decorGrid = document.getElementById('decorGrid');
+  const cardMirror = document.getElementById('cardMirror');
+  const cardLamp = document.getElementById('cardLamp');
+  if (decorGrid && cardMirror && cardLamp) {
+    if (isMirrorPreorder && !isLampPreorder) {
+      // Lamp is In Stock, Mirror is Pre-Order -> Lamp goes first!
+      decorGrid.appendChild(cardLamp);
+      decorGrid.appendChild(cardMirror);
+    } else {
+      // Mirror goes first
+      decorGrid.appendChild(cardMirror);
+      decorGrid.appendChild(cardLamp);
+    }
+  }
+
+  // 7. DYNAMICALLY SHIFT CATEGORY TABS (IN-STOCK CATEGORIES FIRST)
+  const categoryTabs = [
+    { id: 1, tabId: 'tab1', defaultOrder: 1, isSoldOut: () => camColors.every(c => c.soldOut) },
+    { id: 2, tabId: 'tab2', defaultOrder: 2, isSoldOut: () => isMirrorPreorder && isLampPreorder },
+    { id: 3, tabId: 'tab3', defaultOrder: 3, isSoldOut: () => isPrankPreorder },
+    { id: 4, tabId: 'tab4', defaultOrder: 4, isSoldOut: () => waterbagColors.every(c => c.soldOut) }
+  ];
+
+  categoryTabs.sort((a, b) => {
+    const aOut = a.isSoldOut();
+    const bOut = b.isSoldOut();
+    if (aOut === bOut) return a.defaultOrder - b.defaultOrder;
+    return aOut ? 1 : -1;
+  });
+
+  const pageNav = document.getElementById('pageNavContainer');
+  if (pageNav) {
+    categoryTabs.forEach(cat => {
+      const tabEl = document.getElementById(cat.tabId);
+      if (tabEl) pageNav.appendChild(tabEl);
+    });
+  }
+
+  // If the user hasn't manually selected a tab, open directly on the top in-stock tab
+  if (!hasUserClickedTab) {
+    showPage(categoryTabs[0].id, false);
   }
 }
 
@@ -2200,7 +2269,7 @@ function fetchInventory() {
 
 // TRIGGER FETCH ON PAGE LOAD
 fetchInventory();
-showPage(1);
+showPage(1, false);
 </script>
 </body>
 </html>
