@@ -208,7 +208,7 @@ body {
 .section-label { font-family: var(--font-retro); font-size: 14px; color: var(--text); margin-bottom: 1.5rem; text-shadow: 2px 2px 0 var(--accent-1); line-height: 1.4; }
 
 .variant-toggle { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 15px; }
-.toggle-opt { position: relative; font-family: var(--font-retro); font-size: 9px; color: var(--accent-2); background: #000; border: 2px solid var(--accent-2); padding: 14px 5px; cursor: pointer; text-align: center; transition: all 0.15s ease; display: flex; flex-direction: column; justify-content: center; align-items: gap: 4px; line-height: 1.4;}
+.toggle-opt { position: relative; font-family: var(--font-retro); font-size: 9px; color: var(--accent-2); background: #000; border: 2px solid var(--accent-2); padding: 14px 5px; cursor: pointer; text-align: center; transition: all 0.15s ease; display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 4px; line-height: 1.4;}
 .toggle-opt input { display: none; }
 .toggle-opt:has(input:checked) { background: var(--accent-1); color: #fff; border-color: #fff; box-shadow: 4px 4px 0 #fff; transform: translate3d(-2px, -2px, 0); text-shadow: 1px 1px 0 #000;}
 
@@ -755,7 +755,6 @@ let isWinnableGame = false;
 let isMirrorPreorder = false;
 let isPrankPreorder = false; 
 let isLampPreorder = false;
-let isWaterbagPreorder = false;
 
 let cachedWallpaperFile = null;
 
@@ -1378,12 +1377,14 @@ function openCheckoutLamp() {
 function openCheckoutWaterbag() {
   soundClick();
   currentCheckoutProduct = 'waterbag';
-  updateDispatchText(isWaterbagPreorder);
+  
+  let chosenColor = waterbagColors[currentWaterbagIdx].c;
+  let isWBPreorder = waterbagColors[currentWaterbagIdx].soldOut;
+  updateDispatchText(isWBPreorder);
   
   document.getElementById('catalog').style.opacity = "0";
   
-  let chosenColor = waterbagColors[currentWaterbagIdx].c;
-  let defaultItemColor = isWaterbagPreorder ? `[PRE-ORDER] ${chosenColor}` : chosenColor;
+  let defaultItemColor = isWBPreorder ? `[PRE-ORDER] ${chosenColor}` : chosenColor;
   
   setTimeout(() => {
     document.getElementById('catalog').style.display = "none";
@@ -1391,7 +1392,7 @@ function openCheckoutWaterbag() {
     let colorDropdown = document.getElementById('form-color');
     let optionsHTML = "";
     waterbagColors.forEach(c => {
-       let val = isWaterbagPreorder ? `[PRE-ORDER] ${c.c}` : c.c;
+       let val = c.soldOut ? `[PRE-ORDER] ${c.c}` : c.c;
        optionsHTML += `<option value="${val}">${val}</option>`;
     });
     colorDropdown.innerHTML = optionsHTML;
@@ -1767,17 +1768,17 @@ function getPriceHTML(isWithSD) {
   }
 }
 
-// --- CAMERAS DATA & RENDER ---
+// --- CAMERAS DATA & RENDER (with defaultOrder for dynamic sorting) ---
 var camColors = [
-  { n:"Midnight Black", v:"Neon noir aesthetic", i:"cam_black.jpg", c:"Black", swatch:"#111111", badge:"🔥 BESTSELLER", soldOut: false },
-  { n:"Synthwave Blue", v:"Cool coastal feel", i:"cam_blue.jpg", c:"Blue", swatch:"#3d8bff", badge:"✨ FAN FAVORITE", soldOut: false },
-  { n:"Cloud 99 White", v:"Clean & modern", i:"cam_white.jpg", c:"White", swatch:"#ffffff", badge:"🔥 BESTSELLER", soldOut: false },
-  { n:"Clear Gameboy", v:"Raw Y2K tech", i:"cam_transparent.jpg", c:"Transparent", swatch:"#d9f7ff", badge:"❌ SOLD OUT", soldOut: true },
-  { n:"Glitch Green", v:"90s personality", i:"cam_green.jpg", c:"Green", swatch:"#39ff6a", badge:"❌ SOLD OUT", soldOut: true },
-  { n:"Arcade Red", v:"Bold streetwear energy", i:"cam_red.jpg", c:"Red", swatch:"#ff2b2b", badge:"✨ FAN FAVORITE", soldOut: false },
-  { n:"Pac-Maze Yellow", v:"Sunny 80s nostalgia", i:"cam_yellow.jpg", c:"Yellow", swatch:"#ffe23d", badge:"✨ FAN FAVORITE", soldOut: false },
-  { n:"Mint Condition", v:"Rare retro drop", i:"cam_lightgreen.jpg", c:"Light Green", swatch:"#b6ffcf", badge:"✨ FAN FAVORITE", soldOut: false },
-  { n:"Console Grey", v:"Classic 8-bit vibes", i:"cam_grey.jpg", c:"Grey", swatch:"#9a9a9a", badge:"✨ FAN FAVORITE", soldOut: false }
+  { defaultOrder: 0, n:"Midnight Black", v:"Neon noir aesthetic", i:"cam_black.jpg", c:"Black", swatch:"#111111", badge:"🔥 BESTSELLER", soldOut: false },
+  { defaultOrder: 1, n:"Synthwave Blue", v:"Cool coastal feel", i:"cam_blue.jpg", c:"Blue", swatch:"#3d8bff", badge:"✨ FAN FAVORITE", soldOut: false },
+  { defaultOrder: 2, n:"Cloud 99 White", v:"Clean & modern", i:"cam_white.jpg", c:"White", swatch:"#ffffff", badge:"🔥 BESTSELLER", soldOut: false },
+  { defaultOrder: 3, n:"Clear Gameboy", v:"Raw Y2K tech", i:"cam_transparent.jpg", c:"Transparent", swatch:"#d9f7ff", badge:"❌ SOLD OUT", soldOut: true },
+  { defaultOrder: 4, n:"Glitch Green", v:"90s personality", i:"cam_green.jpg", c:"Green", swatch:"#39ff6a", badge:"❌ SOLD OUT", soldOut: true },
+  { defaultOrder: 5, n:"Arcade Red", v:"Bold streetwear energy", i:"cam_red.jpg", c:"Red", swatch:"#ff2b2b", badge:"✨ FAN FAVORITE", soldOut: false },
+  { defaultOrder: 6, n:"Pac-Maze Yellow", v:"Sunny 80s nostalgia", i:"cam_yellow.jpg", c:"Yellow", swatch:"#ffe23d", badge:"✨ FAN FAVORITE", soldOut: false },
+  { defaultOrder: 7, n:"Mint Condition", v:"Rare retro drop", i:"cam_lightgreen.jpg", c:"Light Green", swatch:"#b6ffcf", badge:"✨ FAN FAVORITE", soldOut: false },
+  { defaultOrder: 8, n:"Console Grey", v:"Classic 8-bit vibes", i:"cam_grey.jpg", c:"Grey", swatch:"#9a9a9a", badge:"✨ FAN FAVORITE", soldOut: false }
 ];
 var currentColorIdx = 0;
 var currentSD = false;
@@ -1844,12 +1845,12 @@ function selectColor(i) {
   renderSwatches();
 }
 
-// --- WATERBAG DATA & RENDER ---
+// --- WATERBAG DATA & RENDER (with defaultOrder for dynamic sorting) ---
 var waterbagColors = [
-  { n:"Comfort Waterbag (Pink)", c:"Pink", swatch:"#ffb6c1", i:"waterbag_pink.jpg" },
-  { n:"Comfort Waterbag (Blue)", c:"Blue", swatch:"#87ceeb", i:"waterbag_blue.jpg" },
-  { n:"Comfort Waterbag (Grey)", c:"Grey", swatch:"#aaaaaa", i:"waterbag_grey.jpg" },
-  { n:"Comfort Waterbag (Beige)", c:"Beige", swatch:"#f5f5dc", i:"waterbag_beige.jpg" }
+  { defaultOrder: 0, n:"Comfort Waterbag (Pink)", c:"Waterbag Pink", swatch:"#ffb6c1", i:"waterbag_pink.jpg", soldOut: false },
+  { defaultOrder: 1, n:"Comfort Waterbag (Blue)", c:"Waterbag Blue", swatch:"#87ceeb", i:"waterbag_blue.jpg", soldOut: false },
+  { defaultOrder: 2, n:"Comfort Waterbag (Grey)", c:"Waterbag Grey", swatch:"#aaaaaa", i:"waterbag_grey.jpg", soldOut: false },
+  { defaultOrder: 3, n:"Comfort Waterbag (Beige)", c:"Waterbag Beige", swatch:"#f5f5dc", i:"waterbag_beige.jpg", soldOut: false }
 ];
 var currentWaterbagIdx = 0;
 
@@ -1872,6 +1873,31 @@ function selectWaterbagColor(i) {
   var col = waterbagColors[i];
   document.getElementById('waterbagImg').src = col.i;
   document.getElementById('waterbagName').innerText = col.n.toUpperCase();
+  
+  var watermark = document.getElementById('waterbagWatermark');
+  var buyBtn = document.getElementById('waterbagBuyBtn');
+
+  if(col.soldOut) {
+    watermark.style.display = 'flex';
+    watermark.querySelector('.watermark-text').innerText = 'PRE-ORDER';
+    watermark.querySelector('.watermark-text').style.color = '#ffff00';
+    watermark.querySelector('.watermark-text').style.borderColor = '#ffff00';
+    
+    buyBtn.innerText = 'PRE-ORDER ITEM';
+    buyBtn.classList.remove('disabled-btn');
+    buyBtn.disabled = false;
+    buyBtn.style.background = 'var(--accent-3)';
+    buyBtn.style.color = '#000';
+  } else {
+    watermark.style.display = 'none';
+    
+    buyBtn.innerText = 'SECURE ITEM';
+    buyBtn.classList.remove('disabled-btn');
+    buyBtn.disabled = false;
+    buyBtn.style.background = '';
+    buyBtn.style.color = '';
+  }
+
   renderWaterbagSwatches();
 }
 
@@ -1893,7 +1919,7 @@ function buyFlagship() {
 
 // INITIALIZE SWATCHES
 renderSwatches();
-selectColor(0); // This now loads Midnight Black by default!
+selectColor(0); 
 updateFlagshipPrice(false);
 
 renderWaterbagSwatches();
@@ -2042,20 +2068,36 @@ function showToast() {
   setTimeout(() => { toast.classList.remove('show'); }, 4000);
 }
 
-// --- APPLY CACHED & FRESH DATA SEAMLESSLY ---
+// --- APPLY CACHED & FRESH DATA SEAMLESSLY (WITH DYNAMIC SORTING) ---
 function applyInventoryData(inventory) {
-  // Cams
+  
+  // 1. DYNAMICALLY SORT CAMERAS
   camColors.forEach(col => {
-    if (inventory[col.c] === true) { 
-      col.soldOut = true;
-      col.badge = "🔥 BESTSELLER"; 
-    } else {
-      col.soldOut = false;
-    }
+    if (inventory[col.c] === true) col.soldOut = true;
+    else if (inventory[col.c] === false) col.soldOut = false;
   });
-  selectColor(currentColorIdx);
+  
+  camColors.sort((a, b) => {
+    if (a.soldOut === b.soldOut) return a.defaultOrder - b.defaultOrder; // Keep original order if both are same status
+    return a.soldOut ? 1 : -1; // Push Sold Out to bottom
+  });
+  
+  selectColor(0); // Instantly select the first available camera
 
-  // Mirror
+  // 2. DYNAMICALLY SORT WATERBAGS
+  waterbagColors.forEach(col => {
+    if (inventory[col.c] === true) col.soldOut = true;
+    else if (inventory[col.c] === false) col.soldOut = false;
+  });
+  
+  waterbagColors.sort((a, b) => {
+    if (a.soldOut === b.soldOut) return a.defaultOrder - b.defaultOrder; 
+    return a.soldOut ? 1 : -1; 
+  });
+  
+  selectWaterbagColor(0);
+
+  // 3. Mirror Logic
   let mirrorSoldOut = inventory["Mirror"];
   if (mirrorSoldOut === undefined) mirrorSoldOut = true;
   isMirrorPreorder = mirrorSoldOut;
@@ -2081,7 +2123,7 @@ function applyInventoryData(inventory) {
     mWatermark.style.display = "none";
   }
   
-  // Pranks
+  // 4. Pranks Logic
   let prankSoldOut = inventory["Prank"];
   if (prankSoldOut === undefined) prankSoldOut = true;
   isPrankPreorder = prankSoldOut;
@@ -2107,7 +2149,7 @@ function applyInventoryData(inventory) {
     pWatermark.style.display = "none";
   }
 
-  // Lamp
+  // 5. Lamp Logic
   let lampSoldOut = inventory["Lamp"];
   if (lampSoldOut === undefined) lampSoldOut = true;
   isLampPreorder = lampSoldOut;
@@ -2131,32 +2173,6 @@ function applyInventoryData(inventory) {
     lBtn.style.background = '';
     lBtn.style.color = '';
     lWatermark.style.display = "none";
-  }
-
-  // Waterbag
-  let waterbagSoldOut = inventory["Waterbag"];
-  if (waterbagSoldOut === undefined) waterbagSoldOut = true;
-  isWaterbagPreorder = waterbagSoldOut;
-  
-  let wBtn = document.getElementById("waterbagBuyBtn");
-  let wWatermark = document.getElementById("waterbagWatermark");
-  
-  if (waterbagSoldOut) {
-    wBtn.innerText = "PRE-ORDER ITEM";
-    wBtn.classList.remove("disabled-btn");
-    wBtn.disabled = false;
-    wBtn.style.background = 'var(--accent-3)';
-    wBtn.style.color = '#000';
-    
-    wWatermark.style.display = "flex";
-    wWatermark.querySelector('.watermark-text').innerText = 'PRE-ORDER';
-    wWatermark.querySelector('.watermark-text').style.color = '#ffff00';
-    wWatermark.querySelector('.watermark-text').style.borderColor = '#ffff00';
-  } else {
-    wBtn.innerText = "SECURE ITEM";
-    wBtn.style.background = '';
-    wBtn.style.color = '';
-    wWatermark.style.display = "none";
   }
 }
 
