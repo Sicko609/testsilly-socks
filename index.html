@@ -104,6 +104,27 @@ body {
 #tictactoe-screen, #checkout-screen, #success-screen, #wallpaper-modal { display: none; opacity: 0; transform: scale(0.95); }
 #tictactoe-screen.visible, #checkout-screen.visible, #success-screen.visible, #wallpaper-modal.visible { opacity: 1; transform: scale(1); }
 
+/* --- GLOBAL FLOATING TOP-BACK BUTTON --- */
+.top-back-btn {
+  position: absolute;
+  top: max(15px, env(safe-area-inset-top));
+  left: 15px;
+  background: var(--bg);
+  color: var(--accent-2);
+  border: 2px solid var(--accent-2);
+  font-family: var(--font-retro);
+  font-size: 10px;
+  padding: 10px 14px;
+  cursor: pointer;
+  z-index: 9999;
+  box-shadow: 3px 3px 0 var(--accent-2);
+  transition: transform 0.1s;
+}
+.top-back-btn:active {
+  transform: translate3d(3px, 3px, 0);
+  box-shadow: none;
+}
+
 /* --- SCREEN 1: HERO & ARCADE BUTTONS --- */
 #hero-screen { cursor: pointer; display: flex; opacity: 1; transform: scale(1); }
 .hero-logo { font-family: var(--font-retro); font-size: clamp(24px, 8vw, 60px); text-align: center; color: #fff; text-shadow: 0 0 10px var(--accent-1), 4px 4px 0px var(--accent-2); margin-bottom: 10px; z-index: 10; padding: 0 15px; letter-spacing: 1px; }
@@ -120,7 +141,7 @@ body {
 .arcade-btn.shop .btn-title { color: #0f0; }
 .arcade-btn .btn-sub { font-family: var(--font-main); font-size: 11px; font-weight: 900; color: #fff; letter-spacing: 1px; text-align: center;}
 
-.hero-sound-toggle { position: fixed; top: 16px; right: 16px; z-index: 30; font-family: var(--font-retro); font-size: 8px; background: #000; color: var(--accent-2); border: 2px solid var(--accent-2); padding: 10px 12px; cursor: pointer; }
+.hero-sound-toggle { position: fixed; top: max(16px, env(safe-area-inset-top)); right: 16px; z-index: 30; font-family: var(--font-retro); font-size: 8px; background: #000; color: var(--accent-2); border: 2px solid var(--accent-2); padding: 10px 12px; cursor: pointer; }
 
 #sock-rain { position: absolute; top: 0; left: 0; width: 100%; height: 100%; overflow: hidden; pointer-events: none; z-index: 1;}
 .falling-sock { position: absolute; top: -10%; font-size: 32px; animation: dropSock linear infinite; will-change: transform; }
@@ -316,6 +337,7 @@ details > summary::-webkit-details-marker { display: none; }
 
 <!-- SCREEN 2: TIC-TAC-TOE -->
 <div id="tictactoe-screen" class="screen-layer">
+  <button class="top-back-btn" onclick="skipToCatalog()">[ &lt; GO BACK ]</button>
   <div class="retro-box">
     <div class="gate-title" style="margin-bottom: 20px;">BEAT THE IMPOSSIBLE BOT FOR 5% OFF</div>
     <p class="gate-sub" id="ttt-status">PLAYER 1 IS 'X'. YOUR TURN!</p>
@@ -341,6 +363,7 @@ details > summary::-webkit-details-marker { display: none; }
 
 <!-- SCREEN 4: CHECKOUT -->
 <div id="checkout-screen" class="screen-layer">
+  <button class="top-back-btn" onclick="cancelCheckout()">[ &lt; GO BACK ]</button>
   <div class="retro-box">
     <div id="checkout-savings-banner" class="checkout-hype-banner">
       ⚡ YOU ARE SAVING ৳XXX TODAY ⚡
@@ -438,6 +461,7 @@ details > summary::-webkit-details-marker { display: none; }
 
 <!-- SCREEN 5: STAGE CLEAR -->
 <div id="success-screen" class="screen-layer">
+  <button class="top-back-btn" onclick="closeSuccessScreen()">[ &lt; GO BACK ]</button>
   <div class="retro-box" style="padding: 3rem 1.5rem;">
     <h2 class="gate-title blink-text" style="color: #0f0; font-size: 24px; text-shadow: 0 0 15px #0f0; margin-bottom: 25px;">STAGE CLEAR</h2>
     <p class="gate-sub" style="color: #fff; font-size: 13px;">&gt;&gt; ORDER DATA TRANSMITTED &lt;&lt;</p>
@@ -783,6 +807,17 @@ function unlockAudioMobile() {
 
 ['click', 'touchstart', 'touchend'].forEach(evt => {
   document.body.addEventListener(evt, unlockAudioMobile, true);
+});
+
+// Native Back Button Handler for Mobile
+window.addEventListener('popstate', function(event) {
+  if (document.getElementById('checkout-screen').classList.contains('visible')) {
+    cancelCheckout();
+  } else if (document.getElementById('tictactoe-screen').classList.contains('visible')) {
+    skipToCatalog();
+  } else if (document.getElementById('success-screen').classList.contains('visible')) {
+    closeSuccessScreen();
+  }
 });
 
 function toggleSound(e) {
