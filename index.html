@@ -498,8 +498,7 @@ details > summary::-webkit-details-marker { display: none; }
     <div class="page-tab active" id="tab1" onclick="showPage(1)">LVL 1: CAMS</div>
     <div class="page-tab" id="tab2" onclick="showPage(2)">LVL 2: DECOR</div>
     <div class="page-tab" id="tab3" onclick="showPage(3)">LVL 3: PRANK</div>
-    <div class="page-tab" id="tab4" onclick="showPage(4)">LVL 4: GLOW</div>
-    <div class="page-tab" id="tab5" onclick="showPage(5)">LVL 5: HEAL</div>
+    <div class="page-tab" id="tab4" onclick="showPage(4)">LVL 4: HEAL</div>
   </div>
   
   <!-- LVL 1 (CAMERAS) -->
@@ -567,10 +566,11 @@ details > summary::-webkit-details-marker { display: none; }
     </div>
   </div>
 
-  <!-- LVL 2 (DECOR) -->
+  <!-- LVL 2 (DECOR - MIRROR & LAMP) -->
   <div class="cat-body" id="page2Body" style="display:none;">
-    <div class="section-label">&gt; INDUSTRIAL AESTHETICS</div>
-    <div id="mirrorGrid" class="cam-grid">
+    <div class="section-label">&gt; INDUSTRIAL &amp; NEON AESTHETICS</div>
+    <div class="cam-grid">
+      <!-- MIRROR -->
       <div class="cam-card">
         <div class="img-wrapper">
           <div class="live-watch">🔥 SHOP FAVORITE</div>
@@ -598,13 +598,42 @@ details > summary::-webkit-details-marker { display: none; }
           <button class="buy-btn" id="mirrorBuyBtn" onclick="openCheckoutMirror()">SECURE ITEM</button>
         </div>
       </div>
+
+      <!-- LAMP -->
+      <div class="cam-card">
+        <div class="img-wrapper">
+          <div class="live-watch">🔥 COZY VIBES</div>
+          <img src="lamp_placeholder.jpg" class="cam-img" alt="Retro Lamp" loading="lazy" decoding="async" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'300\' height=\'200\'><rect width=\'100%\' height=\'100%\' fill=\'#333\'/><text x=\'50%\' y=\'50%\' font-family=\'monospace\' font-size=\'14\' fill=\'#fff\' dominant-baseline=\'middle\' text-anchor=\'middle\'>IMG MISSING</text></svg>'" />
+          <div class="watermark-overlay" id="lampWatermark" style="display: none;">
+            <div class="watermark-text" style="color:#ffff00; border-color:#ffff00;">PRE-ORDER</div>
+          </div>
+        </div>
+        <div class="cam-info">
+          <div class="cam-name">RETRO GLOW LAMP</div>
+          <div class="cam-vibe">AMBIENT ROOM LIGHTING</div>
+          
+          <div class="cam-perks" style="margin-top: 10px;">
+            <span class="perk perk-highlight">&gt;&gt; STANDARD DELIVERY APPLIES (৳100)</span>
+            <span class="perk">&gt;&gt; WARM GLOW</span>
+          </div>
+          
+          <div class="variant-toggle" style="grid-template-columns: 1fr;">
+            <label class="toggle-opt">
+              <input type="radio" name="lamp_variant" value="standard" checked onchange="soundClick();"> <span>STANDARD EDITION</span>
+            </label>
+          </div>
+          
+          <div class="price-row" id="lampPriceRow"></div>
+          <button class="buy-btn" id="lampBuyBtn" onclick="openCheckoutLamp()">SECURE ITEM</button>
+        </div>
+      </div>
     </div>
   </div>
 
   <!-- LVL 3 (PRANKS) -->
   <div class="cat-body" id="page3Body" style="display:none;">
     <div class="section-label">&gt; MISCHIEF UNLOCKED</div>
-    <div id="prankGrid" class="cam-grid">
+    <div class="cam-grid">
       <div class="cam-card">
         <div class="img-wrapper">
           <div class="live-watch">🔥 VIRAL ITEM</div>
@@ -636,44 +665,10 @@ details > summary::-webkit-details-marker { display: none; }
     </div>
   </div>
 
-  <!-- LVL 4 (LAMP) -->
+  <!-- LVL 4 (WATERBAG) -->
   <div class="cat-body" id="page4Body" style="display:none;">
-    <div class="section-label">&gt; NEON NIGHTS</div>
-    <div id="lampGrid" class="cam-grid">
-      <div class="cam-card">
-        <div class="img-wrapper">
-          <div class="live-watch">🔥 COZY VIBES</div>
-          <img src="lamp_placeholder.jpg" class="cam-img" alt="Retro Lamp" loading="lazy" decoding="async" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'300\' height=\'200\'><rect width=\'100%\' height=\'100%\' fill=\'#333\'/><text x=\'50%\' y=\'50%\' font-family=\'monospace\' font-size=\'14\' fill=\'#fff\' dominant-baseline=\'middle\' text-anchor=\'middle\'>IMG MISSING</text></svg>'" />
-          <div class="watermark-overlay" id="lampWatermark" style="display: none;">
-            <div class="watermark-text" style="color:#ffff00; border-color:#ffff00;">PRE-ORDER</div>
-          </div>
-        </div>
-        <div class="cam-info">
-          <div class="cam-name">RETRO GLOW LAMP</div>
-          <div class="cam-vibe">AMBIENT ROOM LIGHTING</div>
-          
-          <div class="cam-perks" style="margin-top: 10px;">
-            <span class="perk perk-highlight">&gt;&gt; STANDARD DELIVERY APPLIES (৳100)</span>
-            <span class="perk">&gt;&gt; WARM GLOW</span>
-          </div>
-          
-          <div class="variant-toggle" style="grid-template-columns: 1fr;">
-            <label class="toggle-opt">
-              <input type="radio" name="lamp_variant" value="standard" checked onchange="soundClick();"> <span>STANDARD EDITION</span>
-            </label>
-          </div>
-          
-          <div class="price-row" id="lampPriceRow"></div>
-          <button class="buy-btn" id="lampBuyBtn" onclick="openCheckoutLamp()">SECURE ITEM</button>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- LVL 5 (WATERBAG) -->
-  <div class="cat-body" id="page5Body" style="display:none;">
     <div class="section-label">&gt; HEALING &amp; COMFORT</div>
-    <div id="waterbagGrid" class="cam-grid">
+    <div class="cam-grid">
       <div class="cam-card">
         <div class="img-wrapper">
           <div class="live-watch">💖 SELF CARE</div>
@@ -1115,8 +1110,10 @@ function refreshCatalogPrices() {
     document.getElementById('topDiscBar').style.fontWeight = "900";
   }
   updateFlagshipPrice(currentSD);
+  
   var mirrorRadio = document.querySelector('input[name="mirror_size"]:checked');
   if(mirrorRadio) updateMirrorPrice(mirrorRadio);
+  
   updatePrankPrice();
   updateLampPrice();
   updateWaterbagPrice();
@@ -1971,9 +1968,8 @@ function showPage(page) {
   document.getElementById('tab2').className = 'page-tab' + (page === 2 ? ' active' : '');
   document.getElementById('tab3').className = 'page-tab' + (page === 3 ? ' active' : '');
   document.getElementById('tab4').className = 'page-tab' + (page === 4 ? ' active' : '');
-  document.getElementById('tab5').className = 'page-tab' + (page === 5 ? ' active' : '');
   
-  const bodies = ['page1Body', 'page2Body', 'page3Body', 'page4Body', 'page5Body'];
+  const bodies = ['page1Body', 'page2Body', 'page3Body', 'page4Body'];
   bodies.forEach(id => document.getElementById(id).style.display = 'none');
   
   const newBody = document.getElementById('page' + page + 'Body');
